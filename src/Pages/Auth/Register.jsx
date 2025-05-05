@@ -2,6 +2,8 @@ import {Link} from 'react-router-dom'
 import {BkavIcon} from '../../Component/Login/BkavIcon' 
 import {Layout} from './Layout'    
 import {useState} from 'react' 
+import {EmailInput} from '../../Component/Login/EmailInput'
+import {PasswordInput} from '../../Component/Login/PasswordInput'
 export const Register =() => {
      const [isSucess, setIsSuccess] = useState(false);
      const [message, setMessage] = useState("");
@@ -37,68 +39,45 @@ export const Register =() => {
                                 <div className = "flex items-center justify-start col-start-1 row-start-2 max-h-[60px]">
                                      <h4 className = "text-start text-[1rem] ">Tên tài khoản</h4>    
                                 </div>
-                                <div className = "relative w-full col-start-2 row-start-2 max-h-[60px] flex justify-end ">
-                                <input
-                                   name = "username"
-                                   type = "username" 
-                                   placeholder = ""
-                                   value = {user.username}
-                                   onChange = {handleChange}
-                                   className = "w-full rounded-lg ring-2 ring-sky-50 p-2 bg-sky-100 focus:ring-4 focus:ring-sky-200 "
-                                   />
-                                   <ion-icon
-                                        name="close-circle-outline"
-                                        className ="absolute  top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none pr-4" ></ion-icon>
-                                </div>
+                                <EmailInput
+                                name = "username"
+                                type = "username"
+                                value = {user.username}
+                                onChange = {handleChange}
+                                placeholder=""
+                                inputclassName= "w-full col-start-2 row-start-2 max-h-[60px] flex justify-end"
+                                />
                                 <div className = "flex items-center justify-start col-start-1 row-start-3">
                                      <h4 className = "text-start text-[1rem] font-[400] ">Địa chỉ email</h4>    
                                 </div>
-               
-                                <div className = "relative w-full col-start-2 row-start-3 max-h-[60px] flex justify-end ">
-                                <input
-                                   name = "email"
-                                   type = "email"
-                                   placeholder = ""
-                                   value = {user.email}
-                                   onChange = {handleChange}
-                                   className = "w-full rounded-lg ring-2 ring-sky-50 p-2 bg-sky-100 focus:ring-4 focus:ring-sky-200 "
-                                   />
-                                   <ion-icon
-                                        name="close-circle-outline"
-                                        className ="absolute  top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none pr-4" ></ion-icon>
-                                </div>
+                                <EmailInput
+                                name = "email"
+                                type = "email"
+                                value = {user.email}
+                                onChange = {handleChange}
+                                placeholder=""
+                                inputclassName= "w-full col-start-2 row-start-3 max-h-[60px] flex justify-end"
+                                />
                                 <div className = "flex items-center justify-start col-start-1 row-start-4">
                                      <h4 className = "text-start text-[1rem] ">Mật khẩu</h4>    
                                 </div>
-                                <div className = "relative w-full col-start-2 row-start-4 max-h-[60px] flex justify-end ">
-                                <input
+                                <PasswordInput
                                    name = "password"
-                                   type = "password" 
-                                   value = {user.password}
-                                   onChange = {handleChange}
-                                   placeholder = ""
-                                   className = "w-full rounded-lg ring-2 ring-sky-50 p-2 bg-sky-100 focus:ring-4 focus:ring-sky-200 "
+                                   value ={user.password}
+                                   onChange = {handleChange}     
+                                   placeholder=""
+                                   inputclassName="w-full col-start-2 row-start-4 max-h-[60px] flex justify-end"
                                    />
-                                   <ion-icon
-                                        name="eye-off-outline"
-                                        className ="absolute  top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none pr-4" ></ion-icon>
-                                </div>
                                 <div className = "flex items-center justify-start col-start-1 row-start-5">
                                      <h4 className = "text-start text-[1rem] ">Nhập lại mật khẩu</h4>    
                                 </div>
-                                <div className = "relative w-full col-start-2 row-start-5 max-h-[60px] flex justify-end ">
-                                <input
+                                <PasswordInput
                                    name = "password2"
-                                   type = "password"
-                                   value = {user.password2}
-                                   onChange={handleChange} 
-                                   placeholder = ""
-                                   className = "w-full rounded-lg ring-2 ring-sky-50 p-2 bg-sky-100 focus:ring-4 focus:ring-sky-200 "
+                                   value ={user.password2}
+                                   onChange = {handleChange}     
+                                   placeholder=""
+                                   inputclassName="w-full col-start-2 row-start-5 max-h-[60px] flex justify-end"
                                    />
-                                   <ion-icon
-                                        name="eye-off-outline"
-                                        className ="absolute  top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none pr-4" ></ion-icon>
-                                </div>
                                 <button className = "p-2   bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 shadow-lg shadow-slate-300 col-start-2 row-start-6" onClick ={(e)=>haldSubmit(e)}>
                                 Đăng ký 
                                 </button>

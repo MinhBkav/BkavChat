@@ -14,7 +14,7 @@ export const Layout = ({children,isSucess,message,onClose,title}) => {
                         <div className = "relative z-1  glow-background-2 mt-56 ml-56 rounded-full"></div>
                         <div className = "absolute z-2 bottom-[400px] right-80 glow-background rounded-full"></div>
                 </div>
-                <div className = "absolute z-3 2xl:top-28 2xl:left-28 top-10 left-24 hidden md:flex md:flex-col md:justify-center md:m-[1rem] md:w-[40%]  ">
+                <div className = "absolute z-3 2xl:top-10 2xl:left-28 top-10 left-24 hidden md:flex md:flex-col md:justify-center md:m-[1rem] md:w-[40%]  ">
                         <div className = "flex h-1/4">
                                 <div className = "flex items-center justify-center w-1/4">
                                         <img src = "./images/IconB.png" alt = "logo" className = "object-cover"/>
@@ -23,7 +23,7 @@ export const Layout = ({children,isSucess,message,onClose,title}) => {
                                         <h1 className = "  text-orange-500 2xl:text-[3.2rem] md:text-[2.2rem] font-bold">Bkav Chat</h1>
                                 </div>
                         </div>
-                        <div className = "p-10 mt-[2rem] w-full h-3/4">
+                        <div className = "p-10 mt-[1.5rem] w-full h-3/4">
                         {child}
                         </div>
                 </div>

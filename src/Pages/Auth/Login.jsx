@@ -4,6 +4,8 @@ import axios from 'axios'
 import {showToast} from '../../Component/Login/Showtoast'  
 import {Layout} from './Layout'
 import {LayoutIcon} from './LayoutIcon'
+import {EmailInput} from '../../Component/Login/EmailInput'  
+import {PasswordInput} from '../../Component/Login/PasswordInput'  
 export const Login =() => {
    const [user,setUser] = useState({
         email : '',
@@ -29,32 +31,21 @@ export const Login =() => {
    <img src ="./images/login.png" alt ="Not found" className = " object-contain w-3/4 h-3/4"/>
    <form className = "flex flex-col justify-center h-4/6  mt-12">
                         <h3 className = " text-center 2xl:text-[3rem] text-[1.5rem] font-[400]">Đăng nhập</h3> 
-                       <div className = "relative w-full h-[60px] flex justify-end 2xl:mt-10 mt-5 ">
-                       <input
-                        name = "email"
-                        value = {user.email}
-                        onChange = {(e)=>setUser({...user,[e.target.name]:e.target.value})}     
-                        type = "email" 
-                        placeholder = "Tên tài khoản/Email"
-                        className = "rounded-lg ring-2 w-full ring-sky-50 2xl:p-6 p-2   bg-sky-100 focus:ring-4 focus:ring-sky-200  "
-                        />
-                        <ion-icon
-                          name="close-circle-outline"
-                          class="absolute  top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none pr-6" ></ion-icon>
-                       </div>
-                       <div className = "relative w-full h-[60px] flex justify-end 2xl:mt-10 mt-5 ">
-                       <input
+                       <EmailInput 
+                         name = "email"
+                         type = "email"
+                         value = {user.email}
+                         onChange = {(e)=>setUser({...user,[e.target.name]:e.target.value})}   
+                         placeholder="Tên tài khoản/Email"  
+                         inputclassName= " w-full h-[60px] flex justify-end 2xl:mt-10 mt-5 "
+                         />
+                        <PasswordInput
                         name = "password"
-                        value = {user.password}
+                        value ={user.password}
                         onChange = {(e)=>setUser({...user,[e.target.name]:e.target.value})}     
-                        type = "password" 
-                        placeholder = "Mật khẩu"
-                        className = "rounded-lg ring-2 w-full ring-sky-50 2xl:p-6 p-2   bg-sky-100 focus:ring-4 focus:ring-sky-200  "
+                        placeholder="Mật khẩu"
+                        inputclassName="w-full h-[60px] flex justify-end 2xl:mt-10 mt-5"
                         />
-                        <ion-icon
-                          name="eye-off-outline"
-                          class="absolute  top-1/2 -translate-y-1/2 text-gray-400 text-xl pointer-events-none pr-6" ></ion-icon>
-                       </div>
                         <button className = "text-end 2xl:text-[23px] md:text-sm text-xs mt-4 italic 2xl:mt-8 ">quên mật khẩu?</button>
                         <button onClick={(e)=>onLogin(e)} className = "2xl:p-4 p-2 mt-4 text-[1.2rem] 2xl:mt-8 bg-[#4461F2] text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-slate-300">
                         Đăng nhập  
