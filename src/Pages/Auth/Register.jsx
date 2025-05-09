@@ -1,4 +1,5 @@
 import {Link} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import {BkavIcon} from '../../Component/Login/BkavIcon' 
 import {Layout} from './Layout'    
 import {useState} from 'react' 
@@ -14,11 +15,12 @@ export const Register =() => {
         password : "",
         password2 : ""
      });
-     const onCloseModal = () => {
-          
+     const navigate = useNavigate();
+     const onCloseModal = () => {   
         setIsSuccess(false);
         setMessage("");
         setTitle("");
+        navigate("/MainChat")
      
      }
      const haldSubmit = async (e) => {

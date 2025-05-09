@@ -10,7 +10,7 @@ export const PasswordInput = ({name,value,onChange,placeholder,inputclassName}) 
              value = {value}
              onChange = {onChange}     
              placeholder = {placeholder}
-             className = "rounded-lg ring-2 w-full ring-sky-50 2xl:p-6 p-2   bg-sky-100 focus:ring-4 focus:ring-sky-200  "
+             className = "rounded-lg  w-full  2xl:p-6 p-2   bg-sky-100  focus:ring-sky-200  "
              />
              <ion-icon
                name={showPassword?'eye-outline':'eye-off-outline'}
