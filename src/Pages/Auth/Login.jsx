@@ -38,7 +38,7 @@ export const Login =() => {
    const onLogin = (e) =>
    {
       e.preventDefault();
-      dispatch(login({user}))
+      dispatch(login(user))
       setIsSuccess(true)
 
    }
@@ -49,7 +49,7 @@ export const Login =() => {
       } else if (!isLoading && !error) {
         setMessage('Đăng nhập thành công!');
         setTitle('Chào mừng bạn!');
-        dispatch(setUser(user));  // Cập nhật người dùng vào Redux state khi login thành công
+        dispatch(sUser(user));  // Cập nhật người dùng vào Redux state khi login thành công
         setIsSuccess(true);  // Hiển thị modal khi login thành công
       } else if (error) {
         setMessage('Đăng nhập thất bại. Vui lòng thử lại.');
@@ -60,7 +60,7 @@ export const Login =() => {
   
    return (
    <>
-   <Layout pen ={isSucess} message={message} onClose={onClose} title ={title} >
+   <Layout isSucess ={isSucess} message={message} onClose={onClose} title ={title} >
    <img src ="./images/login.png" alt ="Not found" className = " object-contain w-3/4 h-3/4"/>
    <form className = "flex flex-col justify-center h-4/6  mt-12">
                         <h3 className = " text-center 2xl:text-[3rem] text-[1.5em] font-[400]">Đăng nhập</h3> 
