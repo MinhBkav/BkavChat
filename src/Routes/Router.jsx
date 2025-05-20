@@ -1,7 +1,7 @@
-import {Login } from "../Pages/Auth/Login";
+import {Login } from "../Pages/Login";
 import {Routes,Route} from "react-router-dom";
-import {Register} from "../Pages/Auth/Register";
-import {MainChat} from "../Pages/Main/MainChat";
+import {Register} from "../Pages/Register";
+import {Layout} from "../Pages/Layout";
 export const Router = () => {
     return (
         <>
@@ -9,7 +9,7 @@ export const Router = () => {
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/Register" element={<Register />} />
-                <Route path ="/MainChat" element ={<MainChat/>}/>
+                <Route path ="/main-chat" element ={<Layout/>}/>
             </Routes>
         </>
     );

@@ -19,7 +19,7 @@ export const WindowModal=({ isOpen,message,onClose,title,firstRegsiter}) => {
     transition = {{duration:0.3,ease:"easeOut"}}
     >
     <div
-        className="bg-white text-center p-6 rounded-md shadow-lg h-1/12 w-2/3"
+        className="bg-white text-center p-6 rounded-md  w-[400px] shadow-lg h-1/12 "
         onClick={(e) => e.stopPropagation()} 
       >
         <h3 className="text-sm text-start font-semibold mb-2">Xác thực email</h3>

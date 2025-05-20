@@ -5,9 +5,8 @@ const initialState  ={
     email:'',
     isLoading : null,
     error : null,
-    isLogin : null
 }
-export const login = createAsyncThunk('auth/login', async(user)=>{
+export const register = createAsyncThunk('auth/register', async(user)=>{
         try {
             const res = await axios.post('https://fe253d2d-1309-43a4-8ee6-250f4a9781f0.mock.pstmn.io/Login',user)
             const data = await res.data;
@@ -17,9 +16,9 @@ export const login = createAsyncThunk('auth/login', async(user)=>{
         }
    }
  )
-const loginSlice =createSlice(
+const registerSlice =createSlice(
     {
-        name : 'login',
+        name : 'register',
         initialState,
         reducers:
         {   
@@ -32,23 +31,20 @@ const loginSlice =createSlice(
         },
         extraReducers :(builder)=>{
             builder
-            .addCase(login.pending,(state) => {
+            .addCase(register.pending,(state) => {
                 state.isLoading = true;
                 state.error = false;
-                state.isLogin = false;
             })
-            .addCase(login.fulfilled,(state)=>{
+            .addCase(register.fulfilled,(state)=>{
                 state.isLoading = false;
                 state.error = false;
-                state.isLogin = true;
             })
-            .addCase(login.rejected,(state)=>{
+            .addCase(register.rejected,(state)=>{
                 state.isLoading = false;
                 state.error = true;
-                state.isLogin = false;
             })
         }
     },
 )
-export const {sUser} = loginSlice.actions;
-export default loginSlice.reducer; 
+export const {sUser} = registerSlice.actions;
+export default registerSlice.reducer; 
