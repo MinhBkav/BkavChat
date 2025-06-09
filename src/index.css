@@ -1,7 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+/* Áp dụng cho toàn bộ trang */
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent; /* Track trong suốt */
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);  /* Màu thumb mờ */
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);  /* Hover đậm hơn */
+}
+
+html, body {
+  overflow: overlay;
+}
 
 .glow-background {
   height : 40%;
@@ -74,3 +95,27 @@
       background: radial-gradient(circle, rgba(86, 109, 209, 0.6) 0%, rgba(158, 70, 70, 0.1) 70%, rgba(0,0,0,0) 100%);
       
   };
+.btn2 {
+        position: relative;
+        display: inline-block;
+        color : rgb(61, 61, 208);
+        text-decoration: none;
+        font-size: 1.067rem;
+        font-weight:700;
+        transition: background-color 0.3s ease-in-out;
+        margin-left : 1.375rem;
+        margin-right: 1.375rem;
+    }
+  .btn2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.5rem;
+    height: 3px;
+    width: 100%;
+    border-radius: 5px;
+    background-color: rgb(61, 61, 208);
+    transform: scaleX(0.5);
+    transition: transform 0.3s ease-in-out;
+    transform-origin: center-left;
+  }

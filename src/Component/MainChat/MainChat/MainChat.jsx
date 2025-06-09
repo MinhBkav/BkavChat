@@ -1,12 +1,14 @@
 
 import {InputChat} from "./InputChat"
 import {HeaderUser} from "./HeaderUser"
+import {Chat} from "./Chat"
 export const MainChat = () => {
     return (
-       <div className = "flex-grow bg-white">
+       <main className = "flex flex-col justify-between   bg-white">
         <HeaderUser/>
+        <Chat/>
         <InputChat/>
-       </div>  
+       </main>  
          )
 }
 export default MainChat;

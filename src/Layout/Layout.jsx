@@ -7,7 +7,6 @@ export const Layout = ({children,isSucess,message,onClose,title}) => {
     const ChildArray = React.Children.toArray(children);
     const child = ChildArray[0];
     const rest = ChildArray.slice(1);
-    
     return  (
         <>
         <div className = "relative z-0 flex 2xl:justify-between justify-center h-screen bg-[#f6f6f6] ">
@@ -33,16 +32,18 @@ export const Layout = ({children,isSucess,message,onClose,title}) => {
                                                 <option value="en">Tiếng Anh</option>
                                         </select>
                                 </li>
-                                <li className="btn">
+                                <li className="">
                                         <NavLink
                                         to="/login"
+                                        className = "btn"
                                         >
                                         Đăng nhập
                                         </NavLink>
                                         </li>
-                                        <li className="btn">
+                                        <li className="">
                                         <NavLink
                                         to="/register"
+                                        className = "btn"
                                         >
                                         Đăng ký
                                         </NavLink>

@@ -40,7 +40,7 @@ export const Login = () => {
     }
     else {
       setIsSuccess(false)
-      navigate("/layout")
+      navigate("/main-chat")
     }
   }
   const validate = () => {

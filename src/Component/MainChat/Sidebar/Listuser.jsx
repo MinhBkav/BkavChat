@@ -1,8 +1,8 @@
 import { Cardfriend } from "./Cardfriend";
-import {chatData} from './chatData'
+import { useSelector } from "react-redux";
 export const Listuser = () =>
 {
-    
+    const chatData = useSelector(state=>(state.data.chatData))
     return (
        <>
        <div className = "  ">

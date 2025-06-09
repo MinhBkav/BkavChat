@@ -1,14 +1,14 @@
 import {Sidebar} from "../Component/MainChat/Sidebar/Sidebar";
 import {MainChat} from "../Component/MainChat/MainChat/MainChat";
 
-export const Layout = () => {
+export const PageChat = () => {
     return (
     <>
-    <div className = "flex w-full">
+    <div className = "flex w-full overflow-x-hidden">
       <Sidebar/>
       <MainChat/>
     </div>
       </>
     )
 }
-export default Layout;
+export default PageChat;
