@@ -9,7 +9,7 @@ export const Layout = ({children,isSucess,message,onClose,title}) => {
     const rest = ChildArray.slice(1);
     return  (
         <>
-        <div className = "relative z-0 flex 2xl:justify-between justify-center h-screen bg-[#f6f6f6] ">
+        <div className = "relative z-0 flex 2xl:justify-between justify-center h-screen bg-[#f6f6f6] dark:bg-[#2d2d2e] ">
                 <div className = "relative z-10 hidden  xl:flex xl:flex-col  xl:justify-center xl:m-[1rem] xl:items-center xl:w-[40%]  ">
                         <div className = "relative z-10  glow-background-2 mt-96 ml-52 rounded-full"></div>
                         <div className = "absolute z-20 bottom-[470px] right-96 glow-background top-16 rounded-full"></div>

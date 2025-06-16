@@ -1,19 +1,19 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 const initialState  ={
-    username : '',
-    email:'',
+    Username : '',
     isLoading : null,
     error : null,
     isLogin : null
 }
 export const login = createAsyncThunk('auth/login', async(user)=>{
         try {
-            const res = await axios.post('https://fe253d2d-1309-43a4-8ee6-250f4a9781f0.mock.pstmn.io/Login',user)
+            const res = await axios.post('http://10.2.44.68:8888/api/auth/login/',user)
             const data = await res.data;
-            localStorage.setItem("token", data.acess);
+            localStorage.setItem("token", data.data.token);
         } catch (error) {
             console.error(error);
+            throw error;
         }
    }
  )
@@ -26,8 +26,7 @@ const loginSlice =createSlice(
             sUser : (state,action) =>
             {
                 const user = action.payload;
-                state.username = user.username;
-                state.email = user.email;
+                state.Username = user.Username;
             }
         },
         extraReducers :(builder)=>{

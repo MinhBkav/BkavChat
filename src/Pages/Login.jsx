@@ -11,8 +11,8 @@ import { WindowModal } from '../Component/Login/WindowModal'
 import { useNavigate } from 'react-router-dom'
 export const Login = () => {
   const [user, setUser] = useState({
-    email: '',
-    password: ''
+    Username: '',
+    Password: ''
   });
   // const onLogin = async (e) => {
   //      e.preventDefault();
@@ -38,29 +38,32 @@ export const Login = () => {
     if (isLoading) {
       setIsSuccess(true)
     }
-    else {
+    else if(!isLoading && !error){
       setIsSuccess(false)
       navigate("/main-chat")
+    }
+    else if(!isLoading && error){
+      setIsSuccess(false)
     }
   }
   const validate = () => {
     const newError = {};
-    const emailRule = /^[A-Za-z0-9]+@Bkav\.com$/;
-    if (!user.email) {
-      newError.email = "Vui long nhap email";
+    const emailRule = /^[A-Za-z0-9]+$/;
+    if (!user.Username) {
+      newError.Username = "Vui long nhap email";
     }
-    else if (!emailRule.test(user.email)) {
-      newError.email = "Mail phai khong dung dinh dang"
+    else if (!emailRule.test(user.Username)) {
+      newError.Username = "Mail phai khong dung dinh dang"
     }
-    if (!user.password) {
-      newError.password = "Vui long nhap mat khau"
+    if (!user.Password) {
+      newError.Password = "Vui long nhap mat khau"
     }
     else {
-      if (/\s/.test(user.password)) {
-        newError.password = "Mat khau khong duoc chua dau cach "
+      if (/\s/.test(user.Password)) {
+        newError.Password = "Mat khau khong duoc chua dau cach "
       }
-      else if (user.password.length <= 8) {
-        newError.password = "Mat khau phai lon hon 8 ky tu"
+      else if (user.Password.length <= 8) {
+        newError.Password = "Mat khau phai lon hon 8 ky tu"
       }
     }
     setErrorInput(newError);
@@ -97,18 +100,18 @@ export const Login = () => {
         <form className="flex flex-col justify-center 2xl:h-4/6 h-full mt-12">
           <h3 className=" text-center 2xl:text-[3rem] text-[2rem] font-[400]">Đăng nhập</h3>
           <EmailInput
-            error={errorInput.email}
-            name="email"
-            type="email"
-            value={user.email}
+            error={errorInput.Username}
+            name="Username"
+            type="text"
+            value={user.Username}
             onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
             placeholder="Tên tài khoản/Email"
             inputclassName=" w-full flex justify-end 2xl:mt-10 mt-5 "
           />
           <PasswordInput
-            error={errorInput.password}
-            name="password"
-            value={user.password}
+            error={errorInput.Password}
+            name="Password"
+            value={user.Password}
             onChange={(e) => setUser({ ...user, [e.target.name]: e.target.value })}
             placeholder="Mật khẩu"
             inputclassName="w-full  flex justify-end 2xl:mt-10 mt-5"

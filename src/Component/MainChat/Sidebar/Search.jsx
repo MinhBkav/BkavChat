@@ -16,6 +16,9 @@ export const Search = () => {
     {
         dispatch(sInputsreach(''))
     }
+    const close = () => {
+        setModal(false)
+    }
     // let filteredUsers=[];
     // useEffect(()=>{
     //     const time = setTimeout(()=>{
@@ -29,28 +32,34 @@ export const Search = () => {
     // },[sreach])
 return (
     <>
-        <div className="fixed w-[360px] h-[60px] bg-white   border-r-[1px] border-slate-200 top-0 flex flex-col justify-center ">
+        <div className="fixed w-[360px] h-[60px] bg-white dark:bg-[#171717]  dark: border-r-[1px] border-slate-200 top-0 md:flex flex-col justify-center  hidden">
             <div className="relative flex  py-2">
-                {!inputsreach && (<button onClick={() => setModal(!modal)} className="z-20"><ion-icon name="menu-sharp" className="w-8 h-8 mx-4"></ion-icon></button>)}
-                {inputsreach && (<button className="z-20"><ion-icon name="arrow-back-sharp" className="w-8 h-8 mx-4"></ion-icon></button>)}
-                <WindowSetting openModal={modal} />
+                {!inputsreach && (<button onClick={() => setModal(!modal)} className="z-20"><ion-icon name="menu-sharp" className="w-8 h-8 mx-4 dark:text-blue-600"></ion-icon></button>)}
+                {inputsreach && (<button className="z-20"><ion-icon name="arrow-back-sharp" className="w-8 h-8 mx-4 dark:text-blue-600"></ion-icon></button>)}
+                <WindowSetting openModal={modal} close = {close}/>
                 <input
                     type="text"
                     value={inputsreach}
                     placeholder="Tìm kiếm"
                     onChange={onChange}
-                    className="rounded-full  w-[78%]  text-lg ring-2 ring-slate-300 pl-12 py-[6px] focus:ring-[#5787db] outline-none  "
+                    className="rounded-full  w-[78%]  text-lg ring-2 ring-slate-300 dark:ring-slate-600 pl-12 py-[6px] focus:ring-[#5787db] outline-none dark:bg-slate-600 dark:text-white "
                 />
 
                 <ion-icon
                     name="search-sharp"
-                    class="absolute  top-1/2 -translate-y-1/2 text-xl pl-20 font-[700]" ></ion-icon>
+                    class="absolute  top-1/2 -translate-y-1/2 text-xl pl-20 font-[700] dark:text-blue-400" ></ion-icon>
                 {inputsreach && (<ion-icon
                     name="close-sharp"
                     class="absolute  top-1/2 -translate-y-1/2  text-gray-400 text-2xl right-6 font-[700]" onClick={() => clearInput()}></ion-icon>)}
             </div>
         </div>
-        <div className="w-[360px] h-[60px]"></div>
+        <div className="md:w-[360px] h-[60px] w-[60px]"></div>
+        <div className="fixed w-[60px] h-[60px] bg-white dark:bg-[#171717]  dark: border-r-[1px] border-slate-200 top-0 flex flex-col justify-center md:hidden">
+            <div className="relative flex  py-2">
+                {!inputsreach && (<button onClick={() => setModal(!modal)} className="z-20"><ion-icon name="menu-sharp" className="w-8 h-8 mx-4 dark:text-blue-600"></ion-icon></button>)}
+                {inputsreach && (<button className="z-20"><ion-icon name="arrow-back-sharp" className="w-8 h-8 mx-4 dark:text-blue-600"></ion-icon></button>)}
+            </div>
+        </div>
     </>
 )
 }
