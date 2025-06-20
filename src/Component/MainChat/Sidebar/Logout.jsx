@@ -1,9 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { logout } from '../../../feature/loginSlice'
+import { useDispatch } from "react-redux";
 export const Logout = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const removeToken = () => {
          localStorage.setItem("token", "");
          navigate("/login")
+         dispatch(logout())
     }
     return (
      <li className="flex-1 hover:bg-[#DBDDE1] dark:hover:bg-slate-700">

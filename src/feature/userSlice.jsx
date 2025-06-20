@@ -2,6 +2,7 @@ import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 const initialState  ={
     userChat : {
+    read : false,
     id: 1,
     name: "Llon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",

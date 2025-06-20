@@ -4,6 +4,7 @@ const initialState  ={
     chatData : [
   {
     id: 1,
+    read : false,
     name: "Elon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",
      messages: [
@@ -16,6 +17,7 @@ const initialState  ={
   },
   {
     id: 2,
+    read : false,
     name: "Wonder Woman",
     avatar: "https://i.pravatar.cc/150?img=5",
     messages: [
@@ -25,6 +27,7 @@ const initialState  ={
     ]
   },
   {
+    read : false,
     id: 3,
     name: "Elon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",
@@ -37,6 +40,7 @@ const initialState  ={
   },
   {
     id: 4,
+    read : false,
     name: "Elon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",
     messages: [
@@ -47,6 +51,7 @@ const initialState  ={
     ]
   },
   {
+    read : false,
     id: 5,
     name: "Elon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",
@@ -58,6 +63,7 @@ const initialState  ={
     ]
   },
   {
+    read : false,
     id: 6,
     name: "Elon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",
@@ -69,6 +75,7 @@ const initialState  ={
     ]
   },
   {
+    read : false,
     id: 7,
     name: "Elon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",
@@ -80,6 +87,7 @@ const initialState  ={
     ]
   },
   {
+    read : false,
     id: 8,
     name: "Elon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",
@@ -194,19 +202,27 @@ const initialState  ={
   // },
 ],
   currentuserid : 0,
-  changeuser: true
+  changeuser: true,
+  openSidebar : false
 
 }
-// export const login = createAsyncThunk('auth/login', async(user)=>{
-//         try {
-//             const res = await axios.post('https://fe253d2d-1309-43a4-8ee6-250f4a9781f0.mock.pstmn.io/Login',user)
-//             const data = await res.data;
-//             localStorage.setItem("token", data.acess);
-//         } catch (error) {
-//             console.error(error);
-//         }
-//    }
-//  )
+export const getListUser = createAsyncThunk('user/getUser', async (_) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get('/api/user', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return res.data;
+  } catch (error) {
+            console.error(error);
+            throw error;
+        }
+});
+
 const dataSlice =createSlice(
     {
         name : 'data',
@@ -224,6 +240,10 @@ const dataSlice =createSlice(
                 const id = action.payload;
                 state.currentuserid = id
             }, 
+            setOpenSidebar : (state,action) =>
+            {
+              state.openSidebar = action.payload
+            }
         },
         // extraReducers :(builder)=>{
         //     builder
@@ -245,5 +265,5 @@ const dataSlice =createSlice(
         // }
     },
 )
-export const {addMessageData,setid} = dataSlice.actions;
+export const {addMessageData,setid,setOpenSidebar} = dataSlice.actions;
 export default dataSlice.reducer; 

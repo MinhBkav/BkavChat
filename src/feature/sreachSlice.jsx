@@ -3,6 +3,7 @@ import axios from 'axios'
 const initialState  ={
     dataSreach: [  {
     id: 1,
+    read : false,
     name: "Llon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",
      messages: [
@@ -14,6 +15,7 @@ const initialState  ={
     ]
   },
   {
+    read : false,
     id: 2,
     name: "Londer Woman",
     avatar: "https://i.pravatar.cc/150?img=5",
@@ -24,6 +26,7 @@ const initialState  ={
     ]
   },
   {
+    read : false,
     id: 3,
     name: "Linh Musk",
     avatar: "https://i.pravatar.cc/150?img=1",

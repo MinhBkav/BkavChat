@@ -22,7 +22,6 @@ export const CardSreach = ({user}) =>
                 </div>
            </div>
         </li>
-
     </button>   
     )
 }

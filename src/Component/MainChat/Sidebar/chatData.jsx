@@ -4,7 +4,7 @@ export const chatData = [
     name: "Elon Musk",
     avatar: "https://i.pravatar.cc/150?img=1",
      messages: [
-      { sender: "them", text: "Chào bạn, tôi là Elon Musk",id:1, time: "01:20 AM" },
+      { sender: "them", text: "Chào bạn, tôi là Elon Musk",id:1, time: "01:20 AM", image:"./images/Apple.png" },
       { sender: "them", text: "Chào bạn, tôi là Elon Musk",id:1 ,time:"02:28 AM",},
       { sender: "me", text: "Ồ, xin chào anh Elon!",id:6,time : "16:28 AM", },
       { sender: "them", text: "Bạn có hứng thú với Mars không  Khong khong khong khong khong khong khong khong ?",id:2, time: "20:02 PM", },

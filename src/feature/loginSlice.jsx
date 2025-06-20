@@ -8,7 +8,7 @@ const initialState  ={
 }
 export const login = createAsyncThunk('auth/login', async(user)=>{
         try {
-            const res = await axios.post('http://10.2.44.68:8888/api/auth/login/',user)
+            const res = await axios.post('http://10.2.44.103:8888/api/auth/login/',user)
             const data = await res.data;
             localStorage.setItem("token", data.data.token);
         } catch (error) {
@@ -27,6 +27,12 @@ const loginSlice =createSlice(
             {
                 const user = action.payload;
                 state.Username = user.Username;
+            },
+            logout : (state) => 
+            {
+                state.isLogin = null;
+                state.isLoading = null;
+                state.isLogin = null;
             }
         },
         extraReducers :(builder)=>{
@@ -49,5 +55,5 @@ const loginSlice =createSlice(
         }
     },
 )
-export const {sUser} = loginSlice.actions;
+export const {sUser,logout} = loginSlice.actions;
 export default loginSlice.reducer; 

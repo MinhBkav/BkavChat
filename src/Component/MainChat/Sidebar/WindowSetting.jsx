@@ -6,6 +6,7 @@ import { useRef } from 'react'
 import { useClickOutside } from '../../../Hooks/useClickOutside'
 import { useTheme } from '../../../Hooks/toggleTheme';
 import { Logout } from './Logout'
+
 export const WindowSetting = ({ openModal, close }) => {
     const { toggleTheme } = useTheme()
     const ref = useRef(null)

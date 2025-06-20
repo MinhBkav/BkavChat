@@ -8,7 +8,7 @@ export const WindowMessage = ({openModal,positionE,close}) => {
     if (!openModal)
         return null;
     return (
-       <div className = "absolute z-20   "  style={{
+       <div className = "absolute    "  style={{
         top: "calc(100%)",
         ...(positionE === "right" ?{right :"95%"}: {left : "95%"})
       }}

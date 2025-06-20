@@ -5,7 +5,7 @@ export const HeaderUser = () =>
     const user = useSelector(state=>state.user.userChat)
 return (
        <>
-       <div className = "fixed w-[calc(100vw-361px)] h-[60px] bg-white dark:bg-[#171717]">
+       <div className = "fixed h-[60px] bg-white dark:bg-[#171717]">
        <div className = "relative flex  py-[6.5px]">
              <div className = " flex justify-start  gap-2 pl-[8px]">
                 <img src={user.avatar} alt="Avatar" className = "w-10 h-10 object-cover rounded-full my-auto overflow-hidden" />
@@ -16,7 +16,7 @@ return (
            </div>
        </div>
        </div>
-       <div className = "w-[calc(100vw-361px)] h-[60px]"></div>
+       <div className = " h-[60px]"></div>
         </>
     )
 }

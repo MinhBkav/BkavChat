@@ -29,7 +29,7 @@ export const Login = () => {
   // }
   const [isSucess, setIsSuccess] = useState(false);
   const dispatch = useDispatch();
-  const { error, isLoading } = useSelector((state) => state.login)
+  const { error, isLoading ,isLogin} = useSelector((state) => state.login)
   const [message, setMessage] = useState("")
   const [title, setTitle] = useState("")
   const [errorInput, setErrorInput] = useState({})
@@ -75,13 +75,27 @@ export const Login = () => {
       e.preventDefault();
       dispatch(login(user))
     }
+  //   if (isLoading) { Khong dung cach nay phai dung useEffect để lấy các sự kiện pending, reject, filled
+  //     setMessage('Loading...');
+  //     setTitle('Đang đăng nhập');
+  //     setIsSuccess(true)
+  //   } else if (isLoading === false && error === false) {
+  //     setMessage('Đăng nhập thành công!');
+  //     setTitle('Chào mừng bạn!');
+  //     dispatch(sUser(user));  // Cập nhật người dùng vào Redux state khi login thành công
+  //     setIsSuccess(true);  // Hiển thị modal khi login thành 
+  //   } else if (error) {
+  //     setMessage('Đăng nhập thất bại. Vui lòng thử lại.');
+  //     setTitle('Lỗi');
+  //     setIsSuccess(true);  // Hiển thị modal khi có lỗi
+  //   }
   }
   useEffect(() => {
     if (isLoading) {
       setMessage('Loading...');
       setTitle('Đang đăng nhập');
       setIsSuccess(true)
-    } else if (isLoading === false && error === false) {
+    } else if (isLoading === false && error === false && isLogin === true ) {
       setMessage('Đăng nhập thành công!');
       setTitle('Chào mừng bạn!');
       dispatch(sUser(user));  // Cập nhật người dùng vào Redux state khi login thành công

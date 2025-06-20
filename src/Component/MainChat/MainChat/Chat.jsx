@@ -4,7 +4,6 @@ import { Emotion } from './Emotion'
 import { useSelector } from 'react-redux';
 import { WindowMessage } from './WindowMessage';
 const TheyChat = ({ mes }) => {
-   console.log(mes.length)
    const isLong = mes.length > 2
    const [showEmotion, setShowEmotion] = useState(false)
     const [modal, setModal] = useState(false)
@@ -75,8 +74,6 @@ const MeChat = ({ mes }) => {
    )
 }
 const funcgroupsMessage = (message) => {
-   console.log(message)
-   console.log(message[message.length - 1])
 
    const groups = []
    let i = 0
@@ -88,7 +85,6 @@ const funcgroupsMessage = (message) => {
          i++
       }
       groups.push({ sender: currentSender, message: group, id: i, time: message[i - 1].time })
-      console.log(message[message.length - 1].time)
    }
    return groups;
 }
@@ -98,7 +94,7 @@ export const Chat = () => {
    const groupMessage = funcgroupsMessage(message.messages)
    return (
       <>
-         <ul className="md:w-[calc(100vw- 361px -20px)] w-[calc(100vw- 61px -10px)] z-0 flex-grow flex flex-col justify-start mt-[10px] mx-[8px] gap-[4px] ">
+         <ul className=" z-0 flex-grow flex flex-col justify-end  mx-[8px] gap-[4px] scroll-container " >
             {groupMessage.map((person) => {
                return person.sender === "them" ? (
                   <li className="flex justify-start gap-[8px]">
