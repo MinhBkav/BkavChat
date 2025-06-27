@@ -1,31 +1,78 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 const initialState  ={
-    userChat : {
-    read : false,
-    id: 1,
-    name: "Llon Musk",
-    avatar: "https://i.pravatar.cc/150?img=1",
-     messages: [
-      { sender: "them", text: "Chào bạn, tôi là Elon Musk",id:1, time: "01:20 AM", image:"./images/Apple.png" },
-      { sender: "them", text: "Chào bạn, tôi là Elon Musk",id:1 ,time:"02:28 AM",},
-      { sender: "me", text: "Ồ, xin chào anh Elon!",id:6,time : "16:28 AM", },
-      { sender: "them", text: "Bạn có hứng thú với Mars không  Khong khong khong khong khong khong khong khong ?",id:2, time: "20:02 PM", },
-      { sender: "me", text: "Có chứ, tôi thích không gian vũ trụ!",id:3,time: "21:02 PM", }
-    ]
-  },
-  currentuserid : 0
+    userChat : {},
+  dataChat :[],
+  currentuserid : 0,
+  isLoading : null,
+  error : null,
+
 }
-export const login = createAsyncThunk('auth/login', async(user)=>{
-        try {
-            const res = await axios.post('https://fe253d2d-1309-43a4-8ee6-250f4a9781f0.mock.pstmn.io/Login',user)
-            const data = await res.data;
-            localStorage.setItem("token", data.acess);
-        } catch (error) {
+export const getdataChat = createAsyncThunk('user/getdataChat', async (FriendID) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get(`http://30.30.30.12:8888/api/message/get-message?FriendID=${FriendID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log(FriendID);
+    return res.data.data
+  } catch (error) {
             console.error(error);
+            throw error;
         }
-   }
- )
+});
+export const sendMessage = createAsyncThunk(
+  'user/sendMessage',
+  async ({ FriendID, Content, file }, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("FriendID", FriendID);
+      formData.append("Content", Content);
+
+      // Thêm tất cả file nếu có
+      if (file && file.length) {
+        file.forEach(f => formData.append("files", f));
+      }
+
+      const response = await axios.post(
+        "http://30.30.30.12:8888/api/message/send-message",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error("Send message error:", error);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const isRead = createAsyncThunk('user/isRead', async ({FriendID,CreatedAt}) => {//chua xu ly cac su kien peding,reject,...
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.get(`http://30.30.30.12:8888/api/message/get-message?FriendID=${FriendID}&LastTime=${CreatedAt}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    console.log(FriendID);
+    return res.data.data
+  } catch (error) {
+            console.error(error);
+            throw error;
+        }
+});
 const userSlice =createSlice(
     {
         name : 'user',
@@ -40,7 +87,7 @@ const userSlice =createSlice(
             addMessage : (state,action) =>
             {
                 const message = action.payload;
-                state.userChat.messages.push(message)
+                state.dataChat.push(message)
             },
             setid : (state,action) =>
             {
@@ -48,24 +95,22 @@ const userSlice =createSlice(
                 state.currentuserid = id
             }
         },
-        // extraReducers :(builder)=>{
-        //     builder
-        //     .addCase(login.pending,(state) => {
-        //         state.isLoading = true;
-        //         state.error = false;
-        //         state.isLogin = false;
-        //     })
-        //     .addCase(login.fulfilled,(state)=>{
-        //         state.isLoading = false;
-        //         state.error = false;
-        //         state.isLogin = true;
-        //     })
-        //     .addCase(login.rejected,(state)=>{
-        //         state.isLoading = false;
-        //         state.error = true;
-        //         state.isLogin = false;
-        //     })
-        // }
+        extraReducers :(builder)=>{
+            builder
+            .addCase(getdataChat.pending,(state) => {
+                state.isLoading = true;
+                state.error = false;
+            })
+            .addCase(getdataChat.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.error = false;
+                state.dataChat = action.payload;
+            })
+            .addCase(getdataChat.rejected,(state)=>{
+                state.isLoading = false;
+                state.error = true;
+            })
+        }
     },
 )
 export const {sUser,addMessage,setid} = userSlice.actions;

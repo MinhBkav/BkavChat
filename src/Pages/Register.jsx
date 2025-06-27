@@ -6,34 +6,48 @@ import {useState,useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import {EmailInput} from '../Component/Login/EmailInput'
 import {PasswordInput} from '../Component/Login/PasswordInput'
-import {register,sUser} from '../feature/registerSlice'  
+import {register,sUser,resetRegister} from '../feature/registerSlice'  
 export const Register =() => {
      const [isSucess, setIsSuccess] = useState(false);
      const [message, setMessage] = useState("");
      const [title,  setTitle] = useState("");
      const [errorInput,setErrorInput] = useState({})
      const [user,setUser] = useState({
-        username : "",
+        Username : "",
+        FullName : "",
+        Password : "",
+        Password2 : "",
         email : "",
-        password : "",
-        password2 : ""
      });
      const dispatch = useDispatch();
      const {error,isLoading} = useSelector((state)=>state.register)
      const navigate = useNavigate();
-       const onCloseModal = () => {   
-     if(isLoading){
-        setIsSuccess(true);
-     }
-     else {
-        setIsSuccess(false)
-     }
-     }
+    //    const onCloseModal = () => {   
+    //  if(isLoading){
+    //     setIsSuccess(true);
+    //  }
+    //  else {
+    //     setIsSuccess(false)
+    //  }
+    //  }
+     const onCloseModal = () => {
+    if (isLoading) {
+      setIsSuccess(true)
+    }
+    else if(!isLoading && !error){
+      setIsSuccess(false)
+      navigate("/Login")
+      dispatch(resetRegister())
+    }
+    else if(!isLoading && error){
+      setIsSuccess(false)
+    }
+  }
      const validate = () => {
       const newError = {};
       const emailRule = /^[A-Za-z0-9]+@Bkav\.com$/;
-         if(!user.username) {
-          newError.username = "Vui long nhap ten"
+         if(!user.Username) {
+          newError.Username = "Vui long nhap ten"
          }
         if (!user.email){
           newError.email = "Vui long nhap email";
@@ -41,23 +55,23 @@ export const Register =() => {
         else if (!emailRule.test(user.email)){
            newError.email = "Mail phai khong dung dinh dang"
         }
-      if(!user.password){
-        newError.password = "Vui long nhap mat khau"
+      if(!user.Password){
+        newError.Password = "Vui long nhap mat khau"
       }
-      if(!user.password2){
-        newError.password2 = "Vui long nhap mat khau"
+      if(!user.Password2){
+        newError.Password2 = "Vui long nhap mat khau"
       }
       
       else {
-          if(user.password !== user.password2){
-               newError.password = "Mat khau khong khop"
+          if(user.Password !== user.Password2){
+               newError.Password = "Mat khau khong khop"
           }
           else {
-         if(/\s/.test(user.password)){
-        newError.password = "Mat khau khong duoc chua dau cach "
+         if(/\s/.test(user.Password)){
+        newError.Password = "Mat khau khong duoc chua dau cach "
              }
-        else if(user.password.length <= 8){
-        newError.password = "Mat khau phai lon hon 8 ky tu"
+        else if(user.Password.length <= 8){
+        newError.Password = "Mat khau phai lon hon 8 ky tu"
           }
        } 
       }
@@ -68,20 +82,19 @@ export const Register =() => {
      
      const haldSubmit = async (e) => {
         e.preventDefault();
-        if(validate()){
+        // if(validate()){
           dispatch(register(user))
-                 }
+                //  }
      }
          useEffect(() => {
               if (isLoading) {
                 setMessage('Loading...');
                 setTitle('Đang đăng ký');
                 setIsSuccess(true);
-              } else if (isLoading === false && error === true) {
+              } else if (isLoading === false && error === false) {
                   setMessage(`${user.email}`);
                   setTitle(`Chúng tôi đã gửi một liên kết xác thực đến ${user.email}.Vui lòng kiểm tra hòm thư của bạn.`);
                 dispatch(sUser(user));  // Cập nhật người dùng vào Redux state khi login thành công
-                navigate("/Login")
                 setIsSuccess(true);  // Hiển thị modal khi login thành công
               } else if (error) {
                 setMessage('Đăng nhập thất bại. Vui lòng thử lại.');
@@ -103,10 +116,10 @@ export const Register =() => {
                                      <h4 className = "text-start text-[1.2rem] ">Tên tài khoản</h4>    
                                 </div>
                                 <EmailInput
-                                error = {errorInput.username}
-                                name = "username"
-                                type = "username"
-                                value = {user.username}
+                                error = {errorInput.Username}
+                                name = "Username"
+                                type = "Username"
+                                value = {user.Username}
                                 onChange = {handleChange}
                                 placeholder=""
                                 inputclassName= "w-full col-start-2 row-start-2 max-h-[60px] flex justify-end"
@@ -127,9 +140,9 @@ export const Register =() => {
                                      <h4 className = "text-start text-[1.2rem] ">Mật khẩu</h4>    
                                 </div>
                                 <PasswordInput
-                                   error = {errorInput.password}
-                                   name = "password"
-                                   value ={user.password}
+                                   error = {errorInput.Password}
+                                   name = "Password"
+                                   value ={user.Password}
                                    onChange = {handleChange}     
                                    placeholder=""
                                    inputclassName="w-full col-start-2 row-start-4 max-h-[60px] flex justify-end"
@@ -138,9 +151,9 @@ export const Register =() => {
                                      <h4 className = "text-start text-[1.2rem] ">Nhập lại mật khẩu</h4>    
                                 </div>
                                 <PasswordInput
-                                   error = {errorInput.password2}
-                                   name = "password2"
-                                   value ={user.password2}
+                                   error = {errorInput.Password2}
+                                   name = "Password2"
+                                   value ={user.Password2}
                                    onChange = {handleChange}     
                                    placeholder=""
                                    inputclassName="w-full col-start-2 row-start-5 max-h-[60px] flex justify-end"

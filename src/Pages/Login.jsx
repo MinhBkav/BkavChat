@@ -6,10 +6,20 @@ import { Layout } from '../Layout/Layout'
 import { useDispatch, useSelector } from "react-redux";
 import { EmailInput } from '../Component/Login/EmailInput'
 import { PasswordInput } from '../Component/Login/PasswordInput'
-import { login, sUser } from '../feature/loginSlice'
+import { login, sUser,loginWithSocial } from '../feature/loginSlice'
 import { WindowModal } from '../Component/Login/WindowModal'
 import { useNavigate } from 'react-router-dom'
+import { loginWithFacebook,loginWithGoogle } from '../Component/Login/loginFirebase'
 export const Login = () => {
+  const handleGoogleLogin = async () => {
+    const {idToken,fcmToken} = await loginWithGoogle();
+    dispatch(loginWithSocial({idToken,fcmToken}));
+  };
+
+  const handleFacebookLogin = async () => {
+    const {idToken,fcmToken} = await loginWithFacebook();
+    dispatch(loginWithSocial( {idToken,fcmToken}));
+  };
   const [user, setUser] = useState({
     Username: '',
     Password: ''
@@ -71,10 +81,10 @@ export const Login = () => {
   }
   const onLogin = (e) => {
     e.preventDefault();
-    if (validate()) {
+    // if (validate()) {
       e.preventDefault();
       dispatch(login(user))
-    }
+    // }
   //   if (isLoading) { Khong dung cach nay phai dung useEffect để lấy các sự kiện pending, reject, filled
   //     setMessage('Loading...');
   //     setTitle('Đang đăng nhập');
@@ -143,13 +153,13 @@ export const Login = () => {
             <div className="h-0.5 w-56 bg-gray-200 "></div>
           </div>
           <div className="flex justify-center">
-            <button className="2xl:mx-4  2xl:py-4 2xl:px-12 mx-2 py-2 px-6 rounded-lg ring-1 ring-slate-300 hover:shadow-slate-400 hover:shadow-lg hover:bg-white hover:ring-slate-50">
+            <button className="2xl:mx-4  2xl:py-4 2xl:px-12 mx-2 py-2 px-6 rounded-lg ring-1 ring-slate-300 hover:shadow-slate-400 hover:shadow-lg hover:bg-white hover:ring-slate-50"onClick={handleFacebookLogin}>
               <img src="./images/Fa.png" alt="" className=" w-6 h-6 object-contain" />
             </button>
             <button className="2xl:mx-4  2xl:py-4 2xl:px-12 mx-2 py-2 px-6 rounded-lg ring-1 ring-slate-300 hover:shadow-slate-400 hover:shadow-lg hover:bg-white hover:ring-slate-50">
               <img src="./images/Apple.png" alt="" className=" w-6 h-6 object-contain mb-1" />
             </button>
-            <button className="2xl:mx-4  2xl:py-4 2xl:px-12 mx-2 py-2 px-6 rounded-lg ring-1 ring-slate-300 hover:shadow-slate-400 hover:shadow-lg hover:bg-white hover:ring-slate-50">
+            <button className="2xl:mx-4  2xl:py-4 2xl:px-12 mx-2 py-2 px-6 rounded-lg ring-1 ring-slate-300 hover:shadow-slate-400 hover:shadow-lg hover:bg-white hover:ring-slate-50" onClick={handleGoogleLogin}>
               <img src="./images/Go2.png" alt="" className=" w-8 h-8 object-contain" />
             </button>
           </div>

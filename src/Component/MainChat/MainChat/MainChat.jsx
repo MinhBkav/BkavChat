@@ -4,7 +4,7 @@ import {HeaderUser} from "./HeaderUser"
 import {Chat} from "./Chat"
 export const MainChat = () => {
     return (
-       <main className = "relative flex flex-col justify-between bg-white dark:bg-[#171717] flex-1">
+       <main className = " flex flex-col h-screen justify-between bg-white dark:bg-[#171717] flex-1">
         <HeaderUser/>
         <Chat/>
         <InputChat/>
