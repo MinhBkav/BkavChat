@@ -1,3 +1,4 @@
+const admin = require('../../firebase') // Firebase Admin SDK
 var express = require('express')
 var router = express.Router()
 var mongoose = require('mongoose')
@@ -62,77 +63,109 @@ module.exports = () => {
     })
 
     router.post('/send-message', async (req, res) => {
-        try {
-            const UserID = req.UserID
-            const { FriendID, Content } = req.body
-            let listImages = []
-            let listFiles = []
-            let user = await models.Users.findOne({ _id: new ObjectId(UserID) }).exec()
-            if (user == null) {
-                return res.status(400).json({ status: 0, data: null, message: 'User not found' })
-            }
+    try {
+      const UserID = req.UserID;
+      const { FriendID, Content } = req.body;
+      let listImages = [];
+      let listFiles = [];
 
-            let Friend = await models.Users.findOne({ _id: new ObjectId(FriendID) }).exec()
-            if (Friend == null) {
-                return res.status(400).json({ status: 0, data: null, message: 'Friend not found' })
-            }
-            for (const file of req.files) {
-                if (file.fieldname === 'files') {
-                    const extension = file.originalname.split('.').pop();
-                    const nameFile = uuidv4();
-                    if (!file.mimetype.startsWith('image/')) {
-                        const fullPath = path.join(savePathFile, `${nameFile}.${extension}`);
-                        fs.writeFileSync(fullPath, file.buffer);
-                        const Link = `/files/${nameFile}.${extension}`;
-                        listFiles.push({
-                            urlFile: Link,
-                            FileName: file.originalname
-                        })
-                    }
-                    else {
-                        const fullPath = path.join(savePathImage, `${nameFile}.${extension}`);
-                        fs.writeFileSync(fullPath, file.buffer);
-                        const Link = `/images/${nameFile}.${extension}`;
-                        listImages.push({
-                            urlImage: Link,
-                            FileName: file.originalname
-                        })
-                    }
+      let user = await models.Users.findOne({ _id: new mongoose.Types.ObjectId(UserID) }).exec();
+      if (!user) {
+        return res.status(400).json({ status: 0, data: null, message: 'User not found' });
+      }
 
-                }
-            }
+      let Friend = await models.Users.findOne({ _id: new mongoose.Types.ObjectId(FriendID) }).exec();
+      if (!Friend) {
+        return res.status(400).json({ status: 0, data: null, message: 'Friend not found' });
+      }
 
-            const response = await models.Message({
-                UserID: user._id,
-                FriendID: Friend._id,
-                Content: Content,
-                Files: listFiles,
-                Images: listImages,
-                CreatedAt: moment().toDate(),
-                UpdateAt: moment().toDate(),
-                isSend: 0
-            }).save()
-            await models.Users.updateOne({ _id: user._id }, { UpdateAt: moment().toDate() })
-            // const resMessage = await models.Message.find({ FriendID: Friend._id, isSend: 0 }, { _id: 1, content: 1 }).sort({ createdAt: 1 });
-            // await Promise.all(resMessage.map(async (value) => {
-            //     await models.Message.updateOne({ _id: value._id }, { isSend: 1 });
-            // }));
-            return res.status(200).json({
-                status: 1, data: {
-                    id: response?._id,
-                    Content: response?.Content,
-                    Files: response?.Files,
-                    Images: response?.Images,
-                    isSend: response?.isSend,
-                    CreatedAt: response?.CreatedAt,
-                    MessageType: 1
-                }, message: ""
-            })
-
-        } catch (error) {
-            return res.status(400).json({ status: 0, data: null, message: error.message })
+      for (const file of req.files) {
+        if (file.fieldname === 'files') {
+          const extension = file.originalname.split('.').pop();
+          const nameFile = uuidv4();
+          if (!file.mimetype.startsWith('image/')) {
+            const fullPath = path.join(savePathFile, `${nameFile}.${extension}`);
+            fs.writeFileSync(fullPath, file.buffer);
+            const Link = `/files/${nameFile}.${extension}`;
+            listFiles.push({
+              urlFile: Link,
+              FileName: file.originalname
+            });
+          } else {
+            const fullPath = path.join(savePathImage, `${nameFile}.${extension}`);
+            fs.writeFileSync(fullPath, file.buffer);
+            const Link = `/images/${nameFile}.${extension}`;
+            listImages.push({
+              urlImage: Link,
+              FileName: file.originalname
+            });
+          }
         }
-    })
+      }
+
+      const response = await models.Message({
+        UserID: user._id,
+        FriendID: Friend._id,
+        Content: Content,
+        Files: listFiles,
+        Images: listImages,
+        CreatedAt: moment().toDate(),
+        UpdateAt: moment().toDate(),
+        isSend: 0
+      }).save();
+
+      await models.Users.updateOne({ _id: user._id }, { UpdateAt: moment().toDate() });
+
+      // ✅ Gửi thông báo FCM
+      await sendFCMToFriend({
+        toUser: Friend,
+        fromUser: user,
+        messageText: Content
+      });
+
+      return res.status(200).json({
+        status: 1,
+        data: {
+          id: response?._id,
+          Content: response?.Content,
+          Files: response?.Files,
+          Images: response?.Images,
+          isSend: response?.isSend,
+          CreatedAt: response?.CreatedAt,
+          MessageType: 1
+        },
+        message: ""
+      });
+
+    } catch (error) {
+      return res.status(400).json({ status: 0, data: null, message: error.message });
+    }
+  });
+
+  // ✅ Hàm gửi thông báo FCM
+  const sendFCMToFriend = async ({ toUser, fromUser, messageText }) => {
+    if (!toUser?.fcmToken) return;
+
+    const payload = {
+      token: toUser.fcmToken,
+      notification: {
+        title: 'Tin nhắn mới',
+        body: `${fromUser.FullName || fromUser.Username}: ${messageText}`
+      },
+      data: {
+        type: 'chat',
+        senderId: fromUser._id.toString(),
+        content: messageText
+      }
+    };
+
+    try {
+      const response = await admin.messaging().send(payload);
+      console.log('✅ Đã gửi FCM:', response);
+    } catch (err) {
+      console.error('❌ FCM lỗi:', err.message);
+    }
+  };
 
     router.get('/get-message', async (req, res) => {
         try {

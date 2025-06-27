@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
 let User = new mongoose.Schema({
+    firebase_uid: { type: String, required: false, unique: true }, // ✅ thêm dòng này
+    fcmToken: String,
     Avatar: { type: String, required: false },
     FullName: { type: String, required: false },
     Username: {
@@ -13,7 +15,6 @@ let User = new mongoose.Schema({
         },
         unique: true
     },
-    Password: { type: String, required: true, default: null },
     CreatedAt: { type: Date, required: false, default: null },
     UpdateAt: { type: Date, required: false, default: null }
 })
