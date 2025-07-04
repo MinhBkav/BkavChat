@@ -27,7 +27,7 @@ module.exports = (io) => {
     console.log(user._id)
     console.log(decoded.uuid)
       onlineUsers.set(decoded.uuid, socket.id);
-      await models.Users.updateOne({ _id: decoded.uuid }, { UpdateAt: moment().toDate() });
+      await models.Users.updateOne({ _id: decoded.uuid }, { UpdateAt: moment().toDate()});
       next();
     } catch (err) {
       return next(new Error("Authentication error"));
@@ -128,7 +128,7 @@ module.exports = (io) => {
     });
 
     // Load lịch sử chat
-     socket.on("load_history", async ({ friendId, before, limit = 20 }) => {
+     socket.on("load_history", async ({ friendId, before, limit = 30 }) => {
   try {
     const userId = socket.userId;
     const friend = await models.Users.findById(friendId);
