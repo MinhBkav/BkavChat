@@ -13,12 +13,11 @@ export const getListUser = createAsyncThunk('user/getUser', async (_) => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await axios.get('http://30.30.30.12:8888/api/message/list-friend', {
+    const res = await axios.get('http://30.30.30.12:9999/api/message/list-friend', {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
-    console.log(res.data.data);
     return res.data.data
   } catch (error) {
             console.error(error);

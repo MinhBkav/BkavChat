@@ -17,7 +17,6 @@ export const Listuser = () =>
   // Xóa interval khi component bị hủy (unmount) để tránh leak bộ nhớ
   // return () => clearInterval(interval);
 }, []);
-console.log(chatData);
 
     return (
        <>

@@ -8,9 +8,13 @@ import useFirebaseNotification from './Hooks/useFirebaseNotification'
 import { useEffect } from 'react';
 import { onMessage } from 'firebase/messaging';
 import { messaging } from '../firebase'
+import useSocketReceiveMessage from './Component/useSocketReceiveMessage'
+import { connectSocket } from '../socket'
 function App() {
   useTheme()
   useFirebaseNotification();
+  useSocketReceiveMessage();
+  connectSocket();
   return (
     <>
      <Router/>

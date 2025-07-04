@@ -12,7 +12,6 @@ export const WindowSetting = ({ openModal, close }) => {
     const { toggleTheme } = useTheme()
     const ref = useRef(null)
     const me = useSelector((state) => state.login.me)
-    console.log(me)
     useClickOutside(ref, close, openModal)
     if (!openModal)
         return null;

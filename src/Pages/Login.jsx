@@ -10,6 +10,7 @@ import { login, sUser,loginWithSocial } from '../feature/loginSlice'
 import { WindowModal } from '../Component/Login/WindowModal'
 import { useNavigate } from 'react-router-dom'
 import { loginWithFacebook,loginWithGoogle } from '../Component/Login/loginFirebase'
+import { connectSocket } from '../../socket'
 export const Login = () => {
   const handleGoogleLogin = async () => {
     const {idToken,fcmToken} = await loginWithGoogle();
@@ -110,6 +111,7 @@ export const Login = () => {
       setTitle('Chào mừng bạn!');
       dispatch(sUser(user));  // Cập nhật người dùng vào Redux state khi login thành công
       setIsSuccess(true);  // Hiển thị modal khi login thành 
+      connectSocket()
     } else if (error) {
       setMessage('Đăng nhập thất bại. Vui lòng thử lại.');
       setTitle('Lỗi');

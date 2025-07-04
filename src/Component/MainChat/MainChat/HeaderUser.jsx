@@ -11,7 +11,7 @@ return (
              <div className = " flex justify-start  gap-2 pl-[8px]">
                 <AvatarImage src={user.Avatar} inputcss={"w-10 h-10 object-cover rounded-full my-auto overflow-hidden" } />
                 <div className = " flex flex-col justify-center gap-[3px]  ">
-                        <h1 className = "text-base font-[500] dark:text-white">{user.Username}</h1>
+                        <h1 className = "text-base font-[500] dark:text-white">{user.FullName}</h1>
                         <p className = "text-sm font-[400] text-[#747881] dark:text-[#9c9f9f] ">Online for 10 mins</p>
                 </div>
            </div>

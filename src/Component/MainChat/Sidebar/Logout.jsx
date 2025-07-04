@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { logout } from '../../../feature/loginSlice'
 import { useDispatch } from "react-redux";
+import { disconnectSocket } from "../../../../socket";
 export const Logout = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -8,6 +9,7 @@ export const Logout = () => {
          localStorage.setItem("token", "");
          navigate("/login")
          dispatch(logout())
+         disconnectSocket()
     }
     return (
      <li className="flex-1 hover:bg-[#DBDDE1] dark:hover:bg-slate-700">

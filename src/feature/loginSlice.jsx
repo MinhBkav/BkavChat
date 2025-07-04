@@ -9,7 +9,7 @@
 //     me : {}
 // }
 // export const loginWithSocial = createAsyncThunk('auth/loginSocial', async (idToken) => {
-//   const res = await axios.post('http://30.30.30.12:8888/api/auth/loginsocial/', {
+//   const res = await axios.post('http://30.30.30.12:9999/api/auth/loginsocial/', {
 //     idToken: idToken
 //   });
 //   const data = res.data;
@@ -26,7 +26,7 @@
 //         const idToken = await loginWithFirebase(user.Username, user.Password)
 
 //         // ✅ 2. Gửi idToken về backend
-//         const res = await axios.post('http://30.30.30.12:8888/api/auth/login/', {
+//         const res = await axios.post('http://30.30.30.12:9999/api/auth/login/', {
 //             idToken: idToken
 //         })
 
@@ -108,7 +108,7 @@ import {
   loginWithFacebook
 } from "../Component/Login/loginFirebase";
 
-// ✅ Trạng thái mặc định
+//  Trạng thái mặc định
 const initialState = {
   Username: '',
   isLoading: null,
@@ -117,21 +117,21 @@ const initialState = {
   me: {}
 };
 
-// ✅ Đăng nhập thường (email/password)
+//  Đăng nhập thường (email/password)
 export const login = createAsyncThunk('auth/login', async (user) => {
   try {
-    // 🔐 1. Đăng nhập Firebase
+    //  1. Đăng nhập Firebase
     const { idToken, fcmToken } = await loginWithFirebase(user.Username, user.Password);
 
-    // 🚀 2. Gửi cả idToken và fcmToken về backend
-    const res = await axios.post('http://30.30.30.12:8888/api/auth/login/', {
+    //  2. Gửi cả idToken và fcmToken về backend
+    const res = await axios.post('http://30.30.30.12:9999/api/auth/login/', {
       idToken: idToken,
       fcmToken : fcmToken
     });
 
     const data = res.data;
 
-    // 💾 3. Lưu token nội bộ
+    //  3. Lưu token nội bộ
     if (data?.data?.token) {
       localStorage.setItem('token', data.data.token);
     }
@@ -143,9 +143,9 @@ export const login = createAsyncThunk('auth/login', async (user) => {
   }
 });
 
-// ✅ Đăng nhập mạng xã hội (Google, Facebook)
+//  Đăng nhập mạng xã hội (Google, Facebook)
 export const loginWithSocial = createAsyncThunk('auth/loginSocial', async ({idToken,fcmToken}) => {
-  const res = await axios.post('http://30.30.30.12:8888/api/auth/loginsocial/', {
+  const res = await axios.post('http://30.30.30.12:9999/api/auth/loginsocial/', {
     idToken: idToken,
     fcmToken : fcmToken
   });

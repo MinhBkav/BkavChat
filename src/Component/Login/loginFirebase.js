@@ -60,12 +60,12 @@ import {
   FacebookAuthProvider
 } from 'firebase/auth';
 import { getToken } from 'firebase/messaging';
-import { auth, messaging } from '../../../firebase'; // đảm bảo đã export messaging từ đây
+import { auth, messaging } from '../../../firebase'; 
 
 const getFcmToken = async () => {
   try {
     const fcmToken = await getToken(messaging, {
-      vapidKey: 'BN9WPzE9IoYqmq_J3578Afj9yTiQCrkMpE-A3VqvV6a3ypASo7lmOaT8y_CgWIkwi_Fd7J8WTNDw9plBlKT1mPY' // 🔑 thay bằng key thật
+      vapidKey: 'BN9WPzE9IoYqmq_J3578Afj9yTiQCrkMpE-A3VqvV6a3ypASo7lmOaT8y_CgWIkwi_Fd7J8WTNDw9plBlKT1mPY' // Lay
     });
     console.log(fcmToken)
     return fcmToken;

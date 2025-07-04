@@ -8,7 +8,6 @@ export const Sidebar = () => {
   const dispatch = useDispatch();
     const inputsreach = useSelector((state) => state.sreach.inputSreach)
     const openSidebar = useSelector((state) => state.data.openSidebar)
-    console.log(openSidebar);
     
     return (
         <>

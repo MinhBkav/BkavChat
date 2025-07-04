@@ -12,7 +12,6 @@ const useFirebaseNotification = () => {
 
     const unsubscribe = onMessage(messaging, (payload) => {
       console.log('📩 Nhận thông báo:', payload);
-      alert(payload.notification?.title);
     });
 
     return () => unsubscribe();

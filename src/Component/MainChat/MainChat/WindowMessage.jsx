@@ -5,10 +5,12 @@ import { useClickOutside } from '../../../Hooks/useClickOutside';
 export const WindowMessage = ({openModal,positionE,close}) => {
     const ref = useRef(null);
    useClickOutside(ref,close,openModal)
-    if (!openModal)
+   
+    if (!openModal ){
         return null;
+    }
     return (
-       <div className = "absolute    "  style={{
+       <div className = "absolute"  style={{
         top: "calc(100%)",
         ...(positionE === "right" ?{right :"95%"}: {left : "95%"})
       }}

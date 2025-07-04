@@ -4,8 +4,8 @@ import {setid} from '../../../feature/dataSlice'
 import AvatarImage from "../../AvatarImage"
 import { addMessageData ,setInputMessage} from "../../../feature/dataSlice"
 import { useState, useEffect } from "react"
+import TimeDisplay from '../../../Hooks/TimeDisplay';
 export const Cardfriend = ({ user }) => {
-    console.log(user)
     const [read,setRead] = useState(false)
     const dispatch = useDispatch()
     const isSend = user.isSend
@@ -15,9 +15,10 @@ export const Cardfriend = ({ user }) => {
     const loadChat = () => {
         dispatch(sUser(user))
         dispatch(setid(user.FriendID))
+        console.log(user.FriendID)
         dispatch(getdataChat(user.FriendID))
         dispatch(setInputMessage(''))
-        dispatch(isRead({FriendID: FriendID,CreatedAt:CreatedAt }))
+        dispatch(isRead({FriendID: FriendID}))
         setRead(true)
     }
         const userid = useSelector(state=>state.data.currentuserid)
@@ -40,7 +41,7 @@ export const Cardfriend = ({ user }) => {
                         <h1 className=" text-xs   font-[700] rounded-full text-white   bg-red-500 px-[7px] py-[4px]">{UnreadCount}</h1>
                     )}
                     </div>
-                    <p className="text-sm text-end font-[400] dark:text-white" >9:16 AM</p>
+                    <TimeDisplay isoString={user.CreatedAt} inputcss={"text-sm text-end font-[400] dark:text-white"} />
                 </div>
             </li>
         </button>

@@ -21,14 +21,14 @@ export const InputChat = () => {
   }
 
   const send = () => {
-    dispatch(addMessage({
-      Content: inputMessage,
-      Files: [],
-      Images: [], // Xử lý hình riêng nếu cần
-      isSend: 1,
-      CreatedAt: new Date().toISOString(),
-      MessageType: 1
-    }))
+    // dispatch(addMessage({
+    //   Content: inputMessage,
+    //   Files: [],
+    //   Images: [], // Xử lý hình riêng nếu cần
+    //   isSend: 1,
+    //   CreatedAt: new Date().toISOString(),
+    //   MessageType: 1
+    // }))
     dispatch(sendMessage({ FriendID, Content: inputMessage, file: attachedFiles }))
     clearInput()
   }
