@@ -128,42 +128,46 @@ module.exports = (io) => {
     });
 
     // Load lịch sử chat
-    socket.on("load_history", async ({ friendId, after }) => {
-      try {
-        const userId = socket.userId;
-        const friend = await models.Users.findById(friendId);
-        if (!friend) return;
+     socket.on("load_history", async ({ friendId, before, limit = 20 }) => {
+  try {
+    const userId = socket.userId;
+    const friend = await models.Users.findById(friendId);
+    if (!friend) return;
 
-        const query = {
-          $or: [
-            { UserID: new ObjectId(userId), FriendID: friend._id },
-            { UserID: friend._id, FriendID: new ObjectId(userId) }
-          ]
-        };
+    const query = {
+      $or: [
+        { UserID: new ObjectId(userId), FriendID: friend._id },
+        { UserID: friend._id, FriendID: new ObjectId(userId) }
+      ]
+    };
 
-        if (after) {
-          query.CreatedAt = { $gt: new Date(after) };
-        }
+    if (before) {
+      query.CreatedAt = { $lt: new Date(before) }; //  lấy các tin nhắn trước mốc thời gian
+      console.log("load them tin nhan");
+    }
+  else {
+          console.log("load dau tin nhan");
 
-        const messages = await models.Message.find(query).sort({ CreatedAt: 1 });
-        console.log(messages)
-        const formatted = messages.map((msg) => ({
-          id: msg._id,
-          Content: msg.Content,
-          Files: msg.Files,
-          Images: msg.Images,
-          CreatedAt: msg.CreatedAt,
-          MessageType: msg.UserID.equals(userId) ? 1 : 0,
-          isSend : msg.isSend
-        }));
+  }
+    const messages = await models.Message.find(query)
+      .sort({ CreatedAt: -1 }) //  lấy tin nhắn mới nhất trước
+      .limit(limit);
 
-        socket.emit("chat_history", formatted);
-        console.log()
-      } catch (err) {
-        console.error("❌ load_history error:", err.message);
-      }
-    });
+    const formatted = messages.reverse().map((msg) => ({
+      id: msg._id,
+      Content: msg.Content,
+      Files: msg.Files,
+      Images: msg.Images,
+      CreatedAt: msg.CreatedAt,
+      MessageType: msg.UserID.equals(userId) ? 1 : 0,
+      isSend: msg.isSend
+    }));
 
+    socket.emit("chat_history", formatted);
+  } catch (err) {
+    console.error("❌ load_history error:", err.message);
+  }
+});
     socket.on("disconnect", () => {
       console.log(`❌ User ${socket.userId} disconnected`);
       onlineUsers.delete(socket.userId);
