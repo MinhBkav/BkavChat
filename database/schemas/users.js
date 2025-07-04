@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 let User = new mongoose.Schema({
-    firebase_uid: { type: String, required: false, unique: true }, // ✅ thêm dòng này
+    firebase_uid: { type: String, required: false, unique: true }, //  Dùng để check xem user da ton tai chua
     fcmToken: String,
     Avatar: { type: String, required: false },
     FullName: { type: String, required: false },

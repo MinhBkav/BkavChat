@@ -1,8 +1,8 @@
 var express = require('express')
 var router = express.Router()
 mongoose = require('mongoose')
-models = reqlib('database').models
-const path = require('path');
+const appRoot = require('app-root-path');
+const models = require(appRoot + '/database').models;const path = require('path');
 const currentDirectory = __dirname;
 const parentDirectory = path.resolve(currentDirectory, '..', '..');
 

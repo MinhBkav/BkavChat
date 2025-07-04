@@ -1,7 +1,9 @@
 var express = require('express')
+const appRoot = require('app-root-path');
 var router = express.Router()
 var mongoose = require('mongoose')
-var models = reqlib('database').models
+// var models = reqlib('database').models
+const models = require(appRoot + '/database').models;
 var moment = require('moment')
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../../utils/jwtUtils')
@@ -139,6 +141,7 @@ router.post('/register', async (req, res) => {
 
         const decoded = await admin.auth().verifyIdToken(idToken)
         const firebaseUid = decoded.uid
+        console.log(decoded)
 
         // Kiểm tra tồn tại user
         const user = await models.Users.findOne({ firebase_uid: firebaseUid }).exec()

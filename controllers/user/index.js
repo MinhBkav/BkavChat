@@ -1,7 +1,9 @@
 var express = require('express')
 var router = express.Router()
 var mongoose = require('mongoose')
-var models = reqlib('database').models
+const appRoot = require('app-root-path');
+const models = require(appRoot + '/database').models;
+// var models = reqlib('database').models
 var moment = require('moment')
 const { ObjectId } = require('mongoose').Types
 
