@@ -33,7 +33,7 @@ export const Chat = () => {
    const message = chatData;
    const groupMessage = funcgroupsMessage(message)
    const FriendID = useSelector((state) => state.user.userChat)
-
+   const chatBoxRef = useRef(null);
    // useEffect(() => {
    //    const interval = setInterval(() => {
    //       dispatch(getdataChat(FriendID.FriendID))
@@ -42,9 +42,29 @@ export const Chat = () => {
    //    // Xóa interval khi component bị hủy (unmount) để tránh leak bộ nhớ
    //    return () => clearInterval(interval);
    // }, [dispatch, FriendID]);
+    const handleScroll = () => {
+    const chatBox = chatBoxRef.current;
+    if (chatBox.scrollTop == 0 && chatData.length > 0) {
+      console.log("scroll roi");
+      const oldestMessageDate = chatData[0].CreatedAt;
+      dispatch(getdataChat(FriendID.FriendID, oldestMessageDate));
+    }
+  };
+   console.log(chatData)
+   if(chatData.length == 0)
+   {
+      return (
+         <div className="flex flex-col  flex-1 gap-[4px] ">
+            <div className = "m-auto flex flex-col justify-center items-center">
+               <img src="./images/EmptyMess.png" alt="" className = "w-28 "/>
+            <p className = "font-[500] text-xl text-[#747881]">Chưa có tin nhắn...</p>
+            </div>
+         </div>
+      )
+   }
    return (
       <>
-         <div className="flex flex-col  flex-1 gap-[4px] overflow-y-scroll " >
+         <div className="flex flex-col  flex-1 gap-[4px] overflow-y-scroll " ref = {chatBoxRef}  onScroll={handleScroll} >
             {groupMessage.map((person) => {
                return person.sender == 0 ? (
                   <div className="flex justify-start gap-[8px]">

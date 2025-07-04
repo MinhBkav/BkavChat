@@ -150,9 +150,9 @@ export const Login = () => {
         </form>
         <div className="flex flex-col justify-between h-1/6 mb-12  ">
           <div className="flex justify-between items-center">
-            <div className="h-0.5 w-56 bg-gray-200 "></div>
+            <div className="h-0.5 lg:w-56 md:w-32 w-24 bg-gray-200 "></div>
             <h3 className="mx- text-gray-500 2xl:text-[14px] font-[500] md:text-sm text-xs text-justify ">hoặc tiếp tục ở đây</h3>
-            <div className="h-0.5 w-56 bg-gray-200 "></div>
+            <div className="h-0.5 lg:w-56 md:w-32 w-24 bg-gray-200 "></div>
           </div>
           <div className="flex justify-center">
             <button className="2xl:mx-4  2xl:py-4 2xl:px-12 mx-2 py-2 px-6 rounded-lg ring-1 ring-slate-300 hover:shadow-slate-400 hover:shadow-lg hover:bg-white hover:ring-slate-50"onClick={handleFacebookLogin}>

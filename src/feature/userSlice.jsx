@@ -9,12 +9,15 @@ const initialState = {
   error: null,
 
 }
-export const getdataChat = (FriendID) => (dispatch) => {
-  socket.emit("load_history", { friendId: FriendID });
-
- 
+export const getdataChat = (FriendID,before) => (dispatch) => {
+  socket.emit("load_history", { friendId: FriendID, before, limit: 20 });
   socket.once("chat_history", (data) => {
-    dispatch(setDataChat(data)); // dùng reducer vừa tạo
+   if (before) {
+      dispatch(prependMessages(data)); // Nối lên trên đầu
+    } else {
+      dispatch(setDataChat(data)); // Lần đầu load thì set mới hoàn toàn
+    }
+
   });
 };
 export const sendMessage = createAsyncThunk(
@@ -136,6 +139,9 @@ const userSlice = createSlice(
         state.dataChat = action.payload;
         console.log(action.payload)
       },
+        prependMessages: (state, action) => {
+      state.dataChat = [...action.payload, ...state.dataChat];
+    },
 
     },
     // extraReducers :(builder)=>{
@@ -156,5 +162,5 @@ const userSlice = createSlice(
     // }
   },
 )
-export const { sUser, addMessage, setid,setDataChat } = userSlice.actions;
+export const { sUser, addMessage, setid,setDataChat,prependMessages } = userSlice.actions;
 export default userSlice.reducer; 

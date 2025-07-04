@@ -71,10 +71,21 @@ html, body {
         font-size: 1.067rem;
         font-weight:700;
         transition: background-color 0.3s ease-in-out;
-        margin-left : 1.375rem;
-        margin-right: 1.375rem;
+        margin-left : 1rem;
+        margin-right: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        
     }
   @media (max-width:768px){
+      .btn {
+        font-size : 0.5rem;
+        margin-left:0.5rem ;
+        margin-right:0.5rem;
+      }
+  }
+   @media (max-width:1024px){
       .btn {
         font-size : 0.7rem;
       }
