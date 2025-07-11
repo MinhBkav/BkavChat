@@ -1,5 +1,5 @@
 
-export const Emotion = ({ showEmotion, positionE , hanlderEnter,hanlderLeave}) => {
+ const Emotion = ({ showEmotion, positionE , hanlderEnter,hanlderLeave}) => {
   if (!showEmotion) {
     return null;
   }
@@ -26,3 +26,4 @@ export const Emotion = ({ showEmotion, positionE , hanlderEnter,hanlderLeave}) =
     </>
   )
 }
+export default Emotion;

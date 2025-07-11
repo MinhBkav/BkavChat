@@ -10,7 +10,7 @@ const initialState = {
 
 }
 export const getdataChat = (FriendID,before) => (dispatch) => {
-  socket.emit("load_history", { friendId: FriendID, before, limit: 20 });
+  socket.emit("load_history", { friendId: FriendID, before, limit: 30 });
   socket.once("chat_history", (data) => {
    if (before) {
       dispatch(prependMessages(data)); // Nối lên trên đầu
@@ -28,7 +28,7 @@ export const sendMessage = createAsyncThunk(
       let images = [];
       let files = [];
        const api = axios.create({
-        baseURL: "http://localhost:9999", // ⚠️ sửa lại theo IP nếu dùng LAN
+        baseURL: "http://localhost:8080", // ⚠️ sửa lại theo IP nếu dùng LAN
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -106,7 +106,7 @@ export const isRead = createAsyncThunk('user/isRead', async ({ FriendID, Created
   try {
     const token = localStorage.getItem("token");
 
-    const res = await axios.get(`http://30.30.30.12:9999/api/message/get-message?FriendID=${FriendID}`, {
+    const res = await axios.get(`http://30.30.30.12:8080/api/message/get-message?FriendID=${FriendID}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

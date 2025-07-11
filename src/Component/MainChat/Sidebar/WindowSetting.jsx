@@ -8,7 +8,7 @@ import { useTheme } from '../../../Hooks/toggleTheme';
 import { Logout } from './Logout'
 import { useSelector } from 'react-redux'
 import AvatarImage from '../../AvatarImage'
-export const WindowSetting = ({ openModal, close }) => {
+const WindowSetting = ({ openModal, close }) => {
     const { toggleTheme } = useTheme()
     const ref = useRef(null)
     const me = useSelector((state) => state.login.me)
@@ -32,3 +32,4 @@ export const WindowSetting = ({ openModal, close }) => {
         </div>
     )
 }
+export default WindowSetting;

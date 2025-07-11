@@ -9,7 +9,7 @@
 //     me : {}
 // }
 // export const loginWithSocial = createAsyncThunk('auth/loginSocial', async (idToken) => {
-//   const res = await axios.post('http://30.30.30.12:9999/api/auth/loginsocial/', {
+//   const res = await axios.post('http://30.30.30.12:8080/api/auth/loginsocial/', {
 //     idToken: idToken
 //   });
 //   const data = res.data;
@@ -26,7 +26,7 @@
 //         const idToken = await loginWithFirebase(user.Username, user.Password)
 
 //         // ✅ 2. Gửi idToken về backend
-//         const res = await axios.post('http://30.30.30.12:9999/api/auth/login/', {
+//         const res = await axios.post('http://30.30.30.12:8080/api/auth/login/', {
 //             idToken: idToken
 //         })
 
@@ -124,7 +124,7 @@ export const login = createAsyncThunk('auth/login', async (user) => {
     const { idToken, fcmToken } = await loginWithFirebase(user.Username, user.Password);
 
     //  2. Gửi cả idToken và fcmToken về backend
-    const res = await axios.post('http://30.30.30.12:9999/api/auth/login/', {
+    const res = await axios.post('http://30.30.30.12:8080/api/auth/login/', {
       idToken: idToken,
       fcmToken : fcmToken
     });
@@ -145,7 +145,7 @@ export const login = createAsyncThunk('auth/login', async (user) => {
 
 //  Đăng nhập mạng xã hội (Google, Facebook)
 export const loginWithSocial = createAsyncThunk('auth/loginSocial', async ({idToken,fcmToken}) => {
-  const res = await axios.post('http://30.30.30.12:9999/api/auth/loginsocial/', {
+  const res = await axios.post('http://30.30.30.12:8080/api/auth/loginsocial/', {
     idToken: idToken,
     fcmToken : fcmToken
   });

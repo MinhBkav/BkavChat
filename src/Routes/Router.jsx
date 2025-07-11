@@ -1,16 +1,19 @@
-import {Login } from "../Pages/Login";
 import {Routes,Route} from "react-router-dom";
-import {Register} from "../Pages/Register";
-import {PageChat} from "../Pages/MainChat";
+import React,{lazy,Suspense} from "react";
+const Login = lazy(()=>import("../Pages/Login"))
+const Register = lazy(()=>import("../Pages/Register"))
+const PageChat = lazy(()=>import("../Pages/MainChat"))
 export const Router = () => {
     return (
         <>
-            <Routes>
+           <Suspense fallback = {<div>Đang loading...</div>}>
+             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/Register" element={<Register />} />
                 <Route path ="/main-chat" element ={<PageChat/>}/>
             </Routes>
+           </Suspense>
         </>
     );
 };

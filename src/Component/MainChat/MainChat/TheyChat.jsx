@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { Emotion } from './Emotion'
-import { WindowMessage } from './WindowMessage';
+import { useState,lazy,Suspense } from 'react';
 import {Timehover} from '../../Timehover';
+const Emotion = lazy(()=>import('./Emotion'))
+const WindowMessage = lazy(()=>import( './WindowMessage'))
 export const TheyChat = ({ mes }) => {
    const isLong = mes.Content.length > 2
    const [showEmotion, setShowEmotion] = useState(false)
@@ -10,15 +10,15 @@ export const TheyChat = ({ mes }) => {
         setModal(false)
     }
     const [modal, setModal] = useState(false)
-    const { hanlderEnter: enter2, hanlderLeave: leave2 } = Timehover(setShowEmotion,close)
-    const { hanlderEnter: enter1, hanlderLeave: leave1 } = Timehover(setShowInteract,close)
+    const { hanlderEnter: enter2, hanlderLeave: leave2 } = Timehover(setShowEmotion,close,100)
+    const { hanlderEnter: enter1, hanlderLeave: leave1 } = Timehover(setShowInteract,close,500)
    return (
       <div className="relative flex gap-[11px]">
          <div className={`bg-[#E9EAED] dark:bg-slate-600 dark:text-white   max-w-[262px] ${(isLong|| mes.Images.length > 0 )? "rounded-r-2xl rounded-tl-2xl" : "rounded-r-full rounded-tl-full"} `} onMouseEnter={enter1} onMouseLeave={leave1}>
             {mes.Images?.map((img, index) => (
                <img
                   key={index}
-                  src={`http://30.30.30.12:9999/api${img.urlImage}`}
+                  src={`http://30.30.30.12:8080/api${img.urlImage}`}
                   alt={img.FileName}
                   className="w-[258px] max-h-[150px] object-cover rounded-2xl mx-[2px] pt-[2px]"
                />
@@ -28,7 +28,7 @@ export const TheyChat = ({ mes }) => {
                              <div className = "flex py-[4px] px-[15px]">
                                <a
                                  key={index}
-                                 href={`http://30.30.30.12:9999/api${file.urlFile}`} // <-- cần domain backend
+                                 href={`http://30.30.30.12:8080/api${file.urlFile}`} // <-- cần domain backend
                                  download={file.FileName}                        // <-- kích hoạt tải file
                                  target="_blank"                                 // mở tab mới nếu click
                                  rel="noopener noreferrer"

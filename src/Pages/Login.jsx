@@ -11,7 +11,7 @@ import { WindowModal } from '../Component/Login/WindowModal'
 import { useNavigate } from 'react-router-dom'
 import { loginWithFacebook,loginWithGoogle } from '../Component/Login/loginFirebase'
 import { connectSocket } from '../../socket'
-export const Login = () => {
+const Login = () => {
   const handleGoogleLogin = async () => {
     const {idToken,fcmToken} = await loginWithGoogle();
     dispatch(loginWithSocial({idToken,fcmToken}));

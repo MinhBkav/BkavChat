@@ -9,7 +9,7 @@ const initialState  ={
 }
 // export const register = createAsyncThunk('auth/register', async(user)=>{
 //         try {
-//             const res = await axios.post('http://10.2.44.103:9999/api/auth/register',user)
+//             const res = await axios.post('http://10.2.44.103:8080/api/auth/register',user)
 //             const data = await res.data;
 //             localStorage.setItem("token", data.data.token);
 //         } catch (error) {
@@ -23,7 +23,7 @@ export const register = createAsyncThunk('auth/register', async (user) => {
         const idToken = await signUpWithFirebase(user.email, user.Password)
 
         // ✅ 2. Gửi idToken về backend
-        const res = await axios.post('http://30.30.30.12:9999/api/auth/register/', {
+        const res = await axios.post('http://30.30.30.12:8080/api/auth/register/', {
             idToken: idToken,
             Username: user.Username, 
         })

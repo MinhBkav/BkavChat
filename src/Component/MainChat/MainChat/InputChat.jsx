@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { addMessage, sendMessage } from "../../../feature/userSlice"
-import { addMessageData, setInputMessage } from "../../../feature/dataSlice"
+import { setCheckScroll, setInputMessage } from "../../../feature/dataSlice"
 
 export const InputChat = () => {
   const dispatch = useDispatch()
@@ -29,6 +29,7 @@ export const InputChat = () => {
     //   CreatedAt: new Date().toISOString(),
     //   MessageType: 1
     // }))
+    dispatch(setCheckScroll(false))
     dispatch(sendMessage({ FriendID, Content: inputMessage, file: attachedFiles }))
     clearInput()
   }

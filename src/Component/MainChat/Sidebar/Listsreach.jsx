@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { WindowSetting } from './WindowSetting'
 import Listuser from './Listuser'
 import { CardSreach } from './CardSreach'
 import { useSelector, useDispatch } from 'react-redux'

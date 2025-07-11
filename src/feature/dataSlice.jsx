@@ -2,18 +2,20 @@ import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios'
 const initialState  ={
     chatData : [],
+    userOnline : [],
   currentuserid : 0,
   changeuser: true,
   openSidebar : false,
   isLoading : null,
   error : null,
-  inputMessage : ''
+  inputMessage : '',
+  checkScroll : false
 }
 export const getListUser = createAsyncThunk('user/getUser', async (_) => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await axios.get('http://30.30.30.12:9999/api/message/list-friend', {
+    const res = await axios.get('http://30.30.30.12:8080/api/message/list-friend', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -35,7 +37,6 @@ const dataSlice =createSlice(
             {
                 const message = action.payload;
                 state.chatData[message.userid-1].messages.push(message.message)// Can tối ưu hiệu suất ở phần này: đang truy cập phần tử theo index,nếu id không theo thứ tự dẫn đên sai user-> cần sửa lại cấu trúc dữ liệu mảng đê lấy user theo id hoặc phải lọc theo id
-
             },
              setid : (state,action) =>
             {
@@ -49,6 +50,14 @@ const dataSlice =createSlice(
             setInputMessage : (state,action) =>
             {
               state.inputMessage = action.payload;
+            },
+            setCheckScroll : (state,action) => 
+            {
+              state.checkScroll = action.payload;
+            },
+            setUserOnline : (state,action) =>
+            {
+              state.userOnline = action.payload;
             }
         },
         extraReducers :(builder)=>{
@@ -69,5 +78,5 @@ const dataSlice =createSlice(
         }
     },
 )
-export const {addMessageData,setid,setOpenSidebar,setInputMessage} = dataSlice.actions;
+export const {addMessageData,setid,setOpenSidebar,setInputMessage,setCheckScroll,setUserOnline} = dataSlice.actions;
 export default dataSlice.reducer; 

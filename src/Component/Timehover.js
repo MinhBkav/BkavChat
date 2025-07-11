@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-export const Timehover =(setShowEmotion,close) => {
+export const Timehover =(setShowEmotion,close,time) => {
     const timeoutRef = useRef(null)
        const hanlderEnter = () => {
           clearTimeout(timeoutRef.current);
@@ -8,8 +8,8 @@ export const Timehover =(setShowEmotion,close) => {
        const hanlderLeave = () => {
           timeoutRef.current = setTimeout(() => {
              setShowEmotion(false)
-          }, 100)
-          close()
+            close()
+          }, time)
        }
        return {hanlderEnter,hanlderLeave}
 }

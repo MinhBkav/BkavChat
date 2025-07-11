@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { socket } from "../../socket";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../feature/userSlice";
+import { setUserOnline } from "../feature/dataSlice";
+import { getListUser } from "../feature/dataSlice";
 export default function useSocketReceiveMessage() {
   const dispatch = useDispatch();
   const currentUserId = useSelector((state) => state.data.currentuserid);
@@ -20,9 +22,15 @@ export default function useSocketReceiveMessage() {
       
       }
     });
+     socket.on("online_users", (onlineUserIds) => {
+        dispatch(setUserOnline(onlineUserIds))
+        dispatch(getListUser())
+        console.log(onlineUserIds)
+    });
 
     return () => {
       socket.off("receive_message"); // cleanup
+      socket.off("online_users");
     };
   }, [dispatch, currentUserId]);
 }

@@ -1,17 +1,31 @@
 
 import {Limenu} from './Limenu'
-import {useRef} from 'react'
+import {useEffect, useRef,useState} from 'react'
 import { useClickOutside } from '../../../Hooks/useClickOutside';
 export const WindowMessage = ({openModal,positionE,close}) => {
-    const ref = useRef(null);
+  const ref = useRef(null);
    useClickOutside(ref,close,openModal)
-   
+   const [position, setPosition] = useState("bottom");
+     useEffect(() => {
+    if (openModal && ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+
+      if (spaceBelow < 150 && spaceAbove > 150) {
+        setPosition("top"); // nếu không đủ không gian phía dưới → bật lên trên
+      } else {
+        setPosition("bottom");
+      }
+    }
+  }, [openModal]);
     if (!openModal ){
         return null;
     }
+
     return (
        <div className = "absolute"  style={{
-        top: "calc(100%)",
+        ...(position === "top" ?{bottom :"100%"}: {top : "100%"}),
         ...(positionE === "right" ?{right :"95%"}: {left : "95%"})
       }}
       ref = {ref}
@@ -25,3 +39,4 @@ export const WindowMessage = ({openModal,positionE,close}) => {
         </div>
     )
 }   
+export default WindowMessage;

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {EmailInput} from '../Component/Login/EmailInput'
 import {PasswordInput} from '../Component/Login/PasswordInput'
 import {register,sUser,resetRegister} from '../feature/registerSlice'  
-export const Register =() => {
+const Register =() => {
      const [isSucess, setIsSuccess] = useState(false);
      const [message, setMessage] = useState("");
      const [title,  setTitle] = useState("");
@@ -19,6 +19,7 @@ export const Register =() => {
         Password2 : "",
         email : "",
      });
+     console.log("Đã được render");
      const dispatch = useDispatch();
      const {error,isLoading} = useSelector((state)=>state.register)
      const navigate = useNavigate();
