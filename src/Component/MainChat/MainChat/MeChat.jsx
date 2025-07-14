@@ -6,6 +6,7 @@ export const MeChat = ({ mes }) => {
     const isLong = mes.Content.length > 2
     const [showEmotion, setShowEmotion] = useState(false)
     const [showInteract, setShowInteract] = useState(false)
+    console.log(mes)
     const close = () => {
         setModal(false)
     }

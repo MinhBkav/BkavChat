@@ -111,10 +111,10 @@ const Register =() => {
     <>
      <Layout isSucess= {isSucess} message = {message} onClose = {onCloseModal} title = {title}>
      <img src ="./images/Register.png" alt ="Not found" className = " object-contain w-3/4 h-3/4"/>
-     <form className = " grid grid-cols-[30%_70%] grid-rows-7 w-4/5 gap-4 md:gap-8  2xl:gap-[1.6rem] h-4/6 2xl:mt-24 mt-16">
+     <form className = " sm:grid grid-cols-[30%_70%] grid-rows-7 2xl:w-4/5 w-full gap-4 md:gap-8  2xl:gap-[1.6rem] h-4/6 2xl:mt-24 mt-16 hidden">
                                 <h3 className = " text-start 2xl:text-[3rem] text-[2.5rem] font-[400] col-start-2 row-start-1 row-span-2 2xl:row-span-1 pb-8">Đăng ký</h3>
                                 <div className = "flex items-center justify-start col-start-1 row-start-2 max-h-[60px]">
-                                     <h4 className = "text-start text-[1.2rem] ">Tên tài khoản</h4>    
+                                     <h4 className = "text-start 2xl:text-[1.2rem] lg:text-xl md:text-base ">Tên tài khoản</h4>    
                                 </div>
                                 <EmailInput
                                 error = {errorInput.Username}
@@ -123,10 +123,10 @@ const Register =() => {
                                 value = {user.Username}
                                 onChange = {handleChange}
                                 placeholder=""
-                                inputclassName= "w-full col-start-2 row-start-2 max-h-[60px] flex justify-end"
+                               inputclassName= "w-full col-start-2 row-start-2 max-h-[60px] flex justify-end"
                                 />
                                 <div className = "flex items-center justify-start col-start-1 row-start-3">
-                                     <h4 className = "text-start text-[1.2rem] font-[400] ">Địa chỉ email</h4>    
+                                      <h4 className = "text-start 2xl:text-[1.2rem] lg:text-xl md:text-base font-[400] ">Địa chỉ email</h4>    
                                 </div>
                                 <EmailInput
                                 error = {errorInput.email}
@@ -138,7 +138,7 @@ const Register =() => {
                                 inputclassName= "w-full col-start-2 row-start-3 max-h-[60px] flex justify-end"
                                 />
                                 <div className = "flex items-center justify-start col-start-1 row-start-4">
-                                     <h4 className = "text-start text-[1.2rem] ">Mật khẩu</h4>    
+                                     <h4 className = "text-start 2xl:text-[1.2rem] lg:text-xl md:text-base">Mật khẩu</h4>    
                                 </div>
                                 <PasswordInput
                                    error = {errorInput.Password}
@@ -149,7 +149,7 @@ const Register =() => {
                                    inputclassName="w-full col-start-2 row-start-4 max-h-[60px] flex justify-end"
                                    />
                                 <div className = "flex items-center justify-start col-start-1 row-start-5">
-                                     <h4 className = "text-start text-[1.2rem] ">Nhập lại mật khẩu</h4>    
+                                     <h4 className = "text-start 2xl:text-[1.2rem] lg:text-xl md:text-base">Nhập lại mật khẩu</h4>    
                                 </div>
                                 <PasswordInput
                                    error = {errorInput.Password2}
@@ -162,7 +162,51 @@ const Register =() => {
                                 <button className = "px-4 w-full  text-[1.2rem] bg-[#4461F2] text-white font-bold rounded-md hover:bg-blue-700 shadow-lg shadow-slate-300 col-start-2 row-start-6" onClick ={(e)=>haldSubmit(e)}>
                                 Đăng ký 
                                 </button>
-                                <button className = "text-start mt-4 italic col-start-2 row-start-7 text-2xl">Đã có tài khoản, đang nhập tại <a className = "text-sky-700 ">đây!</a></button>
+                                <button className = "text-start mt-4 italic col-start-2 row-start-7 2xl:text-2xl lg:text-xl ">Đã có tài khoản, đang nhập tại <a className = "text-sky-700 ">đây!</a></button>
+                        </form>
+     <form className = " grid grid-cols-1 grid-rows-7 2xl:w-4/5 w-full gap-4 md:gap-8  2xl:gap-[1.6rem] h-4/6 2xl:mt-24 mt-16 sm:hidden">
+                                <h3 className = " text-start 2xl:text-[3rem] text-[2.5rem] font-[400]  row-start-1  pb-8">Đăng ký</h3>
+                                <EmailInput
+                                error = {errorInput.Username}
+                                name = "Username"
+                                type = "Username"
+                                value = {user.Username}
+                                onChange = {handleChange}
+                                placeholder=""
+                                inputclassName= "w-full row-start-2 max-h-[60px] flex justify-end"
+                                />
+                               
+                                <EmailInput
+                                error = {errorInput.email}
+                                name = "email"
+                                type = "email"
+                                value = {user.email}
+                                onChange = {handleChange}
+                                placeholder=""
+                                inputclassName= "w-full  row-start-3 max-h-[60px] flex justify-end"
+                                />
+                                
+                                <PasswordInput
+                                   error = {errorInput.Password}
+                                   name = "Password"
+                                   value ={user.Password}
+                                   onChange = {handleChange}     
+                                   placeholder=""
+                                   inputclassName="w-full  row-start-4 max-h-[60px] flex justify-end"
+                                   />
+                               
+                                <PasswordInput
+                                   error = {errorInput.Password2}
+                                   name = "Password2"
+                                   value ={user.Password2}
+                                   onChange = {handleChange}     
+                                   placeholder=""
+                                   inputclassName="w-full  row-start-5 max-h-[60px] flex justify-end"
+                                   />
+                                <button className = "px-4 w-full  text-[1.2rem] bg-[#4461F2] text-white font-bold rounded-md hover:bg-blue-700 shadow-lg shadow-slate-300  row-start-6" onClick ={(e)=>haldSubmit(e)}>
+                                Đăng ký 
+                                </button>
+                                <button className = "text-start mt-4 italic  row-start-7 2xl:text-2xl lg:text-xl ">Đã có tài khoản, đang nhập tại <a className = "text-sky-700 ">đây!</a></button>
                         </form>
                         <div className = "flex flex-col justify-between h-1/6 mb-4">
                        </div>

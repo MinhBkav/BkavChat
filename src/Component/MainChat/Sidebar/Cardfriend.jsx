@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { sUser,getdataChat,isRead} from '../../../feature/userSlice'
-import {setid} from '../../../feature/dataSlice'
+import {setCheckScroll, setid} from '../../../feature/dataSlice'
 import AvatarImage from "../../AvatarImage"
 import { addMessageData ,setInputMessage} from "../../../feature/dataSlice"
 import { useState, useEffect } from "react"
@@ -12,6 +12,11 @@ export const Cardfriend = ({ user }) => {
     const CreatedAt = user.CreatedAt
     const FriendID = user.FriendID
     const UnreadCount = user.UnreadCount
+    const truncate = (str, maxLength = 15) => {
+  if (!str) return ''
+  return str.length > maxLength ? str.slice(0, maxLength) + '...' : str
+}
+
     const loadChat = () => {
         dispatch(sUser(user))
         dispatch(setid(user.FriendID))
@@ -19,6 +24,7 @@ export const Cardfriend = ({ user }) => {
         dispatch(getdataChat(user.FriendID))
         dispatch(setInputMessage(''))
         dispatch(isRead({FriendID: FriendID}))
+        dispatch(setCheckScroll(false))
         setRead(true)
     }
         const userid = useSelector(state=>state.data.currentuserid)
@@ -31,8 +37,8 @@ export const Cardfriend = ({ user }) => {
                     <div className=" flex flex-col justify-center  ">
                         <h1 className="text-base text-start font-[500] dark:text-white">{user.FullName}</h1>
                         {!read ?(
-                                <p className={`${isSend === 1 ?'text-sm font-[400] dark:text-white text-start':'text-sm font-[700] text-start  dark:text-white'}`}>{user.Content}</p>
-                        ):(  <p className="text-sm font-[400] dark:text-white text-start">{user.Content}</p>)}
+                                <p className={`${isSend === 1 ?'text-sm font-[400] dark:text-white text-start':'text-sm font-[700] text-start  dark:text-white'}`}>{truncate(user.Content)}</p>
+                        ):(  <p className="text-sm font-[400] dark:text-white text-start">{truncate(user.Content)}</p>)}
                     </div>
                 </div>
                 <div className=" flex flex-col justify-center items-center gap-2 ">

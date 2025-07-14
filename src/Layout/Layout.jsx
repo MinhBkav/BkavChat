@@ -24,8 +24,8 @@ export const Layout = ({children,isSucess,message,onClose,title}) => {
                         {child}
                         </div>
                 </div>
-                <div className = "flex flex-col justify-center h-full 2xl:w-[40%] w-2/3  2xl:pr-12 2xl:pt-14 2xl:pb-14 p-10 mr-6">
-                        <ul className = "flex justify-center  md:mx-[6rem] mx-[3rem] h-1/12  ">
+                <div className = "flex flex-col justify-center h-full xl:w-[40%] lg:w-2/3 sm:w-4/5  2xl:pr-12 2xl:pt-14 2xl:pb-14 p-10 xl:mr-6">
+                        <ul className = "flex justify-center  md:mx-[6rem]  h-1/12  ">
                                 <li className = "btn " >
                                         <select name="lang" id="language " className ="bg-[#f6f6f6]">
                                                 <option value="vi">Tiếng Việt</option>

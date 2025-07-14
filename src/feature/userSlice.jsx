@@ -28,52 +28,51 @@ export const sendMessage = createAsyncThunk(
       let images = [];
       let files = [];
        const api = axios.create({
-        baseURL: "http://localhost:8080", // ⚠️ sửa lại theo IP nếu dùng LAN
+        baseURL: "http://localhost:8080", 
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
+      console.log(file)
       // Upload nếu có file
-      if (file && file.length) {
-        const formData = new FormData();
-        file.forEach(f => formData.append("files", f));
+     if (file.length > 0&&file) {
+  const formData = new FormData();
+  file.forEach(f => formData.append("files", f)); // 👈 giữ nguyên
 
-        const isImage = file[0].type.startsWith("image/");
+  const isImage = file[0].type.startsWith("image/");
+  const uploadEndpoint = isImage
+    ? "/api/upload/upload-image"
+    : "/api/upload/upload-file";
 
-        const uploadEndpoint = isImage
-          ? "/api/upload/upload-image"
-          : "/api/upload/upload-file";
+  const uploadRes = await api.post(uploadEndpoint, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
 
-        const uploadRes = await api.post(
-          uploadEndpoint,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
-        );
+  const uploaded = uploadRes.data.data;
 
-        const uploaded = uploadRes.data.data;
+  if (isImage) {
+    uploaded.forEach(item => {
+      images.push({
+        urlImage: item.url,
+        FileName: item.fileName
+      });
+    });
+  } else {
+    uploaded.forEach(item => {
+      files.push({
+        urlFile: item.url,
+        FileName: item.fileName
+      });
+    });
+  }
+}
 
-        if (isImage) {
-          images.push({
-            urlImage: uploaded.url,
-            FileName: uploaded.fileName
-          });
-        } else {
-          files.push({
-            urlFile: uploaded.url,
-            FileName: uploaded.fileName
-          });
-        }
-      }
       dispatch(addMessage({
       Content: Content,
       Files: files,
       Images: images, // Xử lý hình riêng nếu cần
       isSend: 1,
-      CreatedAt: new Date().toISOString(),
+      CreatedAt: new Date().toISOString(),  
       MessageType: 1
     }))
       // Gửi socket

@@ -2,15 +2,17 @@ import { useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { addMessage, sendMessage } from "../../../feature/userSlice"
 import { setCheckScroll, setInputMessage } from "../../../feature/dataSlice"
-
+import { useClickOutside } from "../../../Hooks/useClickOutside"
 export const InputChat = () => {
+  const emojiList = ["😀", "😂", "😍", "😢", "👍", "🙏", "🎉", "💯", "🔥", "🥺", "🤔"]
   const dispatch = useDispatch()
   const fileInputRef = useRef(null)
   const inputMessage = useSelector((state) => state.data.inputMessage)
   const userid = useSelector(state => state.data.currentuserid)
   const FriendID = useSelector(state => state.user.userChat.FriendID)
   const [attachedFiles, setAttachedFiles] = useState([])
-
+  const [showEmoji, setShowEmoji] = useState(false)
+  const emojiRef = useRef(null)
   const onChange = (e) => {
     dispatch(setInputMessage(e.target.value))
   }
@@ -29,6 +31,8 @@ export const InputChat = () => {
     //   CreatedAt: new Date().toISOString(),
     //   MessageType: 1
     // }))
+    // if(inputMessage.length == 0&&attachedFiles.length == 0)
+    //   return 
     dispatch(setCheckScroll(false))
     dispatch(sendMessage({ FriendID, Content: inputMessage, file: attachedFiles }))
     clearInput()
@@ -41,17 +45,21 @@ export const InputChat = () => {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files)
     setAttachedFiles(prev => [...prev, ...files])
+    console.log(attachedFiles)
   }
 
   const removeFile = (index) => {
     setAttachedFiles(prev => prev.filter((_, i) => i !== index))
   }
-
+  const close =()=>{
+    setShowEmoji(false)
+  }
+ useClickOutside(emojiRef,close,showEmoji)
   return (
     <>
       {/* File hiển thị trước khi gửi */}
       {attachedFiles.length > 0 && (
-        <div className="w-full px-4 pb-1 flex gap-2 overflow-x-auto">
+        <div className="  max-w-7xl px-4 pb-1 flex gap-2 overflow-x-auto custom-scrollbar">
           {attachedFiles.map((file, index) => (
             <div key={index} className="flex items-center bg-slate-100 dark:bg-slate-700 text-sm px-2 py-1 rounded-md relative">
               <ion-icon name="document-outline" className="text-blue-500 mr-1" />
@@ -92,8 +100,23 @@ export const InputChat = () => {
           />
           <ion-icon
             name="happy-outline"
+            onClick={() => setShowEmoji(prev => !prev)}
             className="w-8 h-8 absolute top-1/2 -translate-y-1/2 text-gray-400 dark:text-blue-500 text-xl right-14"
           />
+          {showEmoji && (
+            <div className="absolute bottom-14 right-14 z-50 bg-white dark:bg-slate-800 p-2 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.25)] max-w-[200px] flex flex-wrap gap-1 " ref ={emojiRef}>
+              {emojiList.map((emoji, index) => (
+                <button
+                  key={index}
+                  className="text-xl hover:scale-125 transition-transform"
+                  onClick={() => dispatch(setInputMessage(inputMessage + emoji))}
+                >
+                  {emoji}
+                </button>
+              ))}
+            </div>
+          )}
+
           <div className="flex justify-center items-center pl-2">
             <button onClick={send}>
               <ion-icon name="send-sharp" className="w-[1.5em] h-[1.5em] bg-slate-400 dark:bg-blue-600 py-[0.65rem] pl-[0.7rem] pr-[0.5rem] rounded-full text-white dark:text-[#171717]" />
