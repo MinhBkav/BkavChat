@@ -36,7 +36,7 @@ export const Cardfriend = ({ user }) => {
                     <AvatarImage src={user.Avatar} inputcss={"w-[49px] h-[49px] object-cover rounded-full my-auto overflow-hidden" } />
                     <div className=" flex flex-col justify-center  ">
                         <h1 className="text-base text-start font-[500] dark:text-white">{user.FullName}</h1>
-                        {!read ?(
+                        {!read&&UnreadCount !=0 ?(
                                 <p className={`${isSend === 1 ?'text-sm font-[400] dark:text-white text-start':'text-sm font-[700] text-start  dark:text-white'}`}>{truncate(user.Content)}</p>
                         ):(  <p className="text-sm font-[400] dark:text-white text-start">{truncate(user.Content)}</p>)}
                     </div>

@@ -7,6 +7,7 @@ const initialState = {
   currentuserid: 0,
   isLoading: null,
   error: null,
+  messageId: null
 
 }
 export const getdataChat = (FriendID,before) => (dispatch) => {
@@ -20,6 +21,36 @@ export const getdataChat = (FriendID,before) => (dispatch) => {
 
   });
 };
+export const deleteMessage = (messageId) => async (dispatch) => {
+  return new Promise((resolve, reject) => {
+    socket.emit("delete_message", { messageId });
+
+    socket.once("message_deleted", ({ messageId }) => {
+      dispatch(updateDeletedMessage(messageId));
+      resolve(messageId);
+    });
+
+    setTimeout(() => {
+      reject("Timeout khi xóa tin nhắn");
+    }, 5000);
+  });
+};
+export const repairMessage = (messageId,Content) => async (dispatch) => {
+  console.log(messageId)
+  return new Promise((resolve, reject) => {
+    socket.emit("repair_message", { messageId ,Content});
+
+    socket.once("message_repaired", ({ messageId,Content }) => {
+      dispatch(updateDeletedMessage({messageId:messageId,Content:Content}));
+      resolve(messageId);
+    });
+
+    setTimeout(() => {
+      reject("Timeout khi xóa tin nhắn");
+    }, 5000);
+  });
+};
+
 export const sendMessage = createAsyncThunk(
   'user/sendMessage',
   async ({ FriendID, Content, file }, {dispatch, rejectWithValue }) => {
@@ -66,15 +97,6 @@ export const sendMessage = createAsyncThunk(
     });
   }
 }
-
-      dispatch(addMessage({
-      Content: Content,
-      Files: files,
-      Images: images, // Xử lý hình riêng nếu cần
-      isSend: 1,
-      CreatedAt: new Date().toISOString(),  
-      MessageType: 1
-    }))
       // Gửi socket
       return await new Promise((resolve, reject) => {
         socket.emit("send_message", {
@@ -86,7 +108,8 @@ export const sendMessage = createAsyncThunk(
 
         socket.once("message_sent", (msg) => {
           resolve(msg);
-          console.log(msg)
+          console.log(msg);      
+          dispatch(addMessage(msg))
         });
 
         // Timeout fallback (phòng lỗi socket treo)
@@ -141,6 +164,23 @@ const userSlice = createSlice(
         prependMessages: (state, action) => {
       state.dataChat = [...action.payload, ...state.dataChat];
     },
+    updateDeletedMessage: (state, action) => {
+  const { messageId, Content } = action.payload;
+  console.log(messageId)
+  const msg = state.dataChat.find(m => m.id === messageId);
+  console.log(msg)
+  if (msg) {
+    console.log("da xoa")
+    msg.Content = Content||"[Tin nhắn đã thu hồi]";
+    msg.Files = [];
+    msg.Images = [];
+    msg.isDeleted = true; // nếu bạn dùng để flag riêng
+  }
+},
+setMessageId : (state,action) =>{
+  state.messageId = action.payload
+}
+
 
     },
     // extraReducers :(builder)=>{
@@ -161,5 +201,5 @@ const userSlice = createSlice(
     // }
   },
 )
-export const { sUser, addMessage, setid,setDataChat,prependMessages } = userSlice.actions;
+export const { sUser, addMessage, setid,setDataChat,prependMessages,updateDeletedMessage,setMessageId } = userSlice.actions;
 export default userSlice.reducer; 

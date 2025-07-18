@@ -2,10 +2,16 @@
 import {Limenu} from './Limenu'
 import {useEffect, useRef,useState} from 'react'
 import { useClickOutside } from '../../../Hooks/useClickOutside';
-export const WindowMessage = ({openModal,positionE,close}) => {
+import { deleteMessage,repairMessage } from '../../../feature/userSlice';
+import { useDispatch,useSelector } from 'react-redux';
+import { setInputMessage,setCheckRepair } from '../../../feature/dataSlice';
+import { setMessageId } from '../../../feature/userSlice';
+export const WindowMessage = ({openModal,positionE,close,mes}) => {
   const ref = useRef(null);
+  const dispatch = useDispatch()
    useClickOutside(ref,close,openModal)
    const [position, setPosition] = useState("bottom");
+    const inputMessage = useSelector((state) => state.data.inputMessage)
      useEffect(() => {
     if (openModal && ref.current) {
       const rect = ref.current.getBoundingClientRect();
@@ -22,7 +28,18 @@ export const WindowMessage = ({openModal,positionE,close}) => {
     if (!openModal ){
         return null;
     }
-
+    const handledeleteMessage = () =>{
+        dispatch(deleteMessage(mes.id))
+        console.log(mes.id)
+    }
+    const handlerepairMessage = () =>{
+       dispatch(setMessageId(mes.id))
+        dispatch(setCheckRepair(true))
+        dispatch(setInputMessage(mes.Content))
+        console.log(mes.Content)
+        console.log(inputMessage)
+    }
+ 
     return (
        <div className = "absolute"  style={{
         ...(position === "top" ?{bottom :"100%"}: {top : "100%"}),
@@ -30,12 +47,12 @@ export const WindowMessage = ({openModal,positionE,close}) => {
       }}
       ref = {ref}
       >
-            <ul className = "w-[240px] h-[168px] flex flex-col bg-white dark:bg-slate-600 rounded-2xl shadow-[0_0_10px_rgba(0,0,0,0.25)]  overflow-hidden   ">  
+            <div className = "w-[240px] h-[168px] flex flex-col bg-white dark:bg-slate-600 rounded-2xl shadow-[0_0_10px_rgba(0,0,0,0.25)]  overflow-hidden   ">  
                 <Limenu icon = "at-outline" text = "Trả lời"  inputcss = "" action = {""}/>
-                <Limenu icon = "people-outline" text = "Chỉnh sửa"  inputcss = "" action = {""}/>
+                <Limenu icon = "people-outline" text = "Chỉnh sửa"  inputcss = "" action = {handlerepairMessage}/>
                 <Limenu icon = "moon-outline" text = "Ghim"  inputcss = "" action = {""}/>
-                <Limenu icon = "person-outline" text = "Xóa tin nhắn"  inputcss = "" action = {""}/> 
-            </ul>
+                <Limenu icon = "person-outline" text = "Xóa tin nhắn"  inputcss = "" action = {handledeleteMessage}/> 
+            </div>
         </div>
     )
 }   

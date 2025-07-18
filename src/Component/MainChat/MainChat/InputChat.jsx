@@ -1,15 +1,17 @@
 import { useRef, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { addMessage, sendMessage } from "../../../feature/userSlice"
-import { setCheckScroll, setInputMessage } from "../../../feature/dataSlice"
+import { setCheckRepair, setCheckScroll, setInputMessage } from "../../../feature/dataSlice"
 import { useClickOutside } from "../../../Hooks/useClickOutside"
+import { repairMessage } from "../../../feature/userSlice"
 export const InputChat = () => {
   const emojiList = ["😀", "😂", "😍", "😢", "👍", "🙏", "🎉", "💯", "🔥", "🥺", "🤔"]
   const dispatch = useDispatch()
   const fileInputRef = useRef(null)
   const inputMessage = useSelector((state) => state.data.inputMessage)
-  const userid = useSelector(state => state.data.currentuserid)
+  const checkrepair = useSelector(state => state.data.checkrepair)
   const FriendID = useSelector(state => state.user.userChat.FriendID)
+  const messageId = useSelector(state =>state.user.messageId)
   const [attachedFiles, setAttachedFiles] = useState([])
   const [showEmoji, setShowEmoji] = useState(false)
   const emojiRef = useRef(null)
@@ -23,16 +25,14 @@ export const InputChat = () => {
   }
 
   const send = () => {
-    // dispatch(addMessage({
-    //   Content: inputMessage,
-    //   Files: [],
-    //   Images: [], // Xử lý hình riêng nếu cần
-    //   isSend: 1,
-    //   CreatedAt: new Date().toISOString(),
-    //   MessageType: 1
-    // }))
-    // if(inputMessage.length == 0&&attachedFiles.length == 0)
-    //   return 
+    console.log(checkrepair)
+    if(checkrepair){
+    console.log(inputMessage)
+    dispatch(repairMessage(messageId,inputMessage))
+    dispatch(setCheckRepair(false))
+    clearInput()
+    return
+    }
     dispatch(setCheckScroll(false))
     dispatch(sendMessage({ FriendID, Content: inputMessage, file: attachedFiles }))
     clearInput()
@@ -128,4 +128,4 @@ export const InputChat = () => {
   )
 }
 
-export default InputChat
+export default InputChat 

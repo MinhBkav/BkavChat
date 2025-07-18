@@ -9,7 +9,8 @@ const initialState  ={
   isLoading : null,
   error : null,
   inputMessage : '',
-  checkScroll : false
+  checkScroll : false,
+  checkrepair : false
 }
 export const getListUser = createAsyncThunk('user/getUser', async (_) => {
   try {
@@ -55,6 +56,10 @@ const dataSlice =createSlice(
             {
               state.checkScroll = action.payload;
             },
+             setCheckRepair : (state,action) => 
+            {
+              state.checkrepair = action.payload;
+            },
             setUserOnline : (state,action) =>
             {
               state.userOnline = action.payload;
@@ -78,5 +83,5 @@ const dataSlice =createSlice(
         }
     },
 )
-export const {addMessageData,setid,setOpenSidebar,setInputMessage,setCheckScroll,setUserOnline} = dataSlice.actions;
+export const {addMessageData,setid,setOpenSidebar,setInputMessage,setCheckScroll,setUserOnline,setCheckRepair} = dataSlice.actions;
 export default dataSlice.reducer; 

@@ -47,7 +47,7 @@ export const TheyChat = ({ mes }) => {
             <button className="relative flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onMouseEnter={enter2} onMouseLeave={leave2} ><ion-icon name="happy-outline" className="w-[20px] h-[20px] dark:text-[#9c9f9f] border-gray-700 rounded-full focus:text-sky-600 " ></ion-icon></button>
                     <Emotion showEmotion={showEmotion} positionE={"right"} hanlderEnter={enter2} hanlderLeave={leave2} />
             <button className="flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onClick={() => setModal(!modal)} ><ion-icon name="ellipsis-vertical" className="w-[20px] h-[20px]  border-gray-700 rounded-full dark:text-[#9c9f9f] focus:text-sky-600 " ></ion-icon></button>
-            <WindowMessage openModal={modal} positionE={"left"} close={close}/>
+            <WindowMessage openModal={modal} positionE={"left"} close={close} mes = {mes}/>
          </div>)}
       </div>
    )

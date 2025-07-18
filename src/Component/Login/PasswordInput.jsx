@@ -12,7 +12,7 @@ export const PasswordInput = ({error,name,value,onChange,placeholder,inputclassN
              value = {value}
              onChange = {onChange}     
              placeholder = {placeholder}
-             className = "rounded-lg  w-full  2xl:p-4 p-2 text-lg   bg-sky-100  focus:ring-sky-200  "
+             className = "rounded-lg  w-full  2xl:p-4 p-2 text-lg  placeholder:text-[#797c7b] bg-sky-100  focus:ring-sky-200  "
              />
                       <div className = "absolute z-10 left-2  lg:top-14 top-8 w-46">
             {hasError && (
