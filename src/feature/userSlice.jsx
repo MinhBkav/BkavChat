@@ -7,13 +7,15 @@ const initialState = {
   currentuserid: 0,
   isLoading: null,
   error: null,
-  messageId: null
+  messageId: null,
+  messagereplyId : null,
+  whmessMain : {},
 
 }
-export const getdataChat = (FriendID,before) => (dispatch) => {
+export const getdataChat = (FriendID, before) => (dispatch) => {
   socket.emit("load_history", { friendId: FriendID, before, limit: 30 });
   socket.once("chat_history", (data) => {
-   if (before) {
+    if (before) {
       dispatch(prependMessages(data)); // Nối lên trên đầu
     } else {
       dispatch(setDataChat(data)); // Lần đầu load thì set mới hoàn toàn
@@ -35,13 +37,13 @@ export const deleteMessage = (messageId) => async (dispatch) => {
     }, 5000);
   });
 };
-export const repairMessage = (messageId,Content) => async (dispatch) => {
+export const repairMessage = (messageId, Content) => async (dispatch) => {
   console.log(messageId)
   return new Promise((resolve, reject) => {
-    socket.emit("repair_message", { messageId ,Content});
+    socket.emit("repair_message", { messageId, Content });
 
-    socket.once("message_repaired", ({ messageId,Content }) => {
-      dispatch(updateDeletedMessage({messageId:messageId,Content:Content}));
+    socket.once("message_repaired", ({ messageId, Content }) => {
+      dispatch(updateDeletedMessage({ messageId: messageId, Content: Content }));
       resolve(messageId);
     });
 
@@ -53,62 +55,65 @@ export const repairMessage = (messageId,Content) => async (dispatch) => {
 
 export const sendMessage = createAsyncThunk(
   'user/sendMessage',
-  async ({ FriendID, Content, file }, {dispatch, rejectWithValue }) => {
+  async ({ FriendID, Content, file,messagereplyId,whmessMain }, { dispatch, rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
       let images = [];
       let files = [];
-       const api = axios.create({
-        baseURL: "http://localhost:8080", 
+      const api = axios.create({
+        baseURL: "http://localhost:8080",
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       console.log(file)
       // Upload nếu có file
-     if (file.length > 0&&file) {
-  const formData = new FormData();
-  file.forEach(f => formData.append("files", f)); // 👈 giữ nguyên
+      if (file.length > 0 && file) {
+        const formData = new FormData();
+        file.forEach(f => formData.append("files", f)); // 👈 giữ nguyên
 
-  const isImage = file[0].type.startsWith("image/");
-  const uploadEndpoint = isImage
-    ? "/api/upload/upload-image"
-    : "/api/upload/upload-file";
+        const isImage = file[0].type.startsWith("image/");
+        const uploadEndpoint = isImage
+          ? "/api/upload/upload-image"
+          : "/api/upload/upload-file";
 
-  const uploadRes = await api.post(uploadEndpoint, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+        const uploadRes = await api.post(uploadEndpoint, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
 
-  const uploaded = uploadRes.data.data;
+        const uploaded = uploadRes.data.data;
 
-  if (isImage) {
-    uploaded.forEach(item => {
-      images.push({
-        urlImage: item.url,
-        FileName: item.fileName
-      });
-    });
-  } else {
-    uploaded.forEach(item => {
-      files.push({
-        urlFile: item.url,
-        FileName: item.fileName
-      });
-    });
-  }
-}
+        if (isImage) {
+          uploaded.forEach(item => {
+            images.push({
+              urlImage: item.url,
+              FileName: item.fileName
+            });
+          });
+        } else {
+          uploaded.forEach(item => {
+            files.push({
+              urlFile: item.url,
+              FileName: item.fileName
+            });
+          });
+        }
+      }
       // Gửi socket
+      console.log(messagereplyId)
       return await new Promise((resolve, reject) => {
         socket.emit("send_message", {
           toUserId: FriendID,
           content: Content,
           images,
-          files
+          files,
+          messagereplyId,
+          whmessMain
         });
 
         socket.once("message_sent", (msg) => {
           resolve(msg);
-          console.log(msg);      
+          console.log(msg);
           dispatch(addMessage(msg))
         });
 
@@ -161,26 +166,31 @@ const userSlice = createSlice(
         state.dataChat = action.payload;
         console.log(action.payload)
       },
-        prependMessages: (state, action) => {
-      state.dataChat = [...action.payload, ...state.dataChat];
-    },
-    updateDeletedMessage: (state, action) => {
-  const { messageId, Content } = action.payload;
-  console.log(messageId)
-  const msg = state.dataChat.find(m => m.id === messageId);
-  console.log(msg)
-  if (msg) {
-    console.log("da xoa")
-    msg.Content = Content||"[Tin nhắn đã thu hồi]";
-    msg.Files = [];
-    msg.Images = [];
-    msg.isDeleted = true; // nếu bạn dùng để flag riêng
-  }
-},
-setMessageId : (state,action) =>{
-  state.messageId = action.payload
-}
+      prependMessages: (state, action) => {
+        state.dataChat = [...action.payload, ...state.dataChat];
+      },
+      updateDeletedMessage: (state, action) => {
+        const { messageId, Content } = action.payload;
+        console.log(messageId)
+        const msg = state.dataChat.find(m => m.id === messageId);
+        console.log(msg)
+        if (msg) {
+          console.log("da xoa")
+          msg.Content = Content || "[Tin nhắn đã thu hồi]";
+          msg.Files = [];
+          msg.Images = [];
+          msg.isDelete = true; // nếu bạn dùng để flag riêng
+        }
+      },
+      setMessageId: (state, action) => {
+        state.messageId = action.payload
+      },
+      setMessageReply : (state,action) =>{
+       const {id,whmessMain} = action.payload;
+        state.messagereplyId = id;
+        state.whmessMain = whmessMain;
 
+      },
 
     },
     // extraReducers :(builder)=>{
@@ -201,5 +211,5 @@ setMessageId : (state,action) =>{
     // }
   },
 )
-export const { sUser, addMessage, setid,setDataChat,prependMessages,updateDeletedMessage,setMessageId } = userSlice.actions;
+export const { sUser, addMessage, setid, setDataChat, prependMessages, updateDeletedMessage, setMessageId ,setMessageReply} = userSlice.actions;
 export default userSlice.reducer; 

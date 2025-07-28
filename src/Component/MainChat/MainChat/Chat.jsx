@@ -41,9 +41,7 @@ export const Chat = () => {
          dispatch(getdataChat(FriendID.FriendID, oldestMessageDate));
       }
    };
-   const handlecloseRepair =() =>{
-      dispatch(setCheckRepair(false));
-   }
+  
    console.log(chatData)
    if (chatData.length == 0) {
       return (
@@ -57,7 +55,7 @@ export const Chat = () => {
    }
    return (
       <>
-         <div className="relative flex flex-col  flex-1 gap-[4px] overflow-y-scroll custom-scrollbar  p-2 z-10" ref={chatBoxRef} onScroll={handleScroll} >
+         <div className="relative flex flex-col justify-between flex-1 gap-[4px] overflow-y-scroll custom-scrollbar z-30  p-2 " ref={chatBoxRef} onScroll={handleScroll} >
             {groupMessage.map((person) => {
                return person.sender == 0 ? (
                   <div className="flex justify-start gap-[8px]">
@@ -86,13 +84,10 @@ export const Chat = () => {
                )
             })}
             <AutoScrollToBottom/>
-              {checkrepair&&( <div className = "absolute inset-0  z-20 backdrop-blur-sm bg-black/20 ">
-            </div>)}
-           {checkrepair&&(<div className = " z-30 w-full h-28 bg-slate-200  flex justify-between items-center px-2">
-            <p1 className = "text-center">Sửa tin nhắn</p1>
-            <button onClick={handlecloseRepair}><ion-icon name="close-outline" className = ""></ion-icon></button>
-           </div>)} 
          </div>
+          {checkrepair && (
+    <div className="absolute inset-0 z-10 backdrop-blur-sm bg-black/20 pointer-events-none" />
+  )}
        
       </>
    )

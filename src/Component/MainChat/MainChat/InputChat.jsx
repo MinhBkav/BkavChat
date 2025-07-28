@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { addMessage, sendMessage } from "../../../feature/userSlice"
 import { setCheckRepair, setCheckScroll, setInputMessage } from "../../../feature/dataSlice"
 import { useClickOutside } from "../../../Hooks/useClickOutside"
-import { repairMessage } from "../../../feature/userSlice"
+import { repairMessage,setMessageReply } from "../../../feature/userSlice"
 export const InputChat = () => {
   const emojiList = ["😀", "😂", "😍", "😢", "👍", "🙏", "🎉", "💯", "🔥", "🥺", "🤔"]
   const dispatch = useDispatch()
@@ -11,7 +11,9 @@ export const InputChat = () => {
   const inputMessage = useSelector((state) => state.data.inputMessage)
   const checkrepair = useSelector(state => state.data.checkrepair)
   const FriendID = useSelector(state => state.user.userChat.FriendID)
-  const messageId = useSelector(state =>state.user.messageId)
+  const messagereplyId = useSelector(state => state.user.messagereplyId)
+    const whmessMain = useSelector(state => state.user.whmessMain )
+    const messageId = useSelector(state =>state.user.messageId)
   const [attachedFiles, setAttachedFiles] = useState([])
   const [showEmoji, setShowEmoji] = useState(false)
   const emojiRef = useRef(null)
@@ -34,13 +36,22 @@ export const InputChat = () => {
     return
     }
     dispatch(setCheckScroll(false))
-    dispatch(sendMessage({ FriendID, Content: inputMessage, file: attachedFiles }))
+    dispatch(sendMessage({ FriendID, Content: inputMessage, file: attachedFiles ,messagereplyId: messagereplyId ,whmessMain :whmessMain}))
+    console.log(messagereplyId)
+      console.log(whmessMain)
+    dispatch(setMessageReply({}))
     clearInput()
   }
-
+ const handlecloseRepair =() =>{
+      dispatch(setCheckRepair(false));
+   }
+   const handlecloseReply =() =>{
+      dispatch(setMessageReply({}));
+   }
   const handleFileClick = () => {
     fileInputRef.current.click()
   }
+  
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files)
@@ -71,8 +82,15 @@ export const InputChat = () => {
           ))}
         </div>
       )}
-
-      <div className="h-[56px] w-full flex flex-col justify-center items-center bg-white dark:bg-[#171717]">
+    {checkrepair&&(<div className = "  z-30  h-8 bg-slate-300  flex justify-between items-center px-2  ">
+                <p1 className = "text-center">Sửa tin nhắn </p1>
+                <button onClick={handlecloseRepair}><ion-icon name="close-outline" className = "hover:bg-slate-500 hover:rounded"></ion-icon></button>
+              </div>)} 
+    {messagereplyId&&(<div className = "  z-30  h-8 bg-slate-300  flex justify-between items-center px-2  ">
+      <p1 className = "text-center">Trả lời tin nhắn</p1>
+      <button onClick={handlecloseReply}><ion-icon name="close-outline" className = "hover:bg-slate-500 hover:rounded"></ion-icon></button>
+    </div>)} 
+      <div className="h-[56px] w-full flex flex-col justify-center items-center bg-white dark:bg-[#171717] z-30">
         <div className="relative w-full flex justify-between px-[0.3145rem] my-2">
           <div className="flex justify-center items-center pr-1">
             <button onClick={handleFileClick}>
