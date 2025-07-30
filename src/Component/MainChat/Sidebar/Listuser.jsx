@@ -20,8 +20,8 @@ export const Listuser = () =>
 
     return (
        <>
-       <div className = "  ">
-        <ul className = { `${openSidebar ? "flex flex-col" : "md:flex flex-col hidden"}`}>
+       <div className = "h-full  custom-scrollbar overflow-y-scroll">
+        <ul className = { `h-full ${openSidebar ? "flex flex-col" : "md:flex flex-col hidden"}`}>
          {chatData.map(user => (
         <Cardfriend key={user.FriendID} user={user} />
             ))} 

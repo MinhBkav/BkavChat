@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../feature/userSlice";
 import { setUserOnline } from "../feature/dataSlice";
 import { getListUser } from "../feature/dataSlice";
-import { updateDeletedMessage } from "../feature/userSlice";
+import { updateDeletedMessage,updateRepairMessage,updateEmotionMessage } from "../feature/userSlice";
 export default function useSocketReceiveMessage() {
   const dispatch = useDispatch();
   const currentUserId = useSelector((state) => state.data.currentuserid);
@@ -28,14 +28,19 @@ export default function useSocketReceiveMessage() {
         dispatch(getListUser())
         console.log(onlineUserIds)
     });
-    socket.on("message_deleted",(messageId)=>{
+    socket.on("message_deleted",(message)=>{
       console.log("da nhan duoc ")
-      dispatch(updateDeletedMessage(messageId))
+      dispatch(updateDeletedMessage(message))
     });
-    socket.on("message_repaired",(messageId)=>{
-       dispatch(updateDeletedMessage(messageId))
+    socket.on("message_repaired",(message)=>{
+       dispatch(updateRepairMessage(message))
+    })
+    socket.on("message_emotioned",(message)=>{
+      console.log("da nhan duoc emotion ")
+      dispatch(updateEmotionMessage(message))
     })
     return () => {
+      socket.off("message_emotioned");
       socket.off("receive_message"); // cleanup
       socket.off("online_users");
       socket.off("message_deleted");

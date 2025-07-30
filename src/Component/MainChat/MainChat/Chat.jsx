@@ -55,7 +55,7 @@ export const Chat = () => {
    }
    return (
       <>
-         <div className="relative flex flex-col justify-between flex-1 gap-[4px] overflow-y-scroll custom-scrollbar z-30  p-2 " ref={chatBoxRef} onScroll={handleScroll} >
+         <div className="relative flex flex-col justify-start flex-1 gap-[4px] overflow-y-scroll custom-scrollbar z-30  p-2 " ref={chatBoxRef} onScroll={handleScroll} >
             {groupMessage.map((person) => {
                return person.sender == 0 ? (
                   <div className="flex justify-start gap-[8px]">

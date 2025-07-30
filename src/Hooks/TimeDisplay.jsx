@@ -3,7 +3,6 @@ import React from 'react';
 import moment from 'moment';
 
 const TimeDisplay = ({ isoString, inputcss }) => {
-  console.log(isoString)
   if(!isoString)
     return 
   const lastOnline = moment(isoString);

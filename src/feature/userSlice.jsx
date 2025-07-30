@@ -43,7 +43,23 @@ export const repairMessage = (messageId, Content) => async (dispatch) => {
     socket.emit("repair_message", { messageId, Content });
 
     socket.once("message_repaired", ({ messageId, Content }) => {
-      dispatch(updateDeletedMessage({ messageId: messageId, Content: Content }));
+      dispatch(updateRepairMessage({ messageId: messageId, Content: Content }));
+      resolve(messageId);
+    });
+
+    setTimeout(() => {
+      reject("Timeout khi xóa tin nhắn");
+    }, 5000);
+  });
+};
+export const EmotionMessage = (messageId, emotion) => async (dispatch) => {
+  console.log(messageId)
+  return new Promise((resolve, reject) => {
+    socket.emit("emotion_message", { messageId, emotion });
+
+    socket.once("message_emotion", ({ messageId, emotion }) => {
+      dispatch(updateEmotionMessage({ messageId: messageId, Emotion: emotion }));
+      console.log(emotion);
       resolve(messageId);
     });
 
@@ -69,29 +85,41 @@ export const sendMessage = createAsyncThunk(
       console.log(file)
       // Upload nếu có file
       if (file.length > 0 && file) {
-        const formData = new FormData();
-        file.forEach(f => formData.append("files", f)); // 👈 giữ nguyên
+        const imageFormData = new FormData();
+        const fileFormData = new FormData();
 
-        const isImage = file[0].type.startsWith("image/");
-        const uploadEndpoint = isImage
-          ? "/api/upload/upload-image"
-          : "/api/upload/upload-file";
-
-        const uploadRes = await api.post(uploadEndpoint, formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
+        // Tách file và ảnh vào 2 FormData khác nhau
+        file.forEach(f => {
+          if (f.type.startsWith("image/")) {
+            imageFormData.append("files", f);
+          } else {
+            fileFormData.append("files", f);
+          }
         });
 
-        const uploaded = uploadRes.data.data;
+        // Upload ảnh nếu có
+        if (imageFormData.has("files")) {
+          const uploadImageRes = await api.post("/api/upload/upload-image", imageFormData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
 
-        if (isImage) {
-          uploaded.forEach(item => {
+          const uploadedImages = uploadImageRes.data.data;
+          uploadedImages.forEach(item => {
             images.push({
               urlImage: item.url,
               FileName: item.fileName
             });
           });
-        } else {
-          uploaded.forEach(item => {
+        }
+
+        // Upload file nếu có
+        if (fileFormData.has("files")) {
+          const uploadFileRes = await api.post("/api/upload/upload-file", fileFormData, {
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+
+          const uploadedFiles = uploadFileRes.data.data;
+          uploadedFiles.forEach(item => {
             files.push({
               urlFile: item.url,
               FileName: item.fileName
@@ -99,6 +127,7 @@ export const sendMessage = createAsyncThunk(
           });
         }
       }
+
       // Gửi socket
       console.log(messagereplyId)
       return await new Promise((resolve, reject) => {
@@ -182,6 +211,26 @@ const userSlice = createSlice(
           msg.isDelete = true; // nếu bạn dùng để flag riêng
         }
       },
+      updateRepairMessage: (state, action) => {
+        const { messageId, Content } = action.payload;
+        console.log(messageId)
+        const msg = state.dataChat.find(m => m.id === messageId);
+        console.log(msg)
+        if (msg) {
+          console.log("da sua")
+          msg.Content = Content || "[Tin nhắn đã thu hồi]";
+        }
+      },
+      updateEmotionMessage: (state, action) => {
+        const { messageId, Emotion } = action.payload;
+        console.log(messageId)
+        const msg = state.dataChat.find(m => m.id === messageId);
+        console.log(msg)
+        if (msg) {
+          console.log("da sua")
+          msg.Emotion = Emotion ;
+        }
+      },
       setMessageId: (state, action) => {
         state.messageId = action.payload
       },
@@ -211,5 +260,5 @@ const userSlice = createSlice(
     // }
   },
 )
-export const { sUser, addMessage, setid, setDataChat, prependMessages, updateDeletedMessage, setMessageId ,setMessageReply} = userSlice.actions;
+export const {updateRepairMessage,updateEmotionMessage, sUser, addMessage, setid, setDataChat, prependMessages, updateDeletedMessage, setMessageId ,setMessageReply} = userSlice.actions;
 export default userSlice.reducer; 

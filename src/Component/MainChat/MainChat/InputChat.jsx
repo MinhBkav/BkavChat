@@ -26,22 +26,7 @@ export const InputChat = () => {
     setAttachedFiles([]) // Clear files
   }
 
-  const send = () => {
-    console.log(checkrepair)
-    if(checkrepair){
-    console.log(inputMessage)
-    dispatch(repairMessage(messageId,inputMessage))
-    dispatch(setCheckRepair(false))
-    clearInput()
-    return
-    }
-    dispatch(setCheckScroll(false))
-    dispatch(sendMessage({ FriendID, Content: inputMessage, file: attachedFiles ,messagereplyId: messagereplyId ,whmessMain :whmessMain}))
-    console.log(messagereplyId)
-      console.log(whmessMain)
-    dispatch(setMessageReply({}))
-    clearInput()
-  }
+
  const handlecloseRepair =() =>{
       dispatch(setCheckRepair(false));
    }
@@ -56,12 +41,28 @@ export const InputChat = () => {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files)
     setAttachedFiles(prev => [...prev, ...files])
-    console.log(attachedFiles)
   }
+    console.log(attachedFiles)
 
   const removeFile = (index) => {
     setAttachedFiles(prev => prev.filter((_, i) => i !== index))
   }
+    const send = () => {
+        console.log(checkrepair)
+        if(checkrepair){
+            console.log(inputMessage)
+            dispatch(repairMessage(messageId,inputMessage))
+            dispatch(setCheckRepair(false))
+            clearInput()
+            return
+        }
+        dispatch(setCheckScroll(false))
+        dispatch(sendMessage({ FriendID, Content: inputMessage, file: attachedFiles ,messagereplyId: messagereplyId ,whmessMain :whmessMain}))
+        console.log(messagereplyId)
+        console.log(whmessMain)
+        dispatch(setMessageReply({}))
+        clearInput()
+    }
   const close =()=>{
     setShowEmoji(false)
   }
@@ -70,7 +71,7 @@ export const InputChat = () => {
     <>
       {/* File hiển thị trước khi gửi */}
       {attachedFiles.length > 0 && (
-        <div className="  max-w-7xl px-4 pb-1 flex gap-2 overflow-x-auto custom-scrollbar">
+        <div className="  max-w-3xl px-4 pb-1 flex gap-2 overflow-x-auto custom-scrollbar">
           {attachedFiles.map((file, index) => (
             <div key={index} className="flex items-center bg-slate-100 dark:bg-slate-700 text-sm px-2 py-1 rounded-md relative">
               <ion-icon name="document-outline" className="text-blue-500 mr-1" />
@@ -90,7 +91,7 @@ export const InputChat = () => {
       <p1 className = "text-center">Trả lời tin nhắn</p1>
       <button onClick={handlecloseReply}><ion-icon name="close-outline" className = "hover:bg-slate-500 hover:rounded"></ion-icon></button>
     </div>)} 
-      <div className="h-[56px] w-full flex flex-col justify-center items-center bg-white dark:bg-[#171717] z-30">
+      <div className="h-[56px] w-full flex flex-col justify-center items-center bg-white dark:bg-[#171717] z-20">
         <div className="relative w-full flex justify-between px-[0.3145rem] my-2">
           <div className="flex justify-center items-center pr-1">
             <button onClick={handleFileClick}>
