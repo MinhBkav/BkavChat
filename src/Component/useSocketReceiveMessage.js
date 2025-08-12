@@ -36,7 +36,7 @@ export default function useSocketReceiveMessage() {
        dispatch(updateRepairMessage(message))
     })
     socket.on("message_emotioned",(message)=>{
-      console.log("da nhan duoc emotion ")
+      console.log("da nhan duoc emotion ",message)
       dispatch(updateEmotionMessage(message))
     })
     return () => {

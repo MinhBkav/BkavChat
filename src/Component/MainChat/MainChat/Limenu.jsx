@@ -1,6 +1,10 @@
-export const Limenu = ({icon,text,action,inputcss}) => {
+export const Limenu = ({icon,text,action,inputcss,close}) => {
+    const clickoption = () => {
+        close()
+        action()
+    }
    return (
-     <button className="flex-1 hover:bg-[#DBDDE1] dark:hover:bg-slate-700" onClick={action}>
+     <button className="flex-1 hover:bg-[#DBDDE1] dark:hover:bg-slate-700" onClick={clickoption}>
         <div className="flex justify-between  mx-4 my-2">
             <div className="flex justify-between items-center gap-4 ">
                 <ion-icon name={icon} className="w-[24px] h-[24px] text-[#747881] "></ion-icon>

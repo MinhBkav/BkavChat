@@ -10,7 +10,8 @@ const initialState  ={
   error : null,
   inputMessage : '',
   checkScroll : false,
-  checkrepair : false
+  checkrepair : false,
+  openCreatRoom : false
 }
 export const getListUser = createAsyncThunk('user/getUser', async (_) => {
   try {
@@ -27,7 +28,28 @@ export const getListUser = createAsyncThunk('user/getUser', async (_) => {
             throw error;
         }
 });
+export const createRoom = createAsyncThunk('data/CreateRoom', async ({createdBy,name,userIds}) => {
+  console.log(userIds)
+  try {
+    const token = localStorage.getItem("token");
 
+    const res = await axios.post('http://30.30.30.12:8080/api/message/create-room',{
+          createdBy,
+          name,
+          userIds
+        }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    console.log(res.data)
+    return res.data.data
+
+  } catch (error) {
+            console.error(error);
+            throw error;
+        }
+});
 const dataSlice =createSlice(
     {
         name : 'data',
@@ -63,6 +85,9 @@ const dataSlice =createSlice(
             setUserOnline : (state,action) =>
             {
               state.userOnline = action.payload;
+            },
+            setOpenCreateRoom :(state,action) => {
+              state.openCreatRoom = action.payload;
             }
         },
         extraReducers :(builder)=>{
@@ -83,5 +108,5 @@ const dataSlice =createSlice(
         }
     },
 )
-export const {addMessageData,setid,setOpenSidebar,setInputMessage,setCheckScroll,setUserOnline,setCheckRepair} = dataSlice.actions;
+export const {addMessageData,setid,setOpenSidebar,setInputMessage,setCheckScroll,setUserOnline,setCheckRepair,setOpenCreateRoom} = dataSlice.actions;
 export default dataSlice.reducer; 

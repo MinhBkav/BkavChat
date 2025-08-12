@@ -16,7 +16,7 @@ const Emotion = ({ showEmotion, positionE, hanlderEnter, hanlderLeave, mes }) =>
 
     return (
         <div
-            className="absolute z-20"
+            className="absolute z-30"
             style={{
                 bottom: "calc(80% + 9px)",
                 ...(positionE === "right" ? { left: "0%" } : { right: "0%" }),
@@ -24,7 +24,7 @@ const Emotion = ({ showEmotion, positionE, hanlderEnter, hanlderLeave, mes }) =>
             onMouseEnter={hanlderEnter}
             onMouseLeave={hanlderLeave}
         >
-            <div className="w-[342px] h-[62px] flex p-2 gap-[10px] rounded-3xl shadow-[0_0_10px_rgba(0,0,0,0.25)] bg-white dark:bg-slate-600">
+            <div className="w-[342px] h-[62px] flex p-2 gap-[10px] rounded-3xl shadow-[0_0_10px_rgba(0,0,0,0.25)] bg-white dark:bg-slate-600 ">
                 {emotion.map((item, index) => (
                     <button
                         key={index}

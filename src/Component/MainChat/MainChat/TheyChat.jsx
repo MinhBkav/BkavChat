@@ -4,9 +4,11 @@ import {useDispatch} from "react-redux";
 import { useSelector } from 'react-redux';
 import { useRef, useEffect } from 'react';
 import { setMessageReply } from '../../../feature/userSlice';
+import { setOpenCreateRoom } from '../../../feature/dataSlice';
 const emotion = ["❤️", "👍", "👎", "😂", "😮", "😞"];
 const Emotion = lazy(()=>import('./Emotion'))
 const WindowMessage = lazy(()=>import( './WindowMessage'))
+
 export const TheyChat = ({ mes }) => {
    const isLong = mes.Content.length > 2
    const [showEmotion, setShowEmotion] = useState(false)
@@ -17,6 +19,7 @@ export const TheyChat = ({ mes }) => {
     const close = () => {
         setModal(false)
     }
+    const openCreatRoom = useSelector(state=>state.data.openCreatRoom)
     const [modal, setModal] = useState(false)
     const { hanlderEnter: enter2, hanlderLeave: leave2 } = Timehover(setShowEmotion,close,100)
     const { hanlderEnter: enter1, hanlderLeave: leave1 } = Timehover(setShowInteract,close,500)
@@ -90,7 +93,7 @@ export const TheyChat = ({ mes }) => {
                   {/*<div className = "absolute z-10 bg-slate-700 opacity-70 bottom-6  w-full  h-8 rounded-l-full rounded-tr-full" style={{ height : replyRect.height , width : replyRect.width }}></div>*/}
               </>
           )}
-              {mes.Emotion && (<div className = "absolute left-0 top-6  z-30">{emotion[mes.Emotion]}</div>)}
+              {mes.Emotion && (<div className = "absolute left-0 bottom-0 translate-y-1/2  z-30">{emotion[mes.Emotion]}</div>)}
               <div className={`bg-[#E9EAED] dark:bg-slate-600 dark:text-white max-w-[262px] z-20 ${(isLong|| mes.Images.length > 0 )? "rounded-r-2xl rounded-tl-2xl" : "rounded-r-full rounded-tl-full"} `} onMouseEnter={enter1} onMouseLeave={leave1}
          ref = {refMain}
          >
@@ -153,6 +156,7 @@ export const TheyChat = ({ mes }) => {
                   </button>
               </div>
           )}
+         
       </>
    )
 }

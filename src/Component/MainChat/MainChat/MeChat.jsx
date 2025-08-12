@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 import { useSelector } from 'react-redux';
 import { useRef, useEffect, useState } from 'react';
 import { setMessageReply } from '../../../feature/userSlice';
+import { setOpenCreateRoom } from '../../../feature/dataSlice';
 const emotion = ["❤️", "👍", "👎", "😂", "😮", "😞"];
 const Emotion = lazy(() => import('./Emotion'))
 const WindowMessage = lazy(() => import('./WindowMessage'))
@@ -13,7 +14,7 @@ export const MeChat = ({ mes  }) => {
     const [showInteract, setShowInteract] = useState(false)
     const messageId = useSelector(state => state.user.messageId)
     const [previewImage, setPreviewImage] = useState(null);
-
+    const openCreatRoom = useSelector(state=>state.data.openCreatRoom)
     const close = () => {
         setModal(false)
     }
@@ -90,7 +91,7 @@ export const MeChat = ({ mes  }) => {
                         {/*<div className = "absolute z-10 bg-slate-700 opacity-70 bottom-6  w-full  h-8 rounded-l-full rounded-tr-full" style={{ height : replyRect.height , width : replyRect.width }}></div>*/}
                     </>
                 )}
-                    {mes.Emotion && (<div className = "absolute right-0 top-6  z-30">{emotion[mes.Emotion]}</div>)}
+                    {mes.Emotion && (<div className = "absolute right-0 bottom-0 translate-y-1/2 z-30">{emotion[mes.Emotion]}</div>)}
                 {showInteract && (<div className=" flex w-[68px] items-center " onMouseEnter={enter1} onMouseLeave={leave1}>
                     <button className=" flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onClick={() => setModal(!modal)} ><ion-icon name="ellipsis-vertical" className="w-[20px] h-[20px]  border-gray-700 rounded-full dark:text-[#9c9f9f] focus:text-sky-600 " ></ion-icon></button>
                     <Emotion showEmotion={showEmotion} positionE={"left"} hanlderEnter={enter2} hanlderLeave={leave2} mes ={mes} />
@@ -156,6 +157,7 @@ export const MeChat = ({ mes  }) => {
                     </button>
                 </div>
             )}
+             
         </>
     )
 }

@@ -5,7 +5,8 @@ import { useClickOutside } from '../../../Hooks/useClickOutside';
 import { deleteMessage } from '../../../feature/userSlice';
 import { useDispatch,useSelector } from 'react-redux';
 import { setInputMessage,setCheckRepair } from '../../../feature/dataSlice';
-import { setMessageId } from '../../../feature/userSlice';
+import{setMessageReply} from "../../../feature/userSlice";
+import { setMessageId,setMessagechose } from '../../../feature/userSlice';
 export const WindowMessage = ({openModal,positionE,close,mes,onReply}) => {
   const ref = useRef(null);
   const dispatch = useDispatch()
@@ -30,11 +31,14 @@ export const WindowMessage = ({openModal,positionE,close,mes,onReply}) => {
     }
     const handledeleteMessage = () =>{
         dispatch(deleteMessage(mes.id))
+        dispatch(setMessageReply({}))
+        dispatch(setCheckRepair(false))
         console.log(mes.id)
     }
     const handlerepairMessage = () =>{
        dispatch(setMessageId(mes.id))
         dispatch(setCheckRepair(true))
+        dispatch(setMessageReply({}))
         dispatch(setInputMessage(mes.Content))
         console.log(mes.Content)
         console.log(inputMessage)
@@ -45,6 +49,8 @@ export const WindowMessage = ({openModal,positionE,close,mes,onReply}) => {
       return
     const handleReply = async () => {
         if (!onReply) return;
+        dispatch(setCheckRepair(false))
+        dispatch(setMessagechose(mes))
         const size = await onReply(); // 👈 nhận lại kích thước từ cha
         console.log("↩️ Kích thước MeChat:", size);
 
@@ -57,10 +63,10 @@ export const WindowMessage = ({openModal,positionE,close,mes,onReply}) => {
       ref = {ref}
       >
             <div className = "w-[240px] h-[168px] flex flex-col bg-white dark:bg-slate-600 rounded-2xl shadow-[0_0_10px_rgba(0,0,0,0.25)]  overflow-hidden   ">  
-                <Limenu icon = "at-outline" text = "Trả lời"  inputcss = "" action = {handleReply}/>
-                <Limenu icon = "people-outline" text = "Chỉnh sửa"  inputcss = "" action = {handlerepairMessage}/>
+                <Limenu icon = "at-outline" text = "Trả lời"  inputcss = "" action = {handleReply} close = {close}/>
+                <Limenu icon = "people-outline" text = "Chỉnh sửa"  inputcss = "" action = {handlerepairMessage}  close = {close}/>
                 <Limenu icon = "moon-outline" text = "Ghim"  inputcss = "" action = {""}/>
-                <Limenu icon = "person-outline" text = "Xóa tin nhắn"  inputcss = "" action = {handledeleteMessage}/> 
+                <Limenu icon = "person-outline" text = "Xóa tin nhắn"  inputcss = "" action = {handledeleteMessage}  close = {close}/>
             </div>
         </div>
     )

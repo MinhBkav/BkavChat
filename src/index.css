@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.custom-scrollbar {
+  overflow: auto;
+  scrollbar-gutter: stable overlay;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -8,7 +13,6 @@
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
-
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #7f8797;
   border-radius: 6px;
@@ -18,12 +22,11 @@
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #0368f7; 
+  background-color: #0368f7;
 }
 .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #6b7280;
 }
-
 
 .glow-background {
   height : 40%;

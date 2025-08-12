@@ -15,6 +15,7 @@ const store = configureStore({
     sreach: sreachReducer,
     user : userReducer
   },
+  devTools: true,
 });
 
 export default store;

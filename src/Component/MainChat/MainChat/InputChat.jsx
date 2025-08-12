@@ -14,6 +14,8 @@ export const InputChat = () => {
   const messagereplyId = useSelector(state => state.user.messagereplyId)
     const whmessMain = useSelector(state => state.user.whmessMain )
     const messageId = useSelector(state =>state.user.messageId)
+    const messagechose = useSelector(state => state.user.messagechose)
+    console.log(messagechose)
   const [attachedFiles, setAttachedFiles] = useState([])
   const [showEmoji, setShowEmoji] = useState(false)
   const emojiRef = useRef(null)
@@ -29,6 +31,7 @@ export const InputChat = () => {
 
  const handlecloseRepair =() =>{
       dispatch(setCheckRepair(false));
+      dispatch(setInputMessage(""))
    }
    const handlecloseReply =() =>{
       dispatch(setMessageReply({}));
@@ -63,9 +66,23 @@ export const InputChat = () => {
         dispatch(setMessageReply({}))
         clearInput()
     }
+    const checkfile = () => {
+        if(messagechose.Images.length<0) {
+            return <span>Hình ảnh</span>
+        }
+       else if(messagechose.Files<0) {
+            return <span>File</span>
+        }
+        else
+            return <span>{truncate(messagechose.Content)}</span>
+    }
   const close =()=>{
     setShowEmoji(false)
   }
+    const truncate = (str, maxLength = 15) => {
+        if (!str) return ''
+        return str.length > maxLength ? str.slice(0, maxLength) + '...' : str
+    }
  useClickOutside(emojiRef,close,showEmoji)
   return (
     <>
@@ -83,13 +100,18 @@ export const InputChat = () => {
           ))}
         </div>
       )}
-    {checkrepair&&(<div className = "  z-30  h-8 bg-slate-300  flex justify-between items-center px-2  ">
-                <p1 className = "text-center">Sửa tin nhắn </p1>
+    {checkrepair&&(<div className = "  z-30  py-1 bg-slate-300  flex justify-between items-center px-2  ">
+            <div>
+                <h1 className = "text-lg font-[600]">Sửa tin nhắn</h1>
+            </div>
                 <button onClick={handlecloseRepair}><ion-icon name="close-outline" className = "hover:bg-slate-500 hover:rounded"></ion-icon></button>
               </div>)} 
-    {messagereplyId&&(<div className = "  z-30  h-8 bg-slate-300  flex justify-between items-center px-2  ">
-      <p1 className = "text-center">Trả lời tin nhắn</p1>
-      <button onClick={handlecloseReply}><ion-icon name="close-outline" className = "hover:bg-slate-500 hover:rounded"></ion-icon></button>
+    {messagereplyId&&(<div className = "  z-30 py-1 bg-slate-300  flex justify-between items-center px-2  ">
+        <div>
+            <h1 className="text-lg  font-[600]"> Trả lời tin nhắn</h1>
+            {checkfile()}
+        </div>
+      <button onClick={handlecloseReply}><ion-icon name="close-outline" className = " hover:bg-slate-500 hover:rounded " ></ion-icon></button>
     </div>)} 
       <div className="h-[56px] w-full flex flex-col justify-center items-center bg-white dark:bg-[#171717] z-20">
         <div className="relative w-full flex justify-between px-[0.3145rem] my-2">

@@ -10,6 +10,7 @@ const initialState = {
   messageId: null,
   messagereplyId : null,
   whmessMain : {},
+  messagechose  : {}
 
 }
 export const getdataChat = (FriendID, before) => (dispatch) => {
@@ -58,7 +59,7 @@ export const EmotionMessage = (messageId, emotion) => async (dispatch) => {
     socket.emit("emotion_message", { messageId, emotion });
 
     socket.once("message_emotion", ({ messageId, emotion }) => {
-      dispatch(updateEmotionMessage({ messageId: messageId, Emotion: emotion }));
+      dispatch(updateEmotionMessage({ messageId: messageId, emotion: emotion }));
       console.log(emotion);
       resolve(messageId);
     });
@@ -208,6 +209,7 @@ const userSlice = createSlice(
           msg.Content = Content || "[Tin nhắn đã thu hồi]";
           msg.Files = [];
           msg.Images = [];
+          msg.Emotion = null;
           msg.isDelete = true; // nếu bạn dùng để flag riêng
         }
       },
@@ -222,13 +224,16 @@ const userSlice = createSlice(
         }
       },
       updateEmotionMessage: (state, action) => {
-        const { messageId, Emotion } = action.payload;
+        const { messageId, emotion } = action.payload;
+
         console.log(messageId)
         const msg = state.dataChat.find(m => m.id === messageId);
         console.log(msg)
         if (msg) {
           console.log("da sua")
-          msg.Emotion = Emotion ;
+          console.log(msg.Emotion)
+          msg.Emotion = emotion ;
+          console.log(msg.Emotion)
         }
       },
       setMessageId: (state, action) => {
@@ -240,9 +245,13 @@ const userSlice = createSlice(
         state.whmessMain = whmessMain;
 
       },
+      setMessagechose : (state, action) => {
+        console.log(action.payload);
+        state.messagechose = action.payload;
+      }
 
     },
-    // extraReducers :(builder)=>{
+    // extraReducers :(builder)=>{s
     //     builder
     //     .addCase(getdataChat.pending,(state) => {
     //         state.isLoading = true;
@@ -260,5 +269,5 @@ const userSlice = createSlice(
     // }
   },
 )
-export const {updateRepairMessage,updateEmotionMessage, sUser, addMessage, setid, setDataChat, prependMessages, updateDeletedMessage, setMessageId ,setMessageReply} = userSlice.actions;
+export const {setMessagechose,updateRepairMessage,updateEmotionMessage, sUser, addMessage, setid, setDataChat, prependMessages, updateDeletedMessage, setMessageId ,setMessageReply} = userSlice.actions;
 export default userSlice.reducer; 

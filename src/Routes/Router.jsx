@@ -4,7 +4,6 @@ const Login = lazy(()=>import("../Pages/Login"))
 const Register = lazy(()=>import("../Pages/Register"))
 const PageChat = lazy(()=>import("../Pages/MainChat"))
 const Pagetest = lazy(()=>import("../Pages/Pagetest"))
-const Quiz = lazy(()=>import("../Pages/Quiz"))
 
 export const Router = () => {
     return (
@@ -16,7 +15,6 @@ export const Router = () => {
                 <Route path="/Register" element={<Register />} />
                 <Route path ="/main-chat" element ={<PageChat/>}/>
                 <Route path ="page-test" element ={<Pagetest/>}/>
-                 <Route path ="quiz" element ={<Quiz/>}/>
             </Routes>
            </Suspense>
         </>
