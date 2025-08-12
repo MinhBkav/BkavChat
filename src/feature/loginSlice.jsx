@@ -134,6 +134,7 @@ export const login = createAsyncThunk('auth/login', async (user) => {
     //  3. Lưu token nội bộ
     if (data?.data?.token) {
       localStorage.setItem('token', data.data.token);
+    localStorage.setItem("me", JSON.stringify(data.data));
     }
 
     return data.data;
@@ -153,6 +154,8 @@ export const loginWithSocial = createAsyncThunk('auth/loginSocial', async ({idTo
 
   if (data?.data?.token) {
     localStorage.setItem("token", data.data.token);
+    localStorage.setItem("me", JSON.stringify(data.data));
+
   }
 
   return data.data;
@@ -205,7 +208,8 @@ const loginSlice = createSlice({
         state.isLoading = false;
         state.error = false;
         state.isLogin = true;
-        state.me = action.payload;
+        state.me = action.payload;  
+
       })
       .addCase(loginWithSocial.rejected, (state) => {
         state.isLoading = false;

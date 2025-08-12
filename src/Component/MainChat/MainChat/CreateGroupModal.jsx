@@ -2,12 +2,12 @@ import { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AvatarImage from "../../AvatarImage";
 import { createRoom } from "../../../feature/dataSlice";
-export default function CreateGroupModal() {
+export default function CreateGroupModal({close}) {
   const listUser = useSelector((state) => state.data.chatData);
   const [groupName, setGroupName] = useState("");
   const [q, setQ] = useState("");
   const [selected, setSelected] = useState(new Set());
-  const me = useSelector(state=>state.login.me)
+  const me = JSON.parse(localStorage.getItem("me"));
   console.log(me.id)
   const dispatch = useDispatch()
 
@@ -15,6 +15,7 @@ export default function CreateGroupModal() {
     const onCreate =(infoRoom)=>{
         console.log(infoRoom.userIds)
         dispatch(createRoom({createdBy: infoRoom.createdBy,name: infoRoom.name,userIds:infoRoom.userIds}))
+        close()
     }
   const filtered = useMemo(() => {
     const keyword = q.trim().toLowerCase();

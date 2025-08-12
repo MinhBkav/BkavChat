@@ -14,10 +14,12 @@ const WindowSetting = ({ openModal, close }) => {
     const openCreatRoom = useSelector(state=>state.data.openCreatRoom)
     const { toggleTheme } = useTheme()
     const ref = useRef(null)
-    const me = useSelector((state) => state.login.me)
     const listUser = useSelector(state => state.data.chatData)
     const dispatch = useDispatch()
     console.log(openCreatRoom)
+    const me = JSON.parse(localStorage.getItem("me"));
+    console.log(me)
+    console.log(me.Username)
     useClickOutside(ref, close, openModal&&!openCreatRoom)
     if (!openModal)
         return null;

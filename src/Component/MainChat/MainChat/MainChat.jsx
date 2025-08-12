@@ -45,12 +45,12 @@ export const MainChat = () => {
           aria-modal="true"
           aria-label="Tạo nhóm"
         >
-         <div
-  className="2xl:w-1/3 sm:w-1/2 w-2/3 sm:h-5/6 h-4/6 bg-white rounded-2xl"
-  onClick={(e) => e.stopPropagation()}
->
-  <CreateGroupModal />
-</div>
+          <div
+            className="2xl:w-1/3 sm:w-1/2 w-2/3 sm:h-5/6 h-4/6 bg-white rounded-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <CreateGroupModal close ={closeCreateRoom} />
+          </div>
 
           <button
             onClick={(e) => {
