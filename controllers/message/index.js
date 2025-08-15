@@ -17,15 +17,78 @@ const savePathImage = `${parentDirectory}/images`;
 const savePathFile = `${parentDirectory}/files`;
 
 module.exports = () => {
+    router.post('/create-room', async (req, res) => {
+        try {
+            const { createdBy, name, avatarUrl = null, userIds } = req.body;
+            console.log(userIds)
+            if (!createdBy) {
+                return res.status(400).json({ status: 0, message: 'Missing required createdId' });
+            }
+             if (!name) {
+                      return res.status(400).json({ status: 0, message: 'Missing required name' });
+            }
+             if( !Array.isArray(userIds))
+            {
+                     return res.status(400).json({ status: 0, message: 'Missing required list user' });
+            }
+
+            const creator = await models.Users.findById(createdBy);
+            if (!creator) {
+                return res.status(400).json({ status: 0, message: 'Creator not found' });
+            }
+
+            // Bao gồm cả người tạo trong danh sách participants
+            const participants = [
+                { userId: creator._id, joinedAt: moment().toDate() },
+                ...userIds.filter(id => id !== createdBy).map(id => ({
+                    userId: new ObjectId(id),
+                    joinedAt: moment().toDate()
+                }))
+            ];
+
+            const newRoom = await models.Room.create({
+                name,
+                avatarUrl,
+                type: 'group',
+                participants,
+                createdBy: creator._id,
+                createdAt: moment().toDate()
+            });
+
+            return res.status(201).json({
+                status: 1,
+                message: 'Room created successfully',
+                data: {
+                    id: newRoom._id,
+                    name: newRoom.name,
+                    avatarUrl: newRoom.avatarUrl,
+                    createdAt: newRoom.createdAt,
+                    UpdateAtUser: newRoom.UpdateAtUser
+                }
+            });
+        } catch (err) {
+            return res.status(500).json({ status: 0, message: err.message });
+        }
+    });
+
+
     router.get('/list-friend', async (req, res) => {
         try {
-            const UserID = req.UserID
-            let user = await models.Users.findOne({ _id: new ObjectId(UserID) }).exec()
-            if (user == null) {
-                return res.status(400).json({ status: 0, data: null, message: 'User not found' })
+            const UserID = req.UserID;
+
+            // Lấy thông tin user hiện tại
+            let user = await models.Users.findOne({ _id: new ObjectId(UserID) }).exec();
+            if (!user) {
+                return res.status(400).json({ status: 0, data: null, message: 'User not found' });
             }
-            const listUser = await models.Users.find({ _id: { $ne: user._id } }).sort({ UpdateAt: -1 }).exec()
-            let listCustomFriend = []
+
+            // Lấy danh sách user khác
+            const listUser = await models.Users.find({ _id: { $ne: user._id } })
+                .sort({ UpdateAt: -1 })
+                .exec();
+
+            let listCustomFriend = [];
+
             await Promise.all(listUser.map(async (value) => {
                 const queryConditions = [
                     {
@@ -36,33 +99,55 @@ module.exports = () => {
                     }
                 ];
 
-                const response = await models.Message.find({ $and: queryConditions }).sort({ CreatedAt: -1 }).limit(1);
+                // Lấy tin nhắn gần nhất
+                const response = await models.Message.find({ $and: queryConditions })
+                    .sort({ CreatedAt: -1 })
+                    .limit(1);
+
+                // Đếm tin nhắn chưa đọc
                 const unreadCount = await models.Message.countDocuments({
                     UserID: value._id,     // friend gửi
                     FriendID: user._id,    // user nhận
                     isSend: 0
                 });
+
                 listCustomFriend.push({
                     Content: response.length > 0 ? response[0]?.Content : '',
                     Files: response.length > 0 ? response[0]?.Files : null,
-                    CreatedAt: response.length > 0 ? response[0]?.CreatedAt : null, // <--- thêm dòng này
+                    CreatedAt: response.length > 0 ? response[0]?.CreatedAt : null,
                     Images: response.length > 0 ? response[0]?.Images : null,
                     isSend: response.length > 0 ? response[0]?.isSend : 0,
                     FriendID: value._id,
                     FullName: value.FullName,
                     Username: value.Username,
                     Avatar: value.Avatar,
-                    isOnline: moment(value.UpdateAt).isSameOrAfter(moment().subtract(10, 'minutes')),
-                    UnreadCount: unreadCount
-                })
-            }))
-            await models.Users.updateOne({ _id: user._id }, { UpdateAt: moment().toDate() })
-            return res.status(200).json({ status: 1, data: listCustomFriend, message: "success" })
+                    UnreadCount: unreadCount,
+                    UpdateAtUser: value.UpdateAt
+                });
+            }));
+
+            // Lấy danh sách room mà user đang tham gia
+            const listRoom = await models.Room.find({
+                'participants.userId': new ObjectId(UserID)
+            }).sort({ createdAt: -1 }).exec();
+
+            // Cập nhật thời gian online
+            await models.Users.updateOne({ _id: user._id }, { UpdateAt: moment().toDate() });
+
+            // Trả về kết quả
+            return res.status(200).json({
+                status: 1,
+                data: {
+                    friends: listCustomFriend,
+                    rooms: listRoom
+                },
+                message: "success"
+            });
 
         } catch (error) {
-            return res.status(400).json({ status: 0, data: null, message: error.message })
+            return res.status(400).json({ status: 0, data: null, message: error.message });
         }
-    })
+    });
 
     router.post('/send-message', async (req, res) => {
     try {

@@ -158,7 +158,7 @@ router.post('/register', async (req, res) => {
       }
     );
         // Cập nhật thời gian hoạt động
-        await models.Users.updateOne({ _id: user._id }, { UpdateAt: moment().toDate() })
+        // await models.Users.updateOne({ _id: user._id }, { UpdateAt: moment().toDate() })
 
         const token = await generateToken({ uuid: user._id, FullName: user.FullName })
 
@@ -168,7 +168,8 @@ router.post('/register', async (req, res) => {
                 token,
                 Username: user.Username,
                 FullName: user.FullName,
-                Avatar: user.Avatar || null
+                Avatar: user.Avatar || null,
+                id : user._id
             },
             message: 'Login successful'
         })
@@ -207,7 +208,7 @@ router.post('/register', async (req, res) => {
             });
         } else {
             // Cập nhật thời gian hoạt động
-            await models.Users.updateOne({ _id: user._id }, { UpdateAt: moment().toDate() });
+            // await models.Users.updateOne({ _id: user._id }, { UpdateAt: moment().toDate() });
         }
 
          await models.Users.updateOne(
@@ -227,7 +228,8 @@ router.post('/register', async (req, res) => {
                 token,
                 Username: user.Username,
                 FullName: user.FullName,
-                Avatar: user.Avatar || null
+                Avatar: user.Avatar || null,
+                id : user._id
             },
             message: 'Login successful'
         });

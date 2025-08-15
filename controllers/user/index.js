@@ -6,6 +6,8 @@ const models = require(appRoot + '/database').models;
 // var models = reqlib('database').models
 var moment = require('moment')
 const { ObjectId } = require('mongoose').Types
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() }); // hoặc .diskStorage()
 
 const fs = require('fs');
 const path = require('path');
@@ -15,43 +17,42 @@ const parentDirectory = path.resolve(currentDirectory, '..', '..');
 const savePathImageAvatar = `${parentDirectory}/images/avatar`;
 
 module.exports = () => {
-    router.post('/update', async (req, res) => {
+    router.post('/update', upload.single('Avatar'), async (req, res) => {
         try {
-            const UserID = req.UserID
-            const { FullName } = req.body
-            let user = await models.Users.findOne({ _id: new ObjectId(UserID) }).exec()
-            if (user == null) {
-                return res.status(400).json({ status: 0, data: null, message: 'User not found' })
+            const UserID = req.UserID;
+            const { FullName } = req.body;
+            console.log("Body keys:", Object.keys(req.body)); // kiểm tra có dữ liệu không
+            console.log(UserID);
+            const user = await models.Users.findOne({ _id: new ObjectId(UserID) }).exec();
+            if (!user) {
+                return res.status(400).json({ status: 0, message: 'User not found' });
             }
-            let avatar = null
-            for (const file of req.files) {
-                if (file.fieldname === 'avatar') {
-                    const extension = file.originalname.split('.').pop();
-                    const nameFile = uuidv4();
-                    const fullPath = path.join(savePathImageAvatar, `${nameFile}.${extension}`);
-                    fs.writeFileSync(fullPath, file.buffer);
-                    avatar = `/avatar/${nameFile}.${extension}`;
-                }
-            }
+
             const updateObject = {};
+            if (FullName) updateObject.FullName = FullName;
 
-            if (FullName) {
-                updateObject.FullName = FullName;
+            // ✅ Xử lý file avatar nếu có
+            if (req.file) {
+                const file = req.file;
+                const extension = file.originalname.split('.').pop();
+                const nameFile = uuidv4();
+                const fullPath = path.join(savePathImageAvatar, `${nameFile}.${extension}`);
+                console.log(fullPath);
+                fs.writeFileSync(fullPath, file.buffer);
+                updateObject.Avatar = `/avatar/${nameFile}.${extension}`;
             }
-
-            if (avatar) {
-                updateObject.Avatar = avatar;
-            }
+            console.log(updateObject);
             updateObject.UpdateAt = moment().toDate();
             if (Object.keys(updateObject).length > 0) {
                 await models.Users.updateOne({ _id: user._id }, updateObject);
             }
-            return res.status(200).json({ status: 1, data: null, message: "update success" })
 
+            return res.status(200).json({ status: 1, message: 'Update success' });
         } catch (error) {
-            return res.status(400).json({ status: 0, data: null, message: error.message })
+            return res.status(400).json({ status: 0, message: error.message });
         }
-    })
+    });
+
 
     router.get('/info', async (req, res) => {
         try {

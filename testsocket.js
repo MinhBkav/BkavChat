@@ -1,7 +1,7 @@
 // test-client.js
 const { io } = require("socket.io-client");
 
-const socket = io("http://localhost:9999", {
+const socket = io("http://30.30.30.12:8080", {
   auth: {
     token: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiNjg2MzgxODI3MDUzNTg1NzczYjkxYTMwIiwiRnVsbE5hbWUiOiJtaW5oIiwiaWF0IjoxNzUxMzU5MzEwLCJleHAiOjMzMjg3MzU5MzEwfQ.Gi3R9OYdHULYmedWWq3SF763Uzg0Bv-3Bat0JsIQvjQ"
   }
@@ -43,3 +43,6 @@ socket.on("chat_history", (messages) => {
 socket.on("connect_error", (err) => {
   console.error("❌ connect_error:", err.message);
 });
+socket.on("disconnect",()=>{
+  
+})
