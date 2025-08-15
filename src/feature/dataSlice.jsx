@@ -11,7 +11,8 @@ const initialState  ={
   inputMessage : '',
   checkScroll : false,
   checkrepair : false,
-  openCreatRoom : false
+  openCreatRoom : false,
+    rooms : []
 }
 export const getListUser = createAsyncThunk('user/getUser', async (_) => {
   try {
@@ -22,7 +23,8 @@ export const getListUser = createAsyncThunk('user/getUser', async (_) => {
         Authorization: `Bearer ${token}`
       }
     });
-    return res.data.data
+    console.log(res.data.data.friends);
+    return res.data.data;
   } catch (error) {
             console.error(error);
             throw error;
@@ -99,7 +101,8 @@ const dataSlice =createSlice(
             .addCase(getListUser.fulfilled,(state,action)=>{
                 state.isLoading = false;
                 state.error = false;
-                state.chatData = action.payload;
+                state.chatData = action.payload.friends;
+                state.rooms = action.payload.rooms;
             })
             .addCase(getListUser.rejected,(state)=>{
                 state.isLoading = false;

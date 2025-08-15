@@ -10,7 +10,8 @@ export const InputChat = () => {
   const fileInputRef = useRef(null)
   const inputMessage = useSelector((state) => state.data.inputMessage)
   const checkrepair = useSelector(state => state.data.checkrepair)
-  const FriendID = useSelector(state => state.user.userChat.FriendID)
+  const InfoChat = useSelector(state => state.user.userChat)
+
   const messagereplyId = useSelector(state => state.user.messagereplyId)
     const whmessMain = useSelector(state => state.user.whmessMain )
     const messageId = useSelector(state =>state.user.messageId)
@@ -60,7 +61,7 @@ export const InputChat = () => {
             return
         }
         dispatch(setCheckScroll(false))
-        dispatch(sendMessage({ FriendID, Content: inputMessage, file: attachedFiles ,messagereplyId: messagereplyId ,whmessMain :whmessMain}))
+        dispatch(sendMessage({ InfoChat : InfoChat, Content: inputMessage, file: attachedFiles ,messagereplyId: messagereplyId ,whmessMain :whmessMain}))
         console.log(messagereplyId)
         console.log(whmessMain)
         dispatch(setMessageReply({}))

@@ -1,8 +1,7 @@
 import React from "react";
 
-const AvatarImage = ({ src, inputcss, isOnline }) => {
-  const defaultAvatar = "./images/219970.png";
-
+const AvatarImage = ({ src, inputcss, isOnline, type = "solo" }) => {
+  const defaultAvatar = type == "solo" ? "./images/219970.png":"./images/3950923.png";
   const handleError = (e) => {
     e.target.onerror = null;
     e.target.src = defaultAvatar;

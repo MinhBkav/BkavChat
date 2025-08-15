@@ -8,10 +8,11 @@ import CreateGroupModal from "./CreateGroupModal";
 export const MainChat = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userChat);
+  const room = useSelector((state) => state.user.roomChat);
+
   const openCreateRoom = useSelector((state) => state.data.openCreatRoom);
   const listUser = useSelector(state => state.data.chatData)
-  const isEmptyUser = !user || Object.keys(user).length === 0;
-
+  const isEmptyUser = (!user || Object.keys(user).length === 0) && (!room || Object.keys(room).length === 0);
   const closeCreateRoom = useCallback(() => {
     dispatch(setOpenCreateRoom(false));
   }, [dispatch]);

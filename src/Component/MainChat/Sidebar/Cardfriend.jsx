@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { sUser,getdataChat,isRead} from '../../../feature/userSlice'
+import {sUser, getdataChat, isRead, sRoom} from '../../../feature/userSlice'
 import {setCheckScroll, setid} from '../../../feature/dataSlice'
 import AvatarImage from "../../AvatarImage"
 import { addMessageData ,setInputMessage} from "../../../feature/dataSlice"
@@ -21,7 +21,7 @@ export const Cardfriend = ({ user }) => {
         dispatch(sUser(user))
         dispatch(setid(user.FriendID))
         console.log(user.FriendID)
-        dispatch(getdataChat(user.FriendID))
+        dispatch(getdataChat(user.FriendID,null,0))
         dispatch(setInputMessage(''))
         dispatch(isRead({FriendID: FriendID}))
         dispatch(setCheckScroll(false))

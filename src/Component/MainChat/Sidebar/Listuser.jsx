@@ -1,4 +1,5 @@
 import { Cardfriend } from "./Cardfriend";
+import {CardRoom} from "./CardRoom";
 import { useSelector ,useDispatch} from "react-redux";
 import { Cardfmobile } from "./Cardfmobile";
 import { useEffect } from "react";
@@ -7,7 +8,9 @@ import {getListUser } from '../../../feature/dataSlice'
 export const Listuser = () =>
 {
     const dispatch = useDispatch()
-    const chatData = useSelector(state=>(state.data.chatData))
+    const friends = useSelector(state=>(state.data.chatData))
+    const rooms = useSelector(state=>(state.data.rooms))
+    console.log(rooms)
     const openSidebar = useSelector((state) => state.data.openSidebar)
    useEffect(() => {
      dispatch(getListUser());
@@ -22,12 +25,15 @@ export const Listuser = () =>
        <>
        <div className = "h-full  custom-scrollbar overflow-y-scroll">
         <ul className = { `h-full ${openSidebar ? "flex flex-col" : "md:flex flex-col hidden"}`}>
-         {chatData.map(user => (
+         {friends.map(user => (
         <Cardfriend key={user.FriendID} user={user} />
-            ))} 
+            ))}
+            {rooms.map(room => (
+                <CardRoom key={room._id} room={room} />
+            ))}
        </ul>
         <ul className = { `${openSidebar ? "hidden" : "flex flex-col md:hidden"}`}>
-         {chatData.map(user => (
+         {friends.map(user => (
         <Cardfmobile key={user.FriendID} user={user} />
             ))} 
        </ul>

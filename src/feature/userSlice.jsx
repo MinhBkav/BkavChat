@@ -3,6 +3,7 @@ import axios from 'axios'
 import { socket } from "../../socket";
 const initialState = {
   userChat: {},
+  roomChat:{},
   dataChat: [],
   currentuserid: 0,
   isLoading: null,
@@ -13,8 +14,11 @@ const initialState = {
   messagechose  : {}
 
 }
-export const getdataChat = (FriendID, before) => (dispatch) => {
-  socket.emit("load_history", { friendId: FriendID, before, limit: 30 });
+export const getdataChat = (id,before,type) => (dispatch) => {
+  if(type == 0)
+  socket.emit("load_history", { friendId: id, before, limit: 30 });
+  else
+    socket.emit("load_history", { roomId: id, before, limit: 30 });
   socket.once("chat_history", (data) => {
     if (before) {
       dispatch(prependMessages(data)); // Nối lên trên đầu
@@ -72,7 +76,7 @@ export const EmotionMessage = (messageId, emotion) => async (dispatch) => {
 
 export const sendMessage = createAsyncThunk(
   'user/sendMessage',
-  async ({ FriendID, Content, file,messagereplyId,whmessMain }, { dispatch, rejectWithValue }) => {
+  async ({ InfoChat, Content, file,messagereplyId,whmessMain }, { dispatch, rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
       let images = [];
@@ -133,7 +137,8 @@ export const sendMessage = createAsyncThunk(
       console.log(messagereplyId)
       return await new Promise((resolve, reject) => {
         socket.emit("send_message", {
-          toUserId: FriendID,
+          toUserId: InfoChat.FriendID,
+          roomId: InfoChat._id,
           content: Content,
           images,
           files,
@@ -183,6 +188,10 @@ const userSlice = createSlice(
       sUser: (state, action) => {
         const user = action.payload;
         state.userChat = user;
+      },
+      sRoom : (state, action) => {
+        const user = action.payload;
+        state.roomChat = user;
       },
       addMessage: (state, action) => {
         const message = action.payload;
@@ -269,5 +278,5 @@ const userSlice = createSlice(
     // }
   },
 )
-export const {setMessagechose,updateRepairMessage,updateEmotionMessage, sUser, addMessage, setid, setDataChat, prependMessages, updateDeletedMessage, setMessageId ,setMessageReply} = userSlice.actions;
+export const {sRoom,setMessagechose,updateRepairMessage,updateEmotionMessage, sUser, addMessage, setid, setDataChat, prependMessages, updateDeletedMessage, setMessageId ,setMessageReply} = userSlice.actions;
 export default userSlice.reducer; 

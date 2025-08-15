@@ -56,7 +56,7 @@ export default function CreateGroupModal({close}) {
     }
   };
 
-  const canCreate = groupName.trim() && selected.size >= 3;
+  const canCreate = groupName.trim() && selected.size >= 2;
 
   return (
     <div className="flex h-full flex-col ">
