@@ -22,6 +22,7 @@ export const Cardfriend = ({ user }) => {
         dispatch(setid(user.FriendID))
         console.log(user.FriendID)
         dispatch(getdataChat(user.FriendID,null,0))
+        console.log("idddddddddđ",user.FriendID)
         dispatch(setInputMessage(''))
         dispatch(isRead({FriendID: FriendID}))
         dispatch(setCheckScroll(false))

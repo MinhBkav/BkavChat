@@ -15,6 +15,7 @@ const initialState = {
 
 }
 export const getdataChat = (id,before,type) => (dispatch) => {
+  console.log( "get ìnoooooooo",id ,before ,type);
   if(type == 0)
   socket.emit("load_history", { friendId: id, before, limit: 30 });
   else

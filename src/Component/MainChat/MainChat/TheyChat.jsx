@@ -128,8 +128,9 @@ export const TheyChat = ({ mes }) => {
                              </div>
                               </>
                            ))}
-                           {  mes.Content && (<p className="py-[4px] px-[15px] ">{mes.Content}</p>)}
-         </div>
+                  {mes.Content && (<p className={` py-[4px] px-[15px]  ${mes.isDelete ? ' text-slate-700 text-ellipsis italic' : ''}`}>{mes.isDelete ? "Tin nhan   da xoa" : mes.Content}</p>)}
+
+              </div>
 
           {showInteract && (<div className=" flex w-[68px] items-center " onMouseEnter={enter1} onMouseLeave={leave1}>
             <button className="relative flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onMouseEnter={enter2} onMouseLeave={leave2} ><ion-icon name="happy-outline" className="w-[20px] h-[20px] dark:text-[#9c9f9f] border-gray-700 rounded-full focus:text-sky-600 " ></ion-icon></button>
