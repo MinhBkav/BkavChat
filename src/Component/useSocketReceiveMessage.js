@@ -26,7 +26,7 @@ export default function useSocketReceiveMessage() {
     });
      socket.on("online_users", (onlineUserIds) => {
         dispatch(setUserOnline(onlineUserIds))
-        dispatch(getListUser())
+        // dispatch(getListUser())
         console.log(onlineUserIds)
     });
     socket.on("message_deleted",(message)=>{

@@ -5,11 +5,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { sInputsreach } from '../../../feature/sreachSlice'
 export const Listsreach = () =>
 {
-      const sreach = useSelector((state) => state.sreach.dataSreach)
+      const sreach = useSelector((state) => state.data.chatData)
+      const rooms = useSelector(state=>(state.data.rooms))
       const inputsreach = useSelector((state) => state.sreach.inputSreach)
       const filteredUsers = inputsreach
          ? sreach.filter(user =>
-            user.name.toLowerCase().startsWith(inputsreach.toLowerCase())
+            user.FullName.toLowerCase().startsWith(inputsreach.toLowerCase())
         )
        : []
     return (

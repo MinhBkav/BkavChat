@@ -14,7 +14,6 @@ export const MeChat = ({ mes  }) => {
     const [showInteract, setShowInteract] = useState(false)
     const messageId = useSelector(state => state.user.messageId)
     const [previewImage, setPreviewImage] = useState(null);
-    const openCreatRoom = useSelector(state=>state.data.openCreatRoom)
     const close = () => {
         setModal(false)
     }
@@ -48,16 +47,22 @@ export const MeChat = ({ mes  }) => {
 
             dispatch(setMessageReply({ id: mes.id, whmessMain: size }));
 
-            resolve(size); // 👈 gửi lại cho con
+            resolve(size); //  gửi lại cho con
         });
     };
+    if(mes.MessageReply )
+    {
+        console.log(mes.MessageReply)
+        console.log(mes.Images.length)
+
+    }
     return (
         <>
                 <div className={`relative flex gap-[11px] justify-end ${mes.id == messageId ? 'z-20' : 'z-10'} ${mes.Emotion ? 'mb-3':''}`} style={{ marginTop: replyRect.height }}>
                 {mes.MessageReply && (
                     <>
                     <div ref={replyRef}
-                        className={`absolute right-0 bottom-6  bg-[#8a8b8b] dark:bg-blue-600  dark:text-white max-w-[262px]   ${(isLong || mes.Images.length > 0) ? "rounded-l-2xl rounded-tr-2xl" : "rounded-l-full rounded-tr-full"} `} onMouseEnter={enter1} onMouseLeave={leave1}
+                        className={`absolute right-0 bottom-6  bg-[#8a8b8b] dark:bg-blue-600  dark:text-white max-w-[262px]   ${(isLong || mes.Images.length || Object.hasOwn(mes.MessageReply,'whmessMain') > 0) ? "rounded-l-2xl rounded-tr-2xl" : "rounded-l-full rounded-tr-full"} `} onMouseEnter={enter1} onMouseLeave={leave1}
                          style={{
                              width: `${mes.MessageReply.whmessMain?.width || 0}px`,
                              height: `${mes.MessageReply.whmessMain?.height || 0}px`
@@ -93,10 +98,15 @@ export const MeChat = ({ mes  }) => {
                 )}
                     {mes.Emotion && (<div className = "absolute right-0 bottom-0 translate-y-1/2 z-30">{emotion[mes.Emotion]}</div>)}
                 {showInteract && (<div className=" flex w-[68px] items-center " onMouseEnter={enter1} onMouseLeave={leave1}>
-                    <button className=" flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onClick={() => setModal(!modal)} ><ion-icon name="ellipsis-vertical" className="w-[20px] h-[20px]  border-gray-700 rounded-full dark:text-[#9c9f9f] focus:text-sky-600 " ></ion-icon></button>
+                    {!mes.isDelete&&(
+                        <>
+                        <button className=" flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onClick={() => setModal(!modal)} ><ion-icon name="ellipsis-vertical" className="w-[20px] h-[20px]  border-gray-700 rounded-full dark:text-[#9c9f9f] focus:text-sky-600 " ></ion-icon></button>
                     <Emotion showEmotion={showEmotion} positionE={"left"} hanlderEnter={enter2} hanlderLeave={leave2} mes ={mes} />
                     <button className="flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onMouseEnter={enter2} onMouseLeave={leave2}  ><ion-icon name="happy-outline" className="w-[20px] h-[20px]  border-gray-700 dark:text-[#9c9f9f] rounded-full focus:text-sky-600 " ></ion-icon></button>
                     <WindowMessage openModal={modal} positionE={"right"} close={close} mes={mes} onReply = {handleReply} />
+                        </>
+                    )}
+                    
                 </div>)}
                 <div className={` bg-[#E0F0FF] dark:bg-blue-600 dark:text-white max-w-[262px] z-20 ${(isLong || mes.Images.length > 0) ? "rounded-l-2xl rounded-tr-2xl" : "rounded-l-full rounded-tr-full"} `} onMouseEnter={enter1} onMouseLeave={leave1}
                 ref = {refMain}

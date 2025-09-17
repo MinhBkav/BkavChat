@@ -25,12 +25,16 @@ export const Listuser = () =>
        <>
        <div className = "h-full  custom-scrollbar overflow-y-scroll">
         <ul className = { `h-full ${openSidebar ? "flex flex-col" : "md:flex flex-col hidden"}`}>
-         {friends.map(user => (
-        <Cardfriend key={user.FriendID} user={user} />
-            ))}
-            {rooms.map(room => (
-                <CardRoom key={room._id} room={room} />
-            ))}
+         {[...friends, ...rooms]  // gộp 2 mảng
+  .slice()               // copy để tránh mutate
+  .sort((a, b) => b.unreadCount - a.unreadCount) // sort giảm dần
+  .map(item => (
+    // nếu có FriendID => friend, ngược lại là room
+    item.FriendID 
+      ? <Cardfriend key={item.FriendID} user={item} />
+      : <CardRoom key={item._id} room={item} />
+))}
+
        </ul>
         <ul className = { `${openSidebar ? "hidden" : "flex flex-col md:hidden"}`}>
          {friends.map(user => (

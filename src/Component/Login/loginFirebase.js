@@ -27,26 +27,26 @@
 //   const provider = new FacebookAuthProvider();
 
 //   try {
-//     console.log("📤 Đang mở popup Facebook...");
-//     console.log("🌐 Provider:", provider);
+//     console.log(" Đang mở popup Facebook...");
+//     console.log(" Provider:", provider);
 
 //     const result = await signInWithPopup(auth, provider);
 
-//     console.log("✅ Đăng nhập Facebook thành công:", result);
+//     console.log(" Đăng nhập Facebook thành công:", result);
 
 //     const idToken = await result.user.getIdToken();
-//     console.log("🔐 ID Token:", idToken);
+//     console.log(" ID Token:", idToken);
 
 //     return idToken;
 //   } catch (error) {
-//     console.error("❌ Lỗi khi đăng nhập Facebook:");
-//     console.error("↪️ Code:", error.code);
-//     console.error("📩 Message:", error.message);
-//     console.error("📄 Full error:", error);
+//     console.error(" Lỗi khi đăng nhập Facebook:");
+//     console.error("↪ Code:", error.code);
+//     console.error(" Message:", error.message);
+//     console.error(" Full error:", error);
 
 //     // Tuỳ chọn: xử lý lỗi cụ thể nếu cần
 //     if (error.code === 'auth/account-exists-with-different-credential') {
-//       console.warn("⚠️ Tài khoản đã tồn tại với provider khác:", error.email);
+//       console.warn(" Tài khoản đã tồn tại với provider khác:", error.email);
 //       // Gợi ý xử lý thêm nếu cần
 //     }
 
@@ -70,7 +70,7 @@ const getFcmToken = async () => {
     console.log(fcmToken)
     return fcmToken;
   } catch (error) {
-    console.error('❌ Không lấy được FCM token:', error);
+    console.error(' Không lấy được FCM token:', error);
     return null;
   }
 };
@@ -82,13 +82,11 @@ export const loginWithFirebase = async (email, password) => {
 
   return { idToken, fcmToken };
 };
-
 export const loginWithGoogle = async () => {
   const provider = new GoogleAuthProvider();
   const result = await signInWithPopup(auth, provider);
   const idToken = await result.user.getIdToken();
   const fcmToken = await getFcmToken();
-
   return { idToken, fcmToken };
 };
 
@@ -102,10 +100,10 @@ export const loginWithFacebook = async () => {
 
     return { idToken, fcmToken };
   } catch (error) {
-    console.error("❌ Lỗi khi đăng nhập Facebook:", error);
+    console.error(" Lỗi khi đăng nhập Facebook:", error);
 
     if (error.code === 'auth/account-exists-with-different-credential') {
-      console.warn("⚠️ Tài khoản đã tồn tại với provider khác:", error.email);
+      console.warn("Tài khoản đã tồn tại với provider khác:", error.email);
     }
 
     return null;

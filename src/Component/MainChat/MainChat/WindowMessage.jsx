@@ -36,7 +36,7 @@ export const WindowMessage = ({openModal,positionE,close,mes,onReply}) => {
         console.log(mes.id)
     }
     const handlerepairMessage = () =>{
-       dispatch(setMessageId(mes.id))
+        dispatch(setMessageId(mes.id))
         dispatch(setCheckRepair(true))
         dispatch(setMessageReply({}))
         dispatch(setInputMessage(mes.Content))
@@ -51,8 +51,8 @@ export const WindowMessage = ({openModal,positionE,close,mes,onReply}) => {
         if (!onReply) return;
         dispatch(setCheckRepair(false))
         dispatch(setMessagechose(mes))
-        const size = await onReply(); // 👈 nhận lại kích thước từ cha
-        console.log("↩️ Kích thước MeChat:", size);
+        const size = await onReply(); //  nhận lại kích thước từ cha
+        console.log("↩ Kích thước MeChat:", size);
 
     };
     return (

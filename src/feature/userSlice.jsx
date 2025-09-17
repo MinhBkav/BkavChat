@@ -180,6 +180,20 @@ export const isRead = createAsyncThunk('user/isRead', async ({ FriendID, Created
     throw error;
   }
 });
+export const removeMember = createAsyncThunk('user/RemoveMember', async ({ member,roomId }) => {//chua xu ly cac su kien peding,reject,...
+  try {
+    const token = localStorage.getItem("token");
+     const res = await axios.delete(`http://30.30.30.12:8080/api/room/${roomId}/removemember/${member.userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+});
 const userSlice = createSlice(
   {
     name: 'user',
@@ -221,6 +235,7 @@ const userSlice = createSlice(
           msg.Images = [];
           msg.Emotion = null;
           msg.isDelete = true; // nếu bạn dùng để flag riêng
+          msg.MessageReply = null;
         }
       },
       updateRepairMessage: (state, action) => {

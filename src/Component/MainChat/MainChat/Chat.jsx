@@ -7,12 +7,13 @@ import AutoScrollToBottom from '../../AutoScrollToBottom';
 import TimeDisplay from '../../../Hooks/TimeDisplay';
 import { TheyChat } from './TheyChat';
 import { MeChat } from './MeChat';
+import {Truncate} from '../../../utils/Truncate';
 const groupDM = (message) => {
    const groups = [];
    let i = 0;
    while (i < message.length) {
       const group = [];
-      const currentSender = message[i].MessageType; // 0: họ, 1: mình (theo code của bạn)
+      const currentSender = message[i].MessageType; // 0: họ, 1: mình 
       while (i < message.length && currentSender === message[i].MessageType) {
          group.push(message[i]);
          i++;
@@ -67,10 +68,10 @@ export const Chat = () => {
 
    // Map người dùng theo id để lấy avatar/name nhanh
    const participantsById = useMemo(() => {
-      const entries = participants.map((u) => [u._id || u.id, u]);
+      const entries = participants.map((u) => [u.userId ||u._id || u.id, u]);
       return Object.fromEntries(entries);
    }, [participants]);
-
+console.log(participantsById)
    const message = chatData;
    const grouped = isDM ? groupDM(message) : groupRoom(message, me.id);
 
@@ -102,7 +103,7 @@ export const Chat = () => {
    return (
        <>
           <div
-              className="relative flex flex-col justify-start flex-1 gap-[4px] overflow-y-scroll custom-scrollbar z-30 p-2"
+              className="relative flex flex-col justify-start flex-1 gap-[4px] overflow-y-scroll custom-scrollbar p-2"
               ref={chatBoxRef}
               onScroll={handleScroll}
           >
@@ -163,16 +164,16 @@ export const Chat = () => {
                          <div key={person.id} className="flex justify-start gap-[8px]">
                             <div className="flex flex-col justify-end">
                                {/* avatar đúng theo senderId nhờ map */}
+                                   <span className="text-[10px] text-gray-400 text-center">
+                        {Truncate(participantsById[person.senderId]?.FullName,8)}
+                    </span>
                                <AvatarImage
                                    src={participantsById[person.senderId]?.Avatar}
                                    inputcss="w-9 h-9 rounded-full"
+                                   type ={"solo"}
                                />
                             </div>
                             <div className="flex flex-col gap-[2px]">
-                               {/* nếu muốn hiện tên người gửi trong room */}
-                               {/* <span className="text-xs text-gray-400">
-                      {participantsById[person.senderId]?.FullName}
-                    </span> */}
                                {person.message.map((mes) => (
                                    <TheyChat key={mes.id || mes._id} mes={mes} />
                                ))}

@@ -49,7 +49,7 @@ export const TheyChat = ({ mes }) => {
 
             dispatch(setMessageReply({ id: mes.id, whmessMain: size }));
 
-            resolve(size); // 👈 gửi lại cho con
+            resolve(size); //  gửi lại cho con
         });
     };
    return (
@@ -59,7 +59,7 @@ export const TheyChat = ({ mes }) => {
           {mes.MessageReply && (
               <>
                   <div ref={replyRef}
-                       className={`absolute left-0 bottom-6   bg-[#8a8b8b] dark:bg-blue-600  dark:text-white max-w-[262px]   ${(isLong || mes.Images.length > 0) ? "rounded-r-2xl rounded-tl-2xl" : "rounded-r-full rounded-tl-full"} `} onMouseEnter={enter1} onMouseLeave={leave1}
+                       className={`absolute left-0 bottom-6   bg-[#8a8b8b] dark:bg-blue-600  dark:text-white max-w-[262px]  ${(isLong || mes.Images.length || Object.hasOwn(mes.MessageReply,'whmessMain') > 0)  ? "rounded-r-2xl rounded-tl-2xl" : "rounded-r-full rounded-tl-full"} `} onMouseEnter={enter1} onMouseLeave={leave1}
                        style={{
                            width: `${mes.MessageReply.whmessMain?.width || 0}px`,
                            height: `${mes.MessageReply.whmessMain?.height || 0}px`
@@ -133,10 +133,20 @@ export const TheyChat = ({ mes }) => {
               </div>
 
           {showInteract && (<div className=" flex w-[68px] items-center " onMouseEnter={enter1} onMouseLeave={leave1}>
-            <button className="relative flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onMouseEnter={enter2} onMouseLeave={leave2} ><ion-icon name="happy-outline" className="w-[20px] h-[20px] dark:text-[#9c9f9f] border-gray-700 rounded-full focus:text-sky-600 " ></ion-icon></button>
+            
+                {!mes.isDelete&&(
+                    <>
+                    <button className="relative flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onMouseEnter={enter2} onMouseLeave={leave2} ><ion-icon name="happy-outline" className="w-[20px] h-[20px] dark:text-[#9c9f9f] border-gray-700 rounded-full focus:text-sky-600 " ></ion-icon></button>
                     <Emotion showEmotion={showEmotion} positionE={"right"} hanlderEnter={enter2} hanlderLeave={leave2} mes = {mes} />
-            <button className="flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onClick={() => setModal(!modal)} ><ion-icon name="ellipsis-vertical" className="w-[20px] h-[20px]  border-gray-700 rounded-full dark:text-[#9c9f9f] focus:text-sky-600 " ></ion-icon></button>
-            <WindowMessage openModal={modal} positionE={"left"} close={close} mes = {mes} onReply = {handleReply}/>
+                    </>
+                    )}
+            
+                {!mes.isDelete&&(
+                    <>
+                    <button className="flex-1 z-10 flex items-center justify-center focus:text-sky-600 " onClick={() => setModal(!modal)} ><ion-icon name="ellipsis-vertical" className="w-[20px] h-[20px]  border-gray-700 rounded-full dark:text-[#9c9f9f] focus:text-sky-600 " ></ion-icon></button>
+                    <WindowMessage openModal={modal} positionE={"left"} close={close} mes = {mes} onReply = {handleReply}/>
+                    </>
+                    )}
          </div>)}
       </div>
           {previewImage && (

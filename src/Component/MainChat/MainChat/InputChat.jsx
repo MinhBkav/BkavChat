@@ -146,7 +146,7 @@ export const InputChat = () => {
             className="w-8 h-8 absolute top-1/2 -translate-y-1/2 text-gray-400 dark:text-blue-500 text-xl right-14"
           />
           {showEmoji && (
-            <div className="absolute bottom-14 right-14 z-50 bg-white dark:bg-slate-800 p-2 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.25)] max-w-[200px] flex flex-wrap gap-1 " ref ={emojiRef}>
+            <div className="absolute bottom-14 right-14 z-[999] bg-white dark:bg-slate-800 p-2 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.25)] max-w-[200px] flex flex-wrap gap-1 " ref ={emojiRef}>
               {emojiList.map((emoji, index) => (
                 <button
                   key={index}

@@ -23,7 +23,9 @@ export const Search = () => {
             <div className={`${openSidebar ? 'absolute w-full h-[60px] bg-white dark:bg-[#171717]  dark: border-r-[1px] border-slate-200 top-0 flex flex-col justify-center  ' : 'absolute w-full h-[60px] bg-white dark:bg-[#171717]  dark: border-r-[1px] border-slate-200 top-0 md:flex flex-col justify-center hidden'}`}>
                 <div className="relative flex  py-2">
                     {!inputsreach && (<button onClick={() => setModal(!modal)} className="z-20"><ion-icon name="menu-sharp" className="w-8 h-8 mx-4 dark:text-blue-600"></ion-icon></button>)}
-                    {inputsreach && (<button className="z-20"><ion-icon name="arrow-back-sharp" className="w-8 h-8 mx-4 dark:text-blue-600"></ion-icon></button>)}
+                    {inputsreach && (<button 
+                    onClick={()=>clearInput()}
+                    className="z-20"><ion-icon name="arrow-back-sharp" className="w-8 h-8 mx-4 dark:text-blue-600"></ion-icon></button>)}
                     <Suspense fallback={<div>Đang tải...</div>}>
                         <WindowSetting openModal={modal} close={close} />
                     </Suspense>

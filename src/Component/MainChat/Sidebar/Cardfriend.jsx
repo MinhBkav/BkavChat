@@ -11,14 +11,18 @@ export const Cardfriend = ({ user }) => {
     const isSend = user.isSend
     const CreatedAt = user.CreatedAt
     const FriendID = user.FriendID
-    const UnreadCount = user.UnreadCount
+    const UnreadCount = user.unreadCount
     const truncate = (str, maxLength = 15) => {
   if (!str) return ''
   return str.length > maxLength ? str.slice(0, maxLength) + '...' : str
 }
-
-    const loadChat = () => {
+     let isOnline
+     const userOnline = useSelector(state => state.data.userOnline)
+    isOnline = userOnline.includes(user.FriendID);
+     console.log(isOnline)
+       const loadChat = () => {
         dispatch(sUser(user))
+        dispatch(sRoom({type : "solo"}))
         dispatch(setid(user.FriendID))
         console.log(user.FriendID)
         dispatch(getdataChat(user.FriendID,null,0))
@@ -34,7 +38,7 @@ export const Cardfriend = ({ user }) => {
         <button className={`${user.FriendID === userid?'bg-slate-300 dark:bg-slate-700':'hover:bg-slate-100 dark:hover:bg-slate-600 '}`} onClick={() => loadChat()}>
             <li className=" h-[72px] flex justify-between py-[0.3rem] px-[0.5rem]  ">
                 <div className=" flex justify-start  gap-2">
-                    <AvatarImage src={user.Avatar} inputcss={"w-[49px] h-[49px] object-cover rounded-full my-auto overflow-hidden" } />
+                    <AvatarImage src={user.Avatar} inputcss={"w-[49px] h-[49px] object-cover rounded-full my-auto overflow-hidden" } type = "solo" isOnline={isOnline}/>
                     <div className=" flex flex-col justify-center  ">
                         <h1 className="text-base text-start font-[500] dark:text-white">{user.FullName}</h1>
                         {!read&&UnreadCount !=0 ?(

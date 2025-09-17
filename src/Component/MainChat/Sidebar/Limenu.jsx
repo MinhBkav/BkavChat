@@ -1,6 +1,6 @@
 export const Limenu = ({icon,text,action,inputcss}) => {
    return (
-     <li className="flex-1 hover:bg-[#DBDDE1] dark:hover:bg-slate-700">
+     <button className="flex-1 hover:bg-[#DBDDE1] dark:hover:bg-slate-700">
         <div className="flex justify-between  m-4">
             <div className="flex justify-between items-center gap-4  ">
                 <ion-icon name={icon} className="w-[24px] h-[24px] text-[#747881] "></ion-icon>
@@ -8,7 +8,7 @@ export const Limenu = ({icon,text,action,inputcss}) => {
             </div>
             <div className = {inputcss}>{action}</div>
         </div>
-    </li>
+    </button>
    )
 }
 export default Limenu;
