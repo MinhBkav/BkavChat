@@ -141,7 +141,7 @@ router.post('/register', async (req, res) => {
 
         const decoded = await admin.auth().verifyIdToken(idToken)
         const firebaseUid = decoded.uid
-        console.log(decoded)
+        console.log("uid firebase",decoded.uid)
 
         // Kiểm tra tồn tại user
         const user = await models.Users.findOne({ firebase_uid: firebaseUid }).exec()

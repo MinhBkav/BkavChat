@@ -32,5 +32,7 @@ module.exports = {
         Users: require('./schemas/users'),
         Message: require('./schemas/message'),
         Room : require('./schemas/room'),
+        MemberRoom : require('./schemas/memberRoom'),
+        FriendShip : require('./schemas/friendShip'),
     }
 }

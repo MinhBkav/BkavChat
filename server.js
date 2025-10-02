@@ -5,10 +5,8 @@
 // var bodyParser = require('body-parser')
 // var cors = require('cors')
 // const multer = require('multer');
-
 // var app = express();
 // const port = process.env.PORT || 8888;
-
 // app.use(cors())
 // app.use(bodyParser.json())
 // app.use(bodyParser.urlencoded({ extended: true }))
@@ -26,9 +24,6 @@
 // app.listen(port, () => {
 //     console.log(`Server listening on http://10.2.44.52:${port}`);
 // })
-
-
-
 // const corsOptions = {
 //   origin: "http://localhost:4001", 
 //   credentials: true,
@@ -45,7 +40,7 @@ require('dotenv').config();
 
 // Khởi tạo server HTTP
 const server = http.createServer(app);
-
+const middleware = require('./middleware')
 // Cấu hình CORS
 app.use(cors());
 app.use(express.json());
@@ -65,7 +60,10 @@ require('./socket')(io);
 // Đăng ký routes REST API
 const controller = require('./controllers');
 app.use('/api', controller());
-
+app.use('/api/user',middleware, require('./routers/router.user'));
+app.use('/api/message',middleware, require('./routers/router.message'));
+app.use('/api/room',middleware, require('./routers/router.room'));
+app.use('/api/friend',middleware, require('./routers/router.friend')); 
 // Khởi chạy server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT,'0.0.0.0', () => {

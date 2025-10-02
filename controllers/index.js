@@ -10,5 +10,6 @@ module.exports = function () {
     router.use('/images', require('./images')())
     router.use('/files', require('./files')())
     router.use('/upload', require('./upload')());
+    router.use('/room',middleware,require('./room')())
     return router
 }
