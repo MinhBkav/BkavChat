@@ -32,7 +32,7 @@ exports.updateUser = async(req,res) =>{
                 const InfoUpdate = await updateUser({file,UserID,FullName})
                 return res.status(200).json({ status: 1, message: 'Update success',InfoUpdate });
             } catch (err) {
-                          return res.status(err.status).json({status: 0,message:err.message,code:err.code});
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
             }
 };
 exports.mute  = async(req,res) =>{

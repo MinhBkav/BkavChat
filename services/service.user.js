@@ -13,10 +13,9 @@ const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const currentDirectory = __dirname;
-const parentDirectory = path.resolve(currentDirectory, '..', '..');
+const parentDirectory = path.resolve(currentDirectory,  '..');
 const savePathImageAvatar = `${parentDirectory}/images/avatar`;
 async function updateUser({file,UserID,FullName}) {
-                console.log("Body keys:", Object.keys(req.body)); // kiểm tra có dữ liệu không
                 console.log(UserID);
                 const user = await models.Users.findOne({ _id: new ObjectId(UserID) }).exec();
                 if (!user) {

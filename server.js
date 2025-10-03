@@ -64,6 +64,7 @@ app.use('/api/user',middleware, require('./routers/router.user'));
 app.use('/api/message',middleware, require('./routers/router.message'));
 app.use('/api/room',middleware, require('./routers/router.room'));
 app.use('/api/friend',middleware, require('./routers/router.friend')); 
+app.use('/api/auth', require('./routers/router.auth')); 
 // Khởi chạy server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT,'0.0.0.0', () => {
