@@ -16,6 +16,7 @@ module.exports = (io,socket) =>{
         }
 
         let query = {};
+        // Áp dụng mốc thời gian "before" (nếu có)
         if (before) {
           query.CreatedAt = { $lt: new Date(before) };
         }
