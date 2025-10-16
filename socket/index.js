@@ -19,7 +19,9 @@ module.exports = (io) => {
   Authentication(io);
   io.on('connection', (socket) => {
     console.log(` User ${socket.userId} connected`);
+    presence.setOnline(socket.userId);
     listUserOnline(io);
+    console.log("ds online",presence.getmap())
     console.log("User dang online",presence.listUserIds());
     registerSendMessage(io,socket);
     registerHistoryMessage(io,socket);
@@ -33,8 +35,8 @@ module.exports = (io) => {
         { _id: socket.userId },
         { UpdateAt: moment().toDate()}
       );
-      onlineUsers.delete(socket.userId);
-      console.log(onlineUsers)
+      presence.setOffline(socket.userId);
+      console.log("ds online",presence.getmap())
       console.log(new Date().toISOString())
   const otherOnlineUsers = Array.from(presence.getmap().entries()).map(([userId, _]) => userId);
       io.emit("online_users", otherOnlineUsers);
@@ -47,7 +49,7 @@ module.exports = (io) => {
           { _id: socket.userId },
           { UpdateAt: moment().toDate() }
       );
-      onlineUsers.delete(socket.userId);
+      presence.setOffline(socket.userId);
 
       const otherOnlineUsers = Array.from(presence.getmap().keys());
       io.emit('online_users', otherOnlineUsers);

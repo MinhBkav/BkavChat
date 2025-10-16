@@ -66,7 +66,7 @@ module.exports = (io,socket) =>{
                 if (participantId === socket.userId.toString()) continue;
     
                 const toSocketId = presence.getSocketId(participantId);
-                if (toSocketId) {
+                if (!toSocketId) {
                   //Kiểm tra trạng thái thông báo
                   const pref = await models.MemberRoom.findOne(
                 { userId: participantId, roomId: roomId },
@@ -81,14 +81,16 @@ module.exports = (io,socket) =>{
                   if (participantUser?.fcmToken) {
                     const payload = {
                       token: participantUser.fcmToken,
-                      notification: {
-                        title: `${user.FullName || user.Username}`,
-                        body: content || "Bạn nhận được một tệp tin"
-                      },
+                      // notification: {
+                      //   title: `${user.FullName || user.Username}\n ${room.name}`,
+                      //   body: content || "Bạn nhận được một tệp tin"
+                      // },
                       data: {
                         type: 'chat',
                         senderId: user._id.toString(),
-                        roomId: roomId
+                        roomId: roomId,
+                        url : `/main-chat/group/${roomId}`,
+                        userID : user._id.toString()
                       }
                     };
                     try {
@@ -107,7 +109,7 @@ module.exports = (io,socket) =>{
               if (!friend) return;
     
               const toSocketId = presence.getSocketId(toUserId);
-              if (toSocketId) {
+              if (!toSocketId) {
                 const pref = await models.FriendShip.findOne(
               { UserID: toUserId, FriendID: user._id },
               { isGetNotification: 1, _id: 0 }
@@ -124,14 +126,17 @@ module.exports = (io,socket) =>{
                 if (friend.fcmToken) {
                   const payload = {
                     token: friend.fcmToken,
-                    notification: {
-                      title: `${user.FullName || user.Username}`,
-                      body: content || "Bạn nhận được một tệp tin"
-                    },
+                    // notification: {
+                    //   title: `${user.FullName || user.Username}`,
+                    //   body: content || "Bạn nhận được một tệp tin"
+                    // },
                     data: {
+                      title: `${user.FullName || user.Username}`,
                       type: 'chat',
                       senderId: user._id.toString(),
-                      content: content || ''
+                      content: content || '',
+                      url : `/main-chat/solo/${user._id}`,
+                      userID: user._id.toString()
                     }
                   };
                   try {

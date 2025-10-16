@@ -61,10 +61,11 @@ async function mute({userID,type,id}) {
       if (userObjId.equals(friendObjId)) {
          throw httpError(400,'Không thể mute chính mình',{code:'8xhhhh'});
       }
-
+  console.log(1);
       // tìm cặp
       console.log(userObjId,friendObjId)
       let doc = await models.FriendShip.findOne({ UserID: userObjId, FriendID: friendObjId });
+      console.log(2);
       console.log(doc)
       if (!doc) {
         // chưa có => tạo mới và đặt isGetNotification = false
@@ -73,6 +74,7 @@ async function mute({userID,type,id}) {
           FriendID: friendObjId,
           isGetNotification: false
         });
+                console.log(2.1);
         return {
           ok: true,
           scope: 'solo',
@@ -83,6 +85,8 @@ async function mute({userID,type,id}) {
         // đã có => đảo trạng thái
         doc.isGetNotification = !doc.isGetNotification;
         await doc.save();
+                        console.log(2.2);
+
         return {
           ok: true,
           scope: 'solo',
@@ -92,6 +96,7 @@ async function mute({userID,type,id}) {
       }
 
     } else if (type === 'group') {
+                      console.log(3);
       // toggle giữa userId và roomId = id
       const roomObjId = new ObjectId(id);
 
@@ -103,7 +108,8 @@ async function mute({userID,type,id}) {
           { userId: userObjId, roomId: roomObjId },
           { $setOnInsert: { userId: userObjId, roomId: roomObjId, isGetNotification: false } },
           { upsert: true, new: true }
-        );
+        );                console.log(3.2);
+
         return {
           ok: true,
           scope: 'group',
@@ -114,6 +120,8 @@ async function mute({userID,type,id}) {
         // đã có => đảo trạng thái
         mr.isGetNotification = !mr.isGetNotification;
         await mr.save();
+                        console.log(5);
+
         return {
           ok: true,
           scope: 'group',

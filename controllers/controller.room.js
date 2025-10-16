@@ -33,7 +33,7 @@ exports.createRoom = async(req,res) =>{
     return res.status(201).json({ status: 1, message: 'Room created successfully', newRoom });
     }
     catch(err){
-        return res.status(err.status).json({status: 0,message:err.message,code:err.code});
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
     }
 }
 exports.updateRoom = async(req,res) =>{
@@ -48,7 +48,7 @@ exports.updateRoom = async(req,res) =>{
       await updateRoom({file,roomId,userId,name});
       return res.status(200).json({ status: 1, message: 'Update success' });
     } catch (err) {
-      return res.status(err.status).json({ status: 0, message: err.message,code:err.code });
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
     }
 }
 exports.getInfoRoom = async(req,res)=> {
@@ -61,7 +61,7 @@ exports.getInfoRoom = async(req,res)=> {
     const  infoRoom = await getInfoRoom({roomId,userId});
     return res.status(200).json({status : 1,data: infoRoom,message:'success'});
   } catch (err) {
-    return res.status(err.status).json({ status: 0, data: null, message: err.message,code:err.code });
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
   }
 };
 exports.removeMember = async (req,res) =>{
@@ -76,8 +76,8 @@ exports.removeMember = async (req,res) =>{
     await removeMember({roomId,userId,memberId});
     return res.status(200).json({ status: 1, message: 'Xóa thành viên thành công' });
   }
-  catch{
-    return res.status(err.status).json({ status: 0, data: null, message: err.message,code:err.code });
+  catch(err){
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
   }
 };
 exports.addMember = async (req,res) =>{
@@ -92,7 +92,7 @@ exports.addMember = async (req,res) =>{
   await addMember({roomId,newUserId,userId});
     return res.status(200).json({ status: 1, message: 'Thêm thành viên thành công' });
   } catch (err) {
-    return res.status(err.status).json({ status: 0, data: null, message: err.message,code:err.code });
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
   }
 };
 exports.removeRoom = async(req,res) =>{
@@ -106,6 +106,6 @@ exports.removeRoom = async(req,res) =>{
     await removeRoom({roomId,userId});
     return res.status(200).json({ status: 1, message: 'Xóa nhóm thành công' });
   } catch (err) {
-    return res.status(err.status).json({ status: 0, data: null, message: err.message,code:err.code });
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
   }
 }

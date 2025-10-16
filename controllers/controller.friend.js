@@ -11,6 +11,6 @@ exports.getListFriend  = async (req,res) =>{
     });
 
  } catch(err){
-      return res.status(err.status).json({status: 0,message:err.message,code:err.code});
+                          return res.status(err.status|| 400).json({status: 0,message:err.message,code:"h111"});
  }
 }

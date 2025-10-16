@@ -22,7 +22,7 @@ exports.register = async(req,res) =>{
 
     } catch (err) {
         console.error(err)
-      return res.status(err.status).json({status: 0,message:err.message,code:err.code});
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
     }
 }
 exports.login = async(req,res) =>{
@@ -39,7 +39,7 @@ exports.login = async(req,res) =>{
         })
     } catch (err) {
         console.error(err)
-      return res.status(err.status).json({status: 0,message:err.message,code:err.code});
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
     } 
 }
 exports.loginsocial = async(req,res) =>{
@@ -58,6 +58,6 @@ exports.loginsocial = async(req,res) =>{
 
     } catch (err) {
         console.error(err);
-      return res.status(err.status).json({status: 0,message:err.message,code:err.code});
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
     }
 }

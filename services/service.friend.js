@@ -18,7 +18,6 @@ const savePathImage = `${parentDirectory}/images`;
 const savePathFile = `${parentDirectory}/files`;
 async function getListFriend({UserID}){
         const meId = new ObjectId(UserID);
-    
         // 1) Lấy user hiện tại
         const me = await models.Users.findOne({ _id: meId }).exec();
         if (!me) {
@@ -79,11 +78,8 @@ async function getListFriend({UserID}){
         // Nếu không ở room nào, trả kết quả luôn
         if (roomIds.length === 0) {
           await models.Users.updateOne({ _id: me._id }, { UpdateAt: moment().toDate() });
-          return res.status(200).json({
-            status: 1,
-            data: { friends, rooms: [] },
-            message: 'success'
-          });
+          return { friends, rooms: [] }
+        
         }
     
         // 4) Lấy tin nhắn cuối cho TẤT CẢ room (1 aggregate)

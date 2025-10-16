@@ -10,10 +10,6 @@ const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() }); // hoặc .diskStorage()
 const fs = require('fs');
 const path = require('path');
-const { v4: uuidv4 } = require('uuid');
-const currentDirectory = __dirname;
-const parentDirectory = path.resolve(currentDirectory, '..', '..');
-const savePathImageAvatar = `${parentDirectory}/images/avatar`;
 const {getInfoUser,updateUser,mute} = require('../services/service.user');
 exports.getInfoUser= async (req,res) =>{
          try {
@@ -21,7 +17,7 @@ exports.getInfoUser= async (req,res) =>{
             const InfoUser = await getInfoUser({UserID});
             return res.status(200).json({status: 1,data: InfoUser,message:'Sucess'});
         } catch (err) {
-          return res.status(err.status).json({status: 0,message:err.message,code:err.code});
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
         }
 };
 exports.updateUser = async(req,res) =>{
@@ -44,16 +40,12 @@ exports.mute  = async(req,res) =>{
       return res.status(400).json({ ok: false, message: 'Thiếu userID/type/id' });
     }
     if (!ObjectId.isValid(userID) || !ObjectId.isValid(id)) {
-      return res.status(400).json({ ok: false, message: 'ID không hợp lệ' });
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
     }
 
     data = await mute({userID,type,id});
+                    return res.status(200).json({ status: 1, message: 'Update success',data });
   } catch (err) {
-    console.error('POST /mute error:', err);
-    // duplicate key khi thiếu unique index?
-    if (err?.code === 11000) {
-      return res.status(409).json({ ok: false, message: 'Trùng cặp (duplicate key)' });
-    }
-    return res.status(err.status).json({ ok: false, message: err.message,code : err.code });
+         return res.status(err.status|| 400).json({status: 0,message:err.message});
   }
 };

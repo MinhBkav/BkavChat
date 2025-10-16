@@ -12,8 +12,8 @@ exports.sendMessage = async(req,res) =>{
           const files = req.files;
           const messageSend = await sendMessage({files,UserID,FriendID,Content});
         return res.status(200).json({status : 1,data: messageSend,message:'Send sucess'})
-        } catch (error) {
-        return res.status(err.status).json({status: 0,message:err.message,code:err.code});
+        } catch (err) {
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
         }
 };
 exports.getMessage = async(req,res) =>{
@@ -22,7 +22,7 @@ exports.getMessage = async(req,res) =>{
             const { FriendID, LastTime } = req.query
             const messageGet = await getMessage({UserID,FriendID,LastTime});
             return res.status(200).json({ status: 1, data: messageGet, message: "" })
-        } catch (error) {
-        return res.status(err.status).json({status: 0,message:err.message,code:err.code});
+        } catch (err) {
+                          return res.status(err.status|| 400).json({status: 0,message:err.message});
         }
 };
