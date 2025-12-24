@@ -1,15 +1,45 @@
 import { useEffect } from "react";
 import { socket } from "../../socket";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from "../feature/userSlice";
+import { addMessage, setid } from "../feature/userSlice";
 import { setUserOnline } from "../feature/dataSlice";
 import { getListUser } from "../feature/dataSlice";
+import { sRoom,sUser,getdataChat,isRead} from '../feature/userSlice'
 import { updateDeletedMessage,updateRepairMessage,updateEmotionMessage } from "../feature/userSlice";
 export default function useSocketReceiveMessage() {
   const dispatch = useDispatch();
   const currentUserId = useSelector((state) => state.data.currentuserid);
  const room = useSelector((state) => state.user.userChat);
+   const friends = useSelector(state=>(state.data.chatData))
+    const rooms = useSelector(state=>(state.data.rooms))
   useEffect(() => {
+    const id = sessionStorage.getItem("id");
+    const type = sessionStorage.getItem("type");
+ if (id) {
+  dispatch(setid(id));
+  const matchId = String(id);
+console.log(matchId)
+  if (type === "solo") {
+    
+    const u = friends.find(f => String(f.FriendID) === matchId);
+    console.log(friends.map( f=>f.FriendID))
+    if (u){ 
+      dispatch(sRoom({type:"solo"}))
+            console.log(u)
+      dispatch(sUser(u));}
+              dispatch(getdataChat(u?.FriendID,null,0))
+  } else {
+    console.log(rooms.map(r=>r._id))
+    const r = rooms.find(rm => String(rm._id) === matchId);
+    if (r) {
+      dispatch(sRoom({type:"group"}))
+      console.log(r)
+      dispatch(sUser(r));} // hoặc sUser(r) nếu slice của bạn dùng chung
+      dispatch(getdataChat(r?._id,null,1))
+  }
+}
+
+
     socket.on("receive_message", (msg) => {
       // Nếu tin nhắn từ đúng người đang chat thì thêm vào chat
       console.log(msg)
@@ -47,5 +77,5 @@ export default function useSocketReceiveMessage() {
       socket.off("message_deleted");
       socket.off("message_repaired");
     };
-  }, [dispatch, currentUserId]);
+  }, [dispatch, currentUserId,friends,rooms]);
 }

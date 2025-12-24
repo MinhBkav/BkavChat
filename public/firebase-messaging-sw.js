@@ -12,3 +12,32 @@ firebase.initializeApp({
 });
 
 const messaging = firebase.messaging();
+messaging.onBackgroundMessage((payload) => {
+  console.log(payload);
+  const n = payload.data || {};
+  const title = n.title || 'Thông báo';
+  const userID = n.userID;
+  const options = {
+    body: n.content || '',
+    data: payload.data || {},
+
+
+  };
+  self.registration.showNotification(title, options);
+});
+
+// Click vào notification
+const me = JSON.parse(localStorage.getItem("me"));
+if(me.id == userID)
+{
+  self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || '/';
+  event.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+      for (const c of list) if ('focus' in c) return c.focus();
+      if (clients.openWindow) return clients.openWindow(url);
+    })
+  );
+});
+}

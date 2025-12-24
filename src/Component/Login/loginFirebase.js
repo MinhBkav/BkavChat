@@ -66,6 +66,7 @@ const getFcmToken = async () => {
   try {
     const fcmToken = await getToken(messaging, {
       vapidKey: 'BN9WPzE9IoYqmq_J3578Afj9yTiQCrkMpE-A3VqvV6a3ypASo7lmOaT8y_CgWIkwi_Fd7J8WTNDw9plBlKT1mPY' // Lay
+      // Them registration cua firebase vao day de dam bao firebase tra ve dung service worker da dang ky, trong th nay chi co 1 sw duy nhat nen khong can 
     });
     console.log(fcmToken)
     return fcmToken;

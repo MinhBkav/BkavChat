@@ -15,6 +15,14 @@ function App() {
   useFirebaseNotification();
   useSocketReceiveMessage();
   connectSocket();
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/firebase-messaging-sw.js')
+        .then((reg) => console.log('✅ SW registered:', reg.scope))
+        .catch(console.error);
+    }
+  }, []);
   return (
     <>
      <Router/>

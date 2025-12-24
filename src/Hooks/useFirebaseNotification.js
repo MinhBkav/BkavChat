@@ -5,7 +5,7 @@ import { messaging } from '../../firebase';
 console.log('🔍 File useFirebaseNotification.js đã được import');
 
 const useFirebaseNotification = () => {
-  console.log('🚀 Hook useFirebaseNotification() được gọi'); // 👈 cái này phải hiện
+  console.log('🚀 Hook useFirebaseNotification() được gọi'); // 
 
   useEffect(() => {
     console.log('🟡 useEffect trong useFirebaseNotification chạy');

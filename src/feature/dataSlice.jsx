@@ -20,7 +20,7 @@ export const getListUser = createAsyncThunk('user/getUser', async (_) => {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await axios.get('http://30.30.30.12:8080/api/message/list-friend', {
+    const res = await axios.get('http://30.30.30.12:8080/api/friend/list-friend', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -37,7 +37,7 @@ export const createRoom = createAsyncThunk('data/CreateRoom', async ({ createdBy
   try {
     const token = localStorage.getItem("token");
 
-    const res = await axios.post('http://30.30.30.12:8080/api/message/create-room', {
+    const res = await axios.post('http://30.30.30.12:8080/api/room/create-room', {
       createdBy,
       name,
       userIds

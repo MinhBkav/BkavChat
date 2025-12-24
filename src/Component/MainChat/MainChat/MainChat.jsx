@@ -8,6 +8,8 @@ import { setOpenCreateRoom ,setOpenMyInfo,setOpenInfoChat} from "../../../featur
 import CreateGroupModal from "./CreateGroupModal";
 import OpenMyInfo from "./OpenMyInfo";
 import  OpenInfoChat  from "./OpenInfoChat";
+import { param } from "framer-motion/m";
+import { useParams } from "react-router-dom";
 export const MainChat = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userChat);
@@ -21,7 +23,7 @@ export const MainChat = () => {
   const openInfoChat = useSelector (state=> state.data.openInfoChat)
   const openMyInfo = useSelector (state=> state.data.openMyInfo)
   const listUser = useSelector(state => state.data.chatData)
-  const isEmptyUser = (!user || Object.keys(user).length === 0) && (!room || Object.keys(room).length === 0);
+  // const isEmptyUser = (!user || Object.keys(user).length === 0) && (!room || Object.keys(room).length === 0);
   const closeCreateRoom = useCallback(() => {
     dispatch(setOpenCreateRoom(false));
   }, [dispatch]);
@@ -38,10 +40,11 @@ export const MainChat = () => {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [openCreateRoom, closeCreateRoom]);
- 
+const paramChat = useParams();
+const hasParam = !!(paramChat.type&&paramChat.id)
   return (
     <main className="flex flex-col h-screen justify-between bg-white dark:bg-[#171717] flex-1">
-      {isEmptyUser ? (
+      {!hasParam ? (
         <img src="./images/IconChat.png" alt="No conversation" className="h-36 m-auto" />
       ) : (
         <>

@@ -42,16 +42,21 @@ const Login = () => {
   const dispatch = useDispatch();
   const { error, isLoading ,isLogin} = useSelector((state) => state.login)
   const [message, setMessage] = useState("")
+  const [res,setRes] = useState({});
   const [title, setTitle] = useState("")
   const [errorInput, setErrorInput] = useState({})
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const onClose = () => {
     if (isLoading) {
       setIsSuccess(true)
     }
     else if(!isLoading && !error){
       setIsSuccess(false)
+      if(res.role == "admin")
+      navigate("/page-admin")
+    else
       navigate("/main-chat")
+
     }
     else if(!isLoading && error){
       setIsSuccess(false)
@@ -80,11 +85,11 @@ const Login = () => {
     setErrorInput(newError);
     return Object.keys(newError).length === 0;
   }
-  const onLogin = (e) => {
+  const onLogin = async (e) => {
     e.preventDefault();
     // if (validate()) {
-      e.preventDefault();
-      dispatch(login(user))
+    e.preventDefault();
+     setRes(await dispatch(login(user)).unwrap());
     // }
   //   if (isLoading) { Khong dung cach nay phai dung useEffect để lấy các sự kiện pending, reject, filled
   //     setMessage('Loading...');
